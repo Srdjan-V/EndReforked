@@ -400,10 +400,11 @@ final class Registration implements Initializer {
         OreDictionary.registerOre("essence", ModItems.END_ESSENCE.get());
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public static void addPattern(Class<? extends Enum<?>> clazz, String name, String id, ItemStack craftingItem) {
         name = "endreborn_" + name;
         id = "er_" + id;
-        EnumHelper.addEnum(clazz, name.toUpperCase(), new Class[] { String.class, String.class, ItemStack.class }, name,
+        EnumHelper.addEnum((Class) clazz, name.toUpperCase(), new Class[] { String.class, String.class, ItemStack.class }, name,
                 id, craftingItem);
     }
 }
