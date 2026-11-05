@@ -7,8 +7,8 @@ import dagger.Provides
 import io.github.srdjanv.endreforked.EndReforked
 import io.github.srdjanv.endreforked.Tags
 import io.github.srdjanv.endreforked.common.CommonProxy
+import io.github.srdjanv.endreforked.common.network.Network
 import net.minecraftforge.fml.common.network.NetworkRegistry
-import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper
 import net.minecraftforge.fml.relauncher.Side
 import org.apache.logging.log4j.Logger
 import jakarta.inject.Scope
@@ -24,7 +24,7 @@ object CommonModule {
 
     @CommonScope
     @Provides
-    fun net(): SimpleNetworkWrapper = NetworkRegistry.INSTANCE.newSimpleChannel(Tags.MODID + "Chanel")
+    fun net(): Network = Network(NetworkRegistry.INSTANCE.newEventDrivenChannel(Tags.MODID), Tags.MODID)
 }
 
 /** Composition root, shared by both sides. ServerComponent and ClientComponent add the proxy on top. */
@@ -33,7 +33,7 @@ object CommonModule {
 interface CommonComponent {
     fun side(): Side
     fun logger(): Logger
-    fun net(): SimpleNetworkWrapper
+    fun net(): Network
 
     @Component.Factory
     interface Factory {

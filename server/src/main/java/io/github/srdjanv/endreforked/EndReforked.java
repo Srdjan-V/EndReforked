@@ -15,7 +15,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
 
 import org.apache.logging.log4j.LogManager;
@@ -24,8 +23,7 @@ import org.jetbrains.annotations.NotNull;
 
 import io.github.srdjanv.endreforked.common.CommonProxy;
 import io.github.srdjanv.endreforked.common.comands.EndRebornCommands;
-import io.github.srdjanv.endreforked.common.network.servertoclient.PlayerParticlePacket;
-import io.github.srdjanv.endreforked.common.network.servertoclient.TpParticlePacket;
+import io.github.srdjanv.endreforked.common.network.Network;
 import io.github.srdjanv.endreforked.compat.CompatManger;
 import io.github.srdjanv.endreforked.di.CommonComponent;
 import io.github.srdjanv.endreforked.di.DaggerCommonComponent;
@@ -47,8 +45,7 @@ public class EndReforked {
         FluidRegistry.enableUniversalBucket();
     }
 
-    public static SimpleNetworkWrapper NET;
-    private int netId = 0;
+    public static Network NET;
 
     public static EndReforked instance;
 
@@ -81,8 +78,6 @@ public class EndReforked {
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         proxy.preInit(event);
-        NET.registerMessage(PlayerParticlePacket.Handler.INSTANCE, PlayerParticlePacket.class, netId++, Side.CLIENT);
-        NET.registerMessage(TpParticlePacket.Handler.INSTANCE, TpParticlePacket.class, netId++, Side.CLIENT);
     }
 
     @EventHandler

@@ -4,6 +4,8 @@ import dagger.Component
 import dagger.Module
 import dagger.Provides
 import io.github.srdjanv.endreforked.client.ClientProxy
+import io.github.srdjanv.endreforked.client.network.ClientPacketHandler
+import io.github.srdjanv.endreforked.common.network.Network
 import io.github.srdjanv.endreforked.common.CommonProxy
 import io.github.srdjanv.endreforked.di.CommonComponent
 import net.minecraftforge.fml.relauncher.Side
@@ -16,7 +18,10 @@ annotation class ClientScope
 object ClientModule {
     @ClientScope
     @Provides
-    fun proxy(): CommonProxy = ClientProxy(Side.CLIENT)
+    fun proxy(net: Network): CommonProxy {
+        ClientPacketHandler(net)
+        return ClientProxy(Side.CLIENT)
+    }
 }
 
 /** Client component. Provides the ClientProxy as the CommonProxy. */

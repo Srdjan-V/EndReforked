@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package io.github.srdjanv.endreforked.wire.s2c;
+
+option java_package = "io.github.srdjanv.endreforked.wire.s2c";
+
+// Server to client envelope. The oneof case is the message type.
+message S2CPacket {
+  oneof payload {
+    PlayerParticle player_particle = 1;
+    TpParticle tp_particle = 2;
+  }
+}
+
+// Starts or stops a particle effect on the local player. The other fields are only used when remove is false.
+message PlayerParticle {
+  bool remove = 1;
+  string id = 2;
+  int32 render_iterations = 3;
+  int32 particle_type = 4; // EnumParticleTypes id
+}
+
+// Portal particle trail between two positions.
+message TpParticle {
+  double pos_x = 1;
+  double pos_y = 2;
+  double pos_z = 3;
+  double new_pos_x = 4;
+  double new_pos_y = 5;
+  double new_pos_z = 6;
+  double width = 7;
+  double height = 8;
+}

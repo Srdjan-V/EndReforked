@@ -15,7 +15,9 @@ import net.minecraft.world.World;
 import io.github.srdjanv.endreforked.EndReforked;
 import io.github.srdjanv.endreforked.common.capabilities.timedflight.CapabilityTimedFlightHandler;
 import io.github.srdjanv.endreforked.common.items.base.ItemFoodBase;
-import io.github.srdjanv.endreforked.common.network.servertoclient.TpParticlePacket;
+import io.github.srdjanv.endreforked.wire.s2c.S2CPacket;
+import io.github.srdjanv.endreforked.wire.s2c.TpParticle;
+import okio.ByteString;
 
 public class ItemOrganaFruit extends ItemFoodBase {
 
@@ -105,7 +107,9 @@ public class ItemOrganaFruit extends ItemFoodBase {
             player.setPositionAndUpdate(orgX, orgY, orgZ);
             return false;
         } else {
-            EndReforked.NET.sendToAll(new TpParticlePacket(false, player, orgX, orgY, orgZ));
+            EndReforked.NET.sendToAll(new S2CPacket(null, new TpParticle(orgX, orgY, orgZ,
+                    player.posX, player.posY, player.posZ, player.width, player.height, ByteString.EMPTY),
+                    ByteString.EMPTY));
             return true;
         }
     }

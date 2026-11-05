@@ -31,6 +31,12 @@ dependencies {
         exclude(group = "org.jspecify") // annotations only
     }
 
+    // Kotlin stdlib comes from Forgelin-Continuous, the annotations are not needed at runtime
+    shade("com.squareup.wire:wire-runtime:${project.property("wireVersion")}") {
+        exclude(group = "org.jetbrains.kotlin")
+        exclude(group = "org.jetbrains", module = "annotations")
+    }
+
     // Kotlin runtime on Cleanroom. Cleanroom 0.7.x does not ship the Kotlin stdlib.
     runtimeOnly(cleanroom.deobf("maven.modrinth:forgelin-continuous:2.4.20.0"))
 }
@@ -74,6 +80,8 @@ tasks.shadowJar {
     relocate("dagger", "$modGroup.shadow.dagger")
     relocate("javax.inject", "$modGroup.shadow.javax.inject")
     relocate("jakarta.inject", "$modGroup.shadow.jakarta.inject")
+    relocate("com.squareup.wire", "$modGroup.shadow.wire")
+    relocate("okio", "$modGroup.shadow.okio")
     archiveClassifier = "mcp-shaded"
     addMultiReleaseAttribute = false
     // dagger.internal.Provider extends javax.inject.Provider, Scope is a meta-annotation of dagger.Reusable, the rest is unused
