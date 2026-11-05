@@ -1,6 +1,8 @@
 package io.github.srdjanv.endreforked.compat;
 
 import java.util.List;
+import java.util.Map;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -26,9 +28,14 @@ public class CompatManger implements Initializer {
 
     private final List<ModCompat> mods;
 
+    // Check the mod id before construction: a compat class must not load when its mod is missing
     private CompatManger() {
-        this.mods = Stream.of(new TConstruct(), new BaublesCompat())
-                .filter(mod -> Loader.isModLoaded(mod.modID())).collect(Collectors.toList());
+        this.mods = Stream.<Map.Entry<String, Supplier<ModCompat>>>of(
+                Map.entry("tconstruct", () -> new TConstruct()),
+                Map.entry("baubles", () -> new BaublesCompat()))
+                .filter(entry -> Loader.isModLoaded(entry.getKey()))
+                .map(entry -> entry.getValue().get())
+                .collect(Collectors.toList());
     }
 
     @Override
