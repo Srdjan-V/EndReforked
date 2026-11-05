@@ -31,7 +31,6 @@ import io.github.srdjanv.endreforked.Tags;
 import io.github.srdjanv.endreforked.api.base.crafting.groupings.Fluid2ItemGrouping;
 import io.github.srdjanv.endreforked.api.endforge.EndForgeHandler;
 import io.github.srdjanv.endreforked.api.endforge.EndForgeRecipe;
-import io.github.srdjanv.endreforked.api.entropy.chamber.*;
 import io.github.srdjanv.endreforked.api.entropy.wand.EntropyWandHandler;
 import io.github.srdjanv.endreforked.api.entropy.wand.WorldConversion;
 import io.github.srdjanv.endreforked.api.fluids.base.CollisionRecipe;
@@ -92,7 +91,6 @@ final class Registration implements Initializer {
     public void init(FMLInitializationEvent event) {
         registerMaterializerRecipes();
         registerEndForgeRecipes();
-        registerEntropyChamberRecipes();
         registerEntropyWandRecipes();
         registerBannerPatterns();
 
@@ -224,32 +222,6 @@ final class Registration implements Initializer {
                         .newState(ModBlocks.FLUID_END_MAGMA_BLOCK.get())
                         .addItemDamage(15)
                         .build());
-    }
-
-    private static void registerEntropyChamberRecipes() {
-        var fluid = EntropyFluidChamberHandler.INSTANCE;
-        var item = EntropyItemChamberHandler.INSTANCE;
-
-        fluid.registerRecipe(
-                new FluidChamberRecipe(
-                        new FluidStack(FluidRegistry.LAVA, 2_000),
-                        25 * 20,
-                        150,
-                        fluidStack -> new FluidStack(ModFluids.END_MAGMA.get(), 1_000)));
-
-        item.registerRecipe(
-                new ItemChamberRecipe(
-                        new ItemStack(Blocks.END_STONE, 4),
-                        5 * 20,
-                        2,
-                        itemStack -> new ItemStack(ModItems.ORGANA_WEED_BLOCK.get(), 2)));
-
-        item.registerRecipe(
-                new ItemChamberRecipe(
-                        new ItemStack(Blocks.GRASS, 20),
-                        5 * 20,
-                        2,
-                        itemStack -> new ItemStack(ModItems.END_MOSS_GRASS_BLOCK.get(), 2)));
     }
 
     private static void registerEndForgeRecipes() {

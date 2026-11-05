@@ -2,6 +2,7 @@ package io.github.srdjanv.endreforked.common.network
 
 import io.github.srdjanv.endreforked.wire.s2c.S2CPacket
 import io.netty.buffer.Unpooled
+import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.network.PacketBuffer
 import net.minecraftforge.fml.common.network.FMLEventChannel
 import net.minecraftforge.fml.common.network.internal.FMLProxyPacket
@@ -12,6 +13,13 @@ import net.minecraftforge.fml.common.network.internal.FMLProxyPacket
  */
 class Network(val channel: FMLEventChannel, private val name: String) {
     fun sendToAll(packet: S2CPacket) {
-        channel.sendToAll(FMLProxyPacket(PacketBuffer(Unpooled.wrappedBuffer(S2CPacket.ADAPTER.encode(packet))), name))
+        channel.sendToAll(proxyPacket(packet))
     }
+
+    fun sendTo(packet: S2CPacket, player: EntityPlayerMP) {
+        channel.sendTo(proxyPacket(packet), player)
+    }
+
+    private fun proxyPacket(packet: S2CPacket) =
+        FMLProxyPacket(PacketBuffer(Unpooled.wrappedBuffer(S2CPacket.ADAPTER.encode(packet))), name)
 }

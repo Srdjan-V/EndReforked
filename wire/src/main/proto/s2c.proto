@@ -9,6 +9,7 @@ message S2CPacket {
   oneof payload {
     PlayerParticle player_particle = 1;
     TpParticle tp_particle = 2;
+    RegistrySnapshot registry_snapshot = 3;
   }
 }
 
@@ -30,4 +31,59 @@ message TpParticle {
   double new_pos_z = 6;
   double width = 7;
   double height = 8;
+}
+
+// The complete content of one registry. The server sends one per registry on login and after a reload.
+// The client replaces its registry with it. A new registry adds one case to the oneof.
+message RegistrySnapshot {
+  string registry = 1; // registry id, for example endreborn:machine_recipes
+  oneof entries {
+    MachineRecipes machine_recipes = 2;
+  }
+}
+
+message MachineRecipes {
+  repeated MachineRecipe recipes = 1;
+}
+
+message MachineRecipe {
+  string id = 1;
+  string machine = 2;
+  repeated Ingredient item_inputs = 3;
+  repeated FluidAmount fluid_inputs = 4;
+  repeated ItemResult item_outputs = 5;
+  repeated FluidAmount fluid_outputs = 6;
+  int32 ticks = 7;
+  int32 entropy = 8;
+  int32 priority = 9;
+}
+
+message Ingredient {
+  oneof kind {
+    ItemIngredient item = 1;
+    OreIngredient ore = 2;
+  }
+}
+
+message ItemIngredient {
+  string id = 1;
+  int32 meta = 2; // 32767 matches every meta
+  int32 count = 3;
+}
+
+message OreIngredient {
+  string name = 1;
+  int32 count = 2;
+}
+
+message ItemResult {
+  string id = 1;
+  int32 meta = 2;
+  int32 count = 3;
+}
+
+// A fluid id with an amount in mB. Used for fluid inputs and outputs.
+message FluidAmount {
+  string id = 1;
+  int32 amount = 2;
 }

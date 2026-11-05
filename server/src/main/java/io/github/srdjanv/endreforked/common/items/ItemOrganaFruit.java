@@ -109,7 +109,7 @@ public class ItemOrganaFruit extends ItemFoodBase {
         } else {
             EndReforked.NET.sendToAll(new S2CPacket(null, new TpParticle(orgX, orgY, orgZ,
                     player.posX, player.posY, player.posZ, player.width, player.height, ByteString.EMPTY),
-                    ByteString.EMPTY));
+                    null, ByteString.EMPTY));
             return true;
         }
     }

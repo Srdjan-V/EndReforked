@@ -6,6 +6,7 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.relauncher.Side;
@@ -26,6 +27,8 @@ import io.github.srdjanv.endreforked.common.configs.worldgen.StructureGenConfig;
 import io.github.srdjanv.endreforked.common.datafixers.Fixer;
 import io.github.srdjanv.endreforked.common.handlers.EventHandler;
 import io.github.srdjanv.endreforked.common.handlers.TimedFlightHandler;
+import io.github.srdjanv.endreforked.common.registry.Registries;
+import io.github.srdjanv.endreforked.common.registry.RegistrySync;
 import io.github.srdjanv.endreforked.compat.CompatManger;
 import io.github.srdjanv.endreforked.utils.Initializer;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -33,10 +36,12 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 public class CommonProxy {
 
     public final Side SIDE;
+    public final RegistrySync registrySync;
     protected final List<Initializer> components = new ObjectArrayList<>();
 
-    public CommonProxy(Side SIDE) {
+    public CommonProxy(Side SIDE, RegistrySync registrySync) {
         this.SIDE = SIDE;
+        this.registrySync = registrySync;
         loadStaticCLasses();
         components.add(CompatManger.getInstance());
         components.add(Fixer.getInstance());
@@ -56,7 +61,13 @@ public class CommonProxy {
         StructureGenConfig.getInstance();
     }
 
+    /** The registries a world reads: the client copy for a client world, else the server ones. */
+    public Registries registries(World world) {
+        return registrySync.getRegistries();
+    }
+
     public void registerEventBus() {
+        MinecraftForge.EVENT_BUS.register(registrySync);
         for (Initializer component : components) component.registerEventBus();
         MinecraftForge.EVENT_BUS.register(CapabilityTimedFlightHandler.class);
         MinecraftForge.EVENT_BUS.register(CapabilityEntropyHandler.class);
@@ -76,6 +87,7 @@ public class CommonProxy {
     }
 
     public void init(FMLInitializationEvent event) {
+        registrySync.getRegistries().loadDefaults();
         for (Initializer component : components) component.init(event);
     }
 

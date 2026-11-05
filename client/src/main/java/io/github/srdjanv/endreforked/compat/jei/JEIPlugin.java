@@ -2,6 +2,8 @@ package io.github.srdjanv.endreforked.compat.jei;
 
 import net.minecraft.item.ItemStack;
 
+import io.github.srdjanv.endreforked.EndReforked;
+import io.github.srdjanv.endreforked.client.ClientProxy;
 import io.github.srdjanv.endreforked.common.ModBlocks;
 import io.github.srdjanv.endreforked.common.ModItems;
 import io.github.srdjanv.endreforked.compat.jei.endforge.EndForgeCategory;
@@ -10,17 +12,25 @@ import io.github.srdjanv.endreforked.compat.jei.entropywand.EntropyWandCategory;
 import io.github.srdjanv.endreforked.compat.jei.fluids.FluidInteractionEntityCategory;
 import io.github.srdjanv.endreforked.compat.jei.fluids.FluidInteractionStateCategory;
 import io.github.srdjanv.endreforked.compat.jei.materializer.MaterializerCategory;
+import io.github.srdjanv.endreforked.api.machine.MachineRecipe;
+import io.github.srdjanv.endreforked.impl.machine.MachineRecipes;
+import io.github.srdjanv.endreforked.impl.registry.ManagedRegistry;
 import mezz.jei.api.*;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 
 @mezz.jei.api.JEIPlugin
 public class JEIPlugin implements IModPlugin {
 
+    private static ManagedRegistry<MachineRecipe, MachineRecipes> clientMachineRecipes() {
+        return ((ClientProxy) EndReforked.getProxy()).getClientRegistries().getMachineRecipes();
+    }
+
     @Override
     public void registerCategories(IRecipeCategoryRegistration registry) {
         final IJeiHelpers helpers = registry.getJeiHelpers();
         final IGuiHelper gui = helpers.getGuiHelper();
 
+        registry.addRecipeCategories(new EntropyChamberCategory(gui));
         registry.addRecipeCategories(new EndForgeCategory(gui));
         registry.addRecipeCategories(new MaterializerCategory(gui));
         registry.addRecipeCategories(new EntropyWandCategory(gui));
@@ -39,10 +49,15 @@ public class JEIPlugin implements IModPlugin {
         registry.addRecipes(EntropyWandCategory.getRecipes(), EntropyWandCategory.UID);
         registry.addRecipeCatalyst(new ItemStack(ModItems.ENTROPY_WAND.get()), EntropyWandCategory.UID);
 
-        registry.addRecipes(EntropyChamberCategory.getRecipes(), EntropyChamberCategory.UID);
+        registry.addRecipes(EntropyChamberCategory.load(clientMachineRecipes().getCurrent()), EntropyChamberCategory.UID);
         registry.addRecipeCatalyst(new ItemStack(ModBlocks.ENTROPY_CHAMBER.get()), EntropyChamberCategory.UID);
 
         registry.addRecipes(FluidInteractionEntityCategory.getRecipes(), FluidInteractionEntityCategory.UID);
         registry.addRecipes(FluidInteractionStateCategory.getRecipes(), FluidInteractionStateCategory.UID);
+    }
+
+    @Override
+    public void onRuntimeAvailable(IJeiRuntime runtime) {
+        EntropyChamberCategory.watch(runtime.getRecipeRegistry(), clientMachineRecipes());
     }
 }

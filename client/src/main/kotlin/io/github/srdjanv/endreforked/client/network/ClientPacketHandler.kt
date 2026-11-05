@@ -1,19 +1,31 @@
 package io.github.srdjanv.endreforked.client.network
 
+import io.github.srdjanv.endreforked.EndReforked
 import io.github.srdjanv.endreforked.client.ParticleHandler
 import io.github.srdjanv.endreforked.common.network.Network
+import io.github.srdjanv.endreforked.common.registry.Registries
+import io.github.srdjanv.endreforked.impl.machine.toMachineRecipes
+import io.github.srdjanv.endreforked.wire.s2c.RegistrySnapshot
 import io.github.srdjanv.endreforked.wire.s2c.PlayerParticle
 import io.github.srdjanv.endreforked.wire.s2c.S2CPacket
 import io.github.srdjanv.endreforked.wire.s2c.TpParticle
 import net.minecraft.client.Minecraft
 import net.minecraft.util.EnumParticleTypes
+import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.common.network.FMLNetworkEvent
 
 /** Receives the S2CPacket envelope and dispatches on the oneof field that is set. */
-class ClientPacketHandler(network: Network) {
+class ClientPacketHandler(network: Network, private val registries: Registries) {
     init {
         network.channel.register(this)
+        MinecraftForge.EVENT_BUS.register(this)
+    }
+
+    /** Back to the code defaults when the player leaves a server, so the menu and JEI do not show that server's recipes. */
+    @SubscribeEvent
+    fun onDisconnect(event: FMLNetworkEvent.ClientDisconnectionFromServerEvent) {
+        Minecraft.getMinecraft().addScheduledTask { registries.machineRecipes.reload(null) }
     }
 
     @SubscribeEvent
@@ -26,6 +38,16 @@ class ClientPacketHandler(network: Network) {
         Minecraft.getMinecraft().addScheduledTask {
             packet.player_particle?.let(::playerParticle)
             packet.tp_particle?.let(::tpParticle)
+            packet.registry_snapshot?.let(::registrySnapshot)
+        }
+    }
+
+    private fun registrySnapshot(snapshot: RegistrySnapshot) {
+        try {
+            snapshot.toMachineRecipes()?.let(registries.machineRecipes::replace)
+                ?: EndReforked.LOGGER.warn("Unknown registry snapshot {}", snapshot.registry)
+        } catch (e: Exception) {
+            EndReforked.LOGGER.error("Bad registry snapshot {}", snapshot.registry, e)
         }
     }
 

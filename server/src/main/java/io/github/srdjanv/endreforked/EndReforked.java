@@ -102,6 +102,11 @@ public class EndReforked {
     }
 
     @EventHandler
+    public void onServerAboutToStart(FMLServerAboutToStartEvent event) {
+        proxy.registrySync.onServerAboutToStart();
+    }
+
+    @EventHandler
     public void serverStarting(FMLServerStartingEvent evt) {
         evt.registerServerCommand(new EndRebornCommands());
     }
