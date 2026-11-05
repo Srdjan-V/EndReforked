@@ -56,6 +56,7 @@ message MachineRecipe {
   int32 ticks = 7;
   int32 entropy = 8;
   int32 priority = 9;
+  repeated WorldEvent world_events = 10;
 }
 
 message Ingredient {
@@ -86,4 +87,46 @@ message ItemResult {
 message FluidAmount {
   string id = 1;
   int32 amount = 2;
+}
+
+// A world event of a machine recipe, see api WorldEvent.
+message WorldEvent {
+  int32 at_percent = 1;
+  int32 chance = 2;
+  StructureSpec structure = 3;
+  WorldAction action = 4;
+}
+
+message StructureSpec {
+  repeated Aisle aisles = 1;
+  repeated SymbolSpec symbols = 2;
+}
+
+message Aisle {
+  repeated string rows = 1;
+}
+
+message SymbolSpec {
+  string symbol = 1; // exactly one character
+  BlockSpec block = 2;
+}
+
+message BlockSpec {
+  string block = 1;
+  map<string, string> properties = 2;
+}
+
+message WorldAction {
+  oneof kind {
+    SetBlockAction set_block = 1;
+    DropItemAction drop_item = 2;
+  }
+}
+
+message SetBlockAction {
+  BlockSpec block = 1;
+}
+
+message DropItemAction {
+  ItemResult item = 1;
 }

@@ -17,7 +17,6 @@ import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.ProgressWidget
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import com.cleanroommc.modularui.widgets.slot.SlotGroup
-import io.github.srdjanv.endreforked.EndReforked
 import io.github.srdjanv.endreforked.api.base.crafting.TileStatus
 import io.github.srdjanv.endreforked.api.entropy.EntropyDataProvider
 import io.github.srdjanv.endreforked.api.entropy.EntropyRadius
@@ -31,13 +30,13 @@ import io.github.srdjanv.endreforked.common.machine.MachineIO
 import io.github.srdjanv.endreforked.common.machine.MachineProcess
 import io.github.srdjanv.endreforked.common.machine.OutputHandler
 import io.github.srdjanv.endreforked.common.machine.OutputTank
+import io.github.srdjanv.endreforked.common.machine.recipes
 import io.github.srdjanv.endreforked.common.registry.GameAdapter
 import io.github.srdjanv.endreforked.common.registry.GameAdapter.id
 import io.github.srdjanv.endreforked.common.registry.GameAdapter.toKey
 import io.github.srdjanv.endreforked.common.registry.MachineRecipeDefaults
 import io.github.srdjanv.endreforked.common.tiles.base.BaseTileEntity
 import io.github.srdjanv.endreforked.common.widgets.BasicTextWidget
-import io.github.srdjanv.endreforked.impl.machine.MachineRecipes
 import io.github.srdjanv.endreforked.utils.LangUtil
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
@@ -66,12 +65,6 @@ class EntropyChamberTile : BaseTileEntity(), ITickable, EntropyDataProvider, IGu
             if (stack.item is EntropyRadiusUpgrade) super.insertItem(slot, stack, simulate) else stack
     }
 
-    /** The client world reads the client registry, never the server one. */
-    private fun recipes(): MachineRecipes {
-        val world = world ?: return NO_RECIPES
-        return EndReforked.getProxy().registries(world).machineRecipes.current
-    }
-
     private val itemProcess: MachineProcess = MachineProcess(
         MachineRecipeDefaults.ENTROPY_CHAMBER,
         MachineIO(
@@ -84,7 +77,7 @@ class EntropyChamberTile : BaseTileEntity(), ITickable, EntropyDataProvider, IGu
             emptyList(),
             emptyList(),
         ),
-        ::recipes,
+        this::recipes,
     )
 
     private val fluidProcess: MachineProcess = MachineProcess(
@@ -101,7 +94,7 @@ class EntropyChamberTile : BaseTileEntity(), ITickable, EntropyDataProvider, IGu
             ),
             listOf(OutputTank(20_000) { markDirty() }),
         ),
-        ::recipes,
+        this::recipes,
     )
 
     private val itemIn get() = itemProcess.io.itemInputs
@@ -318,8 +311,4 @@ class EntropyChamberTile : BaseTileEntity(), ITickable, EntropyDataProvider, IGu
     }
 
     private class UpgradeBox : SingleChildWidget<UpgradeBox>()
-
-    private companion object {
-        val NO_RECIPES = MachineRecipes(emptyList())
-    }
 }

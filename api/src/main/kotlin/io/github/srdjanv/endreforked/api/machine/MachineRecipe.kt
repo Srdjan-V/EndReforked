@@ -25,6 +25,7 @@ data class FluidOut(val id: Id, val amount: Int)
  * One recipe of a machine. Pure data, no behaviour. NBT is not part of the model:
  * no current recipe depends on NBT.
  * Of several matching recipes, the highest [priority] wins, then the lowest [id].
+ * [worldEvents] are for machines that change the world while they run. The others leave them empty.
  */
 data class MachineRecipe(
     override val id: Id,
@@ -36,7 +37,12 @@ data class MachineRecipe(
     val ticks: Int,
     val entropy: Int = 0,
     val priority: Int = 0,
+    val worldEvents: List<WorldEvent> = emptyList(),
 ) : RegistryEntry
+
+/** The first world event after [percent] of progress, or null. */
+fun MachineRecipe.nextWorldEvent(percent: Int): WorldEvent? =
+    worldEvents.filter { it.atPercent > percent }.minByOrNull { it.atPercent }
 
 typealias MachineRecipeScripts = io.github.srdjanv.endreforked.api.registry.RegistryScripts<MachineRecipe>
 

@@ -40,16 +40,17 @@ public class JEIPlugin implements IModPlugin {
 
     @Override
     public void register(IModRegistry registry) {
-        registry.addRecipes(EndForgeCategory.getRecipes(), EndForgeCategory.UID);
+        var machineRecipes = clientMachineRecipes().getCurrent();
+        registry.addRecipes(EndForgeCategory.FEED.load(machineRecipes), EndForgeCategory.UID);
         registry.addRecipeCatalyst(new ItemStack(ModBlocks.BLOCK_END_FORGE.get()), EndForgeCategory.UID);
 
-        registry.addRecipes(MaterializerCategory.getRecipes(), MaterializerCategory.UID);
+        registry.addRecipes(MaterializerCategory.FEED.load(machineRecipes), MaterializerCategory.UID);
         registry.addRecipeCatalyst(new ItemStack(ModBlocks.MATERIALIZER_BLOCK.get()), MaterializerCategory.UID);
 
         registry.addRecipes(EntropyWandCategory.getRecipes(), EntropyWandCategory.UID);
         registry.addRecipeCatalyst(new ItemStack(ModItems.ENTROPY_WAND.get()), EntropyWandCategory.UID);
 
-        registry.addRecipes(EntropyChamberCategory.load(clientMachineRecipes().getCurrent()), EntropyChamberCategory.UID);
+        registry.addRecipes(EntropyChamberCategory.FEED.load(machineRecipes), EntropyChamberCategory.UID);
         registry.addRecipeCatalyst(new ItemStack(ModBlocks.ENTROPY_CHAMBER.get()), EntropyChamberCategory.UID);
 
         registry.addRecipes(FluidInteractionEntityCategory.getRecipes(), FluidInteractionEntityCategory.UID);
@@ -58,6 +59,9 @@ public class JEIPlugin implements IModPlugin {
 
     @Override
     public void onRuntimeAvailable(IJeiRuntime runtime) {
-        EntropyChamberCategory.watch(runtime.getRecipeRegistry(), clientMachineRecipes());
+        var jei = runtime.getRecipeRegistry();
+        EntropyChamberCategory.FEED.watch(jei, clientMachineRecipes());
+        EndForgeCategory.FEED.watch(jei, clientMachineRecipes());
+        MaterializerCategory.FEED.watch(jei, clientMachineRecipes());
     }
 }

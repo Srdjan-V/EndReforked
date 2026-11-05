@@ -3,7 +3,10 @@ package io.github.srdjanv.endreforked.impl.machine
 import io.github.srdjanv.endreforked.api.machine.FluidIngredient
 import io.github.srdjanv.endreforked.api.machine.ItemIngredient
 import io.github.srdjanv.endreforked.api.machine.MachineRecipe
+import io.github.srdjanv.endreforked.api.machine.StructureSpec
 import io.github.srdjanv.endreforked.api.machine.WILDCARD_META
+import io.github.srdjanv.endreforked.api.machine.WorldAction
+import io.github.srdjanv.endreforked.api.machine.WorldEvent
 import io.github.srdjanv.endreforked.api.registry.Id
 import io.github.srdjanv.endreforked.api.registry.RegistryKey
 import io.github.srdjanv.endreforked.impl.registry.FrozenRegistry
@@ -155,7 +158,32 @@ class MachineRecipes(entries: Collection<MachineRecipe>) : FrozenRegistry<Machin
             r.fluidInputs.any { it.amount < 1 } -> "fluid input amount must be at least 1"
             r.itemOutputs.any { it.count < 1 || it.meta !in 0..WILDCARD_META } -> "item output count or meta is invalid"
             r.fluidOutputs.any { it.amount < 1 } -> "fluid output amount must be at least 1"
-            else -> null
+            else -> validateWorldEvents(r.worldEvents)
+        }
+
+        private fun validateWorldEvents(events: List<WorldEvent>): String? {
+            if (events.map { it.atPercent }.toSet().size != events.size) return "two world events at the same percent"
+            for (e in events) {
+                val at = "world event at ${e.atPercent}%"
+                if (e.atPercent !in 1..100) return "$at: atPercent must be 1 to 100"
+                if (e.chance !in 0..100) return "$at: chance must be 0 to 100"
+                structureProblem(e.structure)?.let { return "$at: $it" }
+                val a = e.action
+                if (a is WorldAction.DropItem && (a.item.count < 1 || a.item.meta !in 0..WILDCARD_META)) return "$at: drop count or meta is invalid"
+            }
+            return null
+        }
+
+        private fun structureProblem(s: StructureSpec): String? {
+            val rows = s.aisles.firstOrNull()?.size ?: 0
+            val width = s.aisles.firstOrNull()?.firstOrNull()?.length ?: 0
+            if (rows == 0 || width == 0) return "structure is empty"
+            if (s.aisles.any { it.size != rows || it.any { row -> row.length != width } }) return "structure rows differ in size"
+            if (StructureSpec.ANY in s.symbols) return "the blank cannot be mapped to a block"
+            val used = s.aisles.flatMap { a -> a.flatMap { it.toList() } }.toSet() - StructureSpec.ANY
+            if (used.isEmpty()) return "structure has only blanks"
+            used.firstOrNull { it !in s.symbols }?.let { return "symbol '$it' has no block" }
+            return null
         }
     }
 }

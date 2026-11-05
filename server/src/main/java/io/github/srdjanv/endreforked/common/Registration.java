@@ -28,9 +28,6 @@ import net.minecraftforge.registries.IForgeRegistry;
 import com.google.common.collect.Lists;
 
 import io.github.srdjanv.endreforked.Tags;
-import io.github.srdjanv.endreforked.api.base.crafting.groupings.Fluid2ItemGrouping;
-import io.github.srdjanv.endreforked.api.endforge.EndForgeHandler;
-import io.github.srdjanv.endreforked.api.endforge.EndForgeRecipe;
 import io.github.srdjanv.endreforked.api.entropy.wand.EntropyWandHandler;
 import io.github.srdjanv.endreforked.api.entropy.wand.WorldConversion;
 import io.github.srdjanv.endreforked.api.fluids.base.CollisionRecipe;
@@ -39,12 +36,7 @@ import io.github.srdjanv.endreforked.api.fluids.base.EntityFluidRecipeResult;
 import io.github.srdjanv.endreforked.api.fluids.base.EntityMather;
 import io.github.srdjanv.endreforked.api.fluids.entropy.EntropyFluidAnyStateCollisionHandler;
 import io.github.srdjanv.endreforked.api.fluids.entropy.EntropyFluidEntityCollisionHandler;
-import io.github.srdjanv.endreforked.api.materializer.ItemCatalyst;
-import io.github.srdjanv.endreforked.api.materializer.MaterializerHandler;
-import io.github.srdjanv.endreforked.api.materializer.MaterializerRecipe;
-import io.github.srdjanv.endreforked.api.materializer.WorldEvent;
 import io.github.srdjanv.endreforked.api.util.EntityMatchStrategy;
-import io.github.srdjanv.endreforked.api.util.Structure;
 import io.github.srdjanv.endreforked.common.blocks.BlockOrganaFlower;
 import io.github.srdjanv.endreforked.common.capabilities.entropy.CapabilityEntropyHandler;
 import io.github.srdjanv.endreforked.common.capabilities.timedflight.CapabilityTimedFlightHandler;
@@ -89,8 +81,6 @@ final class Registration implements Initializer {
     }
 
     public void init(FMLInitializationEvent event) {
-        registerMaterializerRecipes();
-        registerEndForgeRecipes();
         registerEntropyWandRecipes();
         registerBannerPatterns();
 
@@ -222,102 +212,6 @@ final class Registration implements Initializer {
                         .newState(ModBlocks.FLUID_END_MAGMA_BLOCK.get())
                         .addItemDamage(15)
                         .build());
-    }
-
-    private static void registerEndForgeRecipes() {
-        var lavaGroup = new Fluid2ItemGrouping<EndForgeRecipe>(new FluidStack(FluidRegistry.LAVA, 1000));
-        EndForgeHandler.getInstance().registerRecipeGrouping(lavaGroup);
-
-        lavaGroup.registerRecipe(
-                fluidStack -> new EndForgeRecipe(fluidStack, new ItemStack(ModItems.INGOT_ENDORIUM.get()), 120,
-                        (lava, item) -> new ItemStack(ModItems.INFUSED_METALL.get())));
-
-        lavaGroup.registerRecipe(fluidStack -> new EndForgeRecipe(fluidStack, new ItemStack(Items.SLIME_BALL), 200,
-                (lava, item) -> new ItemStack(Items.MAGMA_CREAM)));
-
-        lavaGroup.registerRecipe(
-                fluidStack -> new EndForgeRecipe(fluidStack, new ItemStack(ModItems.END_ESSENCE.get()), 200,
-                        (lava, item) -> new ItemStack(Items.BLAZE_POWDER)));
-
-        lavaGroup.registerRecipe(
-                fluidStack -> new EndForgeRecipe(fluidStack, new ItemStack(ModItems.ENTROPY_END_STONE.get()), 200,
-                        (lava, item) -> new ItemStack(ModBlocks.END_MAGMA_BLOCK.get())));
-
-        var endLava = new Fluid2ItemGrouping<EndForgeRecipe>(new FluidStack(ModFluids.END_MAGMA.get(), 1000));
-        EndForgeHandler.getInstance().registerRecipeGrouping(endLava);
-
-        endLava.registerRecipe(
-                fluidStack -> new EndForgeRecipe(fluidStack, new ItemStack(ModItems.INGOT_ENDORIUM.get()), 100,
-                        (lava, item) -> new ItemStack(ModItems.INFUSED_METALL.get(), 4)));
-
-        endLava.registerRecipe(fluidStack -> new EndForgeRecipe(fluidStack, new ItemStack(Items.SLIME_BALL), 150,
-                (lava, item) -> new ItemStack(Items.MAGMA_CREAM, 4)));
-
-        endLava.registerRecipe(
-                fluidStack -> new EndForgeRecipe(fluidStack, new ItemStack(ModItems.END_ESSENCE.get()), 150,
-                        (lava, item) -> new ItemStack(Items.BLAZE_POWDER, 4)));
-
-        endLava.registerRecipe(
-                fluidStack -> new EndForgeRecipe(fluidStack, new ItemStack(ModItems.ENTROPY_END_STONE.get()), 150,
-                        (lava, item) -> new ItemStack(ModBlocks.END_MAGMA_BLOCK.get(), 4)));
-    }
-
-    private static void registerMaterializerRecipes() {
-        var itemCatalyst = new ItemCatalyst(new ItemStack(ModItems.CATALYST.get()));
-        MaterializerHandler.getInstance().registerRecipeGrouping(itemCatalyst);
-
-        {
-            var ironToIronRecipe = itemCatalyst.registerRecipe(itemStack -> new MaterializerRecipe(
-                    itemStack,
-                    new ItemStack(Items.IRON_INGOT), 200,
-                    (stack, catalyst) -> new ItemStack(Items.IRON_INGOT, 2)));
-
-            ironToIronRecipe.registerWorldEvent(30, WorldEvent.create(15,
-                    Structure.builder().aisle("S").where('S', Blocks.STONE).build(),
-                    WorldEvent.replaceEachPosWithDefaultBlockState(Blocks.IRON_BLOCK)));
-
-            ironToIronRecipe.registerWorldEvent(60, WorldEvent.create(15,
-                    Structure.builder().aisle("I").where('I', Blocks.IRON_BLOCK).build(),
-                    WorldEvent.replaceEachPosWithDefaultBlockState(Blocks.GOLD_BLOCK)));
-
-            ironToIronRecipe.registerWorldEvent(90, WorldEvent.create(15,
-                    Structure.builder().aisle("G").where('G', Blocks.GOLD_BLOCK).build(),
-                    WorldEvent.replaceEachPosWithDefaultBlockState(Blocks.STONE)));
-        }
-
-        var diaToDiaRecipe = itemCatalyst.registerRecipe(itemStack -> new MaterializerRecipe(
-                itemStack,
-                new ItemStack(Items.DIAMOND), 600,
-                (stack, catalyst) -> new ItemStack(Items.DIAMOND, 1)));
-
-        diaToDiaRecipe.registerWorldEvent(30, WorldEvent.create(2,
-                Structure.builder()
-                        .aisle("S")
-                        .aisle("S")
-                        .aisle("S")
-                        .aisle("S")
-                        .aisle("S")
-                        .aisle("S")
-                        .where('S', Blocks.STONE).build(),
-                WorldEvent.replaceEachPosWithDefaultBlockState(Blocks.IRON_BLOCK)));
-
-        diaToDiaRecipe.registerWorldEvent(60, WorldEvent.create(2,
-                Structure.builder()
-                        .aisle("IIIIIII")
-                        .aisle("I      ")
-                        .aisle("I      ")
-                        .aisle("I      ")
-                        .aisle("I      ")
-                        .aisle("I      ")
-                        .aisle("I      ")
-                        .where('I', Blocks.IRON_BLOCK).build(),
-                WorldEvent.replaceEachPosWithDefaultBlockState(Blocks.GOLD_BLOCK)));
-
-        diaToDiaRecipe.registerWorldEvent(90, WorldEvent.create(2,
-                Structure.builder()
-                        .aisle("GGGGGGG")
-                        .where('G', Blocks.GOLD_BLOCK).build(),
-                WorldEvent.replaceEachPosWithItem(Items.DIAMOND)));
     }
 
     @SubscribeEvent
