@@ -23,7 +23,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import io.github.srdjanv.endreforked.client.StateMappers;
+import io.github.srdjanv.endreforked.EndReforked;
 import io.github.srdjanv.endreforked.common.ModBlocks;
 import io.github.srdjanv.endreforked.common.ModItems;
 import io.github.srdjanv.endreforked.common.blocks.base.BaseBlockCrops;
@@ -184,6 +184,6 @@ public class BlockOrganaFlowerStem extends BaseBlockCrops {
     @Override
     public void handleAssets() {
         super.handleAssets();
-        StateMappers.initOrganaFlowerStem(this);
+        EndReforked.getProxy().registerOrganaFlowerStemStateMapper(this);
     }
 }

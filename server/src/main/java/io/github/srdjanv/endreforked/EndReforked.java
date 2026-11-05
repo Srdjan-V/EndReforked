@@ -23,7 +23,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
-import io.github.srdjanv.endreforked.client.ClientProxy;
 import io.github.srdjanv.endreforked.common.CommonProxy;
 import io.github.srdjanv.endreforked.common.comands.EndRebornCommands;
 import io.github.srdjanv.endreforked.common.network.servertoclient.PlayerParticlePacket;
@@ -59,10 +58,18 @@ public class EndReforked {
 
     public EndReforked() {
         instance = this;
-        proxy = FMLCommonHandler.instance().getSide().isClient() ? new ClientProxy(Side.CLIENT) :
-                new CommonProxy(Side.SERVER);
+        proxy = FMLCommonHandler.instance().getSide().isClient() ? newClientProxy() : new CommonProxy(Side.SERVER);
         proxy.registerEventBus();
         MinecraftForge.EVENT_BUS.register(EndReforked.class);
+    }
+
+    // The client module is not visible to this module, so the client proxy is created by name
+    private static CommonProxy newClientProxy() {
+        try {
+            return (CommonProxy) Class.forName(Tags.CLIENTPROXY).getConstructor(Side.class).newInstance(Side.CLIENT);
+        } catch (ReflectiveOperationException e) {
+            throw new IllegalStateException("Failed to create the client proxy " + Tags.CLIENTPROXY, e);
+        }
     }
 
     @EventHandler

@@ -73,7 +73,7 @@ local.properties
 .idea_modules/
 /classes/
 /out/
-/build/
+build/
 
 # Linux
 *~

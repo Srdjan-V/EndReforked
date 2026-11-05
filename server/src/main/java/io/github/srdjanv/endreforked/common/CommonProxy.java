@@ -12,6 +12,8 @@ import net.minecraftforge.fml.relauncher.Side;
 
 import org.jetbrains.annotations.Nullable;
 
+import io.github.srdjanv.endreforked.common.blocks.BlockOrganaFlowerStem;
+import io.github.srdjanv.endreforked.common.network.servertoclient.PlayerParticlePacket;
 import io.github.srdjanv.endreforked.api.entropy.world.EntropyWorldHandler;
 import io.github.srdjanv.endreforked.common.capabilities.entropy.CapabilityEntropyHandler;
 import io.github.srdjanv.endreforked.common.capabilities.timedflight.CapabilityTimedFlightHandler;
@@ -116,4 +118,11 @@ public class CommonProxy {
     }
 
     public void registerFileStateMapper(@Nullable Block block, @Nullable Item item, String file, String variantName) {}
+
+    public void registerOrganaFlowerStemStateMapper(BlockOrganaFlowerStem block) {}
+
+    public void handlePlayerParticle(PlayerParticlePacket message) {}
+
+    public void handleTpParticle(double posX, double posY, double posZ, double newPosX, double newPosY, double newPosZ,
+                                 double width, double height) {}
 }

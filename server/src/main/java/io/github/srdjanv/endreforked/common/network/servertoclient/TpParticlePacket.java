@@ -1,13 +1,11 @@
 package io.github.srdjanv.endreforked.common.network.servertoclient;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-import io.github.srdjanv.endreforked.client.ParticleHandler;
+import io.github.srdjanv.endreforked.EndReforked;
 import io.netty.buffer.ByteBuf;
 
 public class TpParticlePacket implements IMessage {
@@ -95,29 +93,8 @@ public class TpParticlePacket implements IMessage {
         @Override
         public IMessage onMessage(TpParticlePacket message, MessageContext ctx) {
             if (ctx.side.isServer()) return null;
-            ParticleHandler.addToRender(
-                    new ParticleHandler.RenderInfo("TPParticlePacket" + Minecraft.getSystemTime(), 1) {
-
-                        @Override
-                        public void render() {
-                            var mc = Minecraft.getMinecraft();
-                            var random = mc.world.rand;
-                            for (int j = 0; j < 128; ++j) {
-                                double d6 = (double) j / 127.0D;
-                                float f = (random.nextFloat() - 0.5F) * 0.2F;
-                                float f1 = (random.nextFloat() - 0.5F) * 0.2F;
-                                float f2 = (random.nextFloat() - 0.5F) * 0.2F;
-                                double d3 = message.posX + (message.newPosX - message.posX) * d6 +
-                                        (random.nextDouble() - 0.5D) * message.width * 2.0D;
-                                double d4 = message.posY + (message.newPosY - message.posY) * d6 +
-                                        random.nextDouble() * message.height;
-                                double d5 = message.posZ + (message.newPosZ - message.posZ) * d6 +
-                                        (random.nextDouble() - 0.5D) * message.width * 2.0D;
-                                mc.world.spawnParticle(EnumParticleTypes.PORTAL, d3, d4, d5, f, f1, f2);
-                            }
-                        }
-                    });
-
+            EndReforked.getProxy().handleTpParticle(message.posX, message.posY, message.posZ, message.newPosX,
+                    message.newPosY, message.newPosZ, message.width, message.height);
             return null;
         }
     }
