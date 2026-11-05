@@ -3,12 +3,17 @@
 plugins {
     `java-library`
     kotlin("jvm")
+    id("com.google.devtools.ksp")
     id("com.cleanroommc.cleanroomgradle")
 }
 
 val cleanroom_version = project.property("cleanroom_version") as String
 
 dependencies {
+    // The runtime is shaded into the mod jar by :mod
+    compileOnly("com.google.dagger:dagger:2.60.1")
+    ksp("com.google.dagger:dagger-compiler:2.60.1")
+
     implementation(cleanroom.userdev(cleanroom_version))
     api(project(":server"))
 }

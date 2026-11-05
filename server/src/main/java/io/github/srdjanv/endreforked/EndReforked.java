@@ -15,7 +15,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
 
@@ -28,6 +27,9 @@ import io.github.srdjanv.endreforked.common.comands.EndRebornCommands;
 import io.github.srdjanv.endreforked.common.network.servertoclient.PlayerParticlePacket;
 import io.github.srdjanv.endreforked.common.network.servertoclient.TpParticlePacket;
 import io.github.srdjanv.endreforked.compat.CompatManger;
+import io.github.srdjanv.endreforked.di.CommonComponent;
+import io.github.srdjanv.endreforked.di.DaggerCommonComponent;
+import io.github.srdjanv.endreforked.di.DaggerServerComponent;
 
 @Mod(modid = Tags.MODID, name = Tags.MODNAME, version = Tags.VERSION, dependencies = Tags.MOD_DEPS)
 public class EndReforked {
@@ -45,7 +47,7 @@ public class EndReforked {
         FluidRegistry.enableUniversalBucket();
     }
 
-    public static SimpleNetworkWrapper NET = NetworkRegistry.INSTANCE.newSimpleChannel(Tags.MODID + "Chanel");
+    public static SimpleNetworkWrapper NET;
     private int netId = 0;
 
     public static EndReforked instance;
@@ -58,17 +60,21 @@ public class EndReforked {
 
     public EndReforked() {
         instance = this;
-        proxy = FMLCommonHandler.instance().getSide().isClient() ? newClientProxy() : new CommonProxy(Side.SERVER);
+        Side side = FMLCommonHandler.instance().getSide();
+        CommonComponent component = DaggerCommonComponent.factory().create(side);
+        NET = component.net();
+        proxy = side.isClient() ? newClientProxy(component) : DaggerServerComponent.factory().create(component).proxy();
         proxy.registerEventBus();
         MinecraftForge.EVENT_BUS.register(EndReforked.class);
     }
 
-    // The client module is not visible to this module, so the client proxy is created by name
-    private static CommonProxy newClientProxy() {
+    // The client module is not visible to this module, so the client component is created by name
+    private static CommonProxy newClientProxy(CommonComponent component) {
         try {
-            return (CommonProxy) Class.forName(Tags.CLIENTPROXY).getConstructor(Side.class).newInstance(Side.CLIENT);
+            return (CommonProxy) Class.forName(Tags.CLIENTCOMPONENT).getMethod("create", CommonComponent.class)
+                    .invoke(null, component);
         } catch (ReflectiveOperationException e) {
-            throw new IllegalStateException("Failed to create the client proxy " + Tags.CLIENTPROXY, e);
+            throw new IllegalStateException("Failed to create the client component " + Tags.CLIENTCOMPONENT, e);
         }
     }
 

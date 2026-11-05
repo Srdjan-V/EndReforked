@@ -3,6 +3,8 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 plugins {
     // Same version as the Kotlin stdlib that Forgelin-Continuous 2.4.20.0 ships
     kotlin("jvm") version "2.4.20" apply false
+    // KSP2 versions are independent of Kotlin. 2.3.13 is the latest release; 2.3.11 is documented as the pair of Kotlin 2.4.20
+    id("com.google.devtools.ksp") version "2.3.13" apply false
 }
 
 val kotlinVersion = "2.4.20"
