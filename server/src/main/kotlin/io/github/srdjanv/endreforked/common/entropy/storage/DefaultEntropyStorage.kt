@@ -12,18 +12,13 @@ open class DefaultEntropyStorage(override var maxEntropy: Int = 0) : EntropyStor
     override fun canDrainEntropy() = true
 
     override fun induceEntropy(entropy: Int, simulate: Boolean): Int {
-        val availableSpace = maxEntropy - currentEntropy
-        // original check kept: compares the stored amount, not the amount offered
-        if (currentEntropy > availableSpace) {
-            if (!simulate) currentEntropy = maxEntropy
-            return entropy - availableSpace
-        }
-        if (!simulate) currentEntropy += entropy
-        return entropy
+        val induced = entropy.coerceIn(0, maxOf(0, maxEntropy - currentEntropy))
+        if (!simulate) currentEntropy += induced
+        return induced
     }
 
     override fun drainEntropy(entropy: Int, simulate: Boolean): Int {
-        val drained = minOf(entropy, currentEntropy)
+        val drained = entropy.coerceIn(0, currentEntropy)
         if (!simulate) currentEntropy -= drained
         return drained
     }

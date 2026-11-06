@@ -2,7 +2,7 @@ package io.github.srdjanv.endreforked.common.fluids.blocks
 
 import io.github.srdjanv.endreforked.common.ModFluids
 import io.github.srdjanv.endreforked.common.fluids.base.BaseBlockFluid
-import io.github.srdjanv.endreforked.common.tiles.passiveinducers.FluidEntropyTile
+import io.github.srdjanv.endreforked.common.tiles.passiveinducers.FluidOrganaTile
 import io.github.srdjanv.endreforked.common.world.FluidInteractions
 import net.minecraft.block.material.MapColor
 import net.minecraft.block.material.Material
@@ -30,7 +30,7 @@ class BlockFluidOrgana : BaseBlockFluid("organa", ModFluids.ORGANA.get(), Materi
     override fun hasTileEntity(state: IBlockState) = state.getValue(LEVEL) == 0
 
     override fun createTileEntity(world: World, state: IBlockState): TileEntity? =
-        if (state.getValue(LEVEL) == 0) FluidEntropyTile() else null
+        if (state.getValue(LEVEL) == 0) FluidOrganaTile() else null
 
     override fun onEntityCollision(worldIn: World, pos: BlockPos, state: IBlockState, entityIn: Entity) {
         FluidInteractions.entityCollision(worldIn, pos, state, entityIn, fluid)

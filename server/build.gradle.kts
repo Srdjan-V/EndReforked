@@ -22,6 +22,11 @@ dependencies {
 
     api(cleanroom.userdev(cleanroom_version))
 
+    testImplementation("org.jetbrains.kotlin:kotlin-stdlib:2.4.20")
+    testImplementation(platform("org.junit:junit-bom:5.13.4"))
+    testImplementation("org.junit.jupiter:junit-jupiter")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
     compileOnly("zone.rong:mixinbooter:9.1")
     compileOnly("org.jetbrains:annotations:24.1.0")
 
@@ -78,3 +83,5 @@ val generateTags = tasks.register("generateTags") {
     }
 }
 sourceSets.main { java.srcDir(generateTags.map { tagsDir }) }
+
+tasks.test { useJUnitPlatform() }

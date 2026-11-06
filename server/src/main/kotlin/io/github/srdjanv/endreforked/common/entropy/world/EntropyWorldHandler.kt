@@ -44,13 +44,11 @@ object EntropyWorldHandler {
     fun onChunkLoad(event: ChunkEvent.Load) {
         if (event.world.isRemote) return
         val dim = event.world.provider.dimension
-        var world = getEntropyWorld(dim)
-        if (world == null) {
+        val world = getEntropyWorld(dim) ?: run {
             EndReforked.LOGGER.warn("Chunk was loaded before world was loaded????")
-            world = worlds.put(dim, EntropyWorld(event.world))
+            worlds.computeIfAbsent(dim) { EntropyWorld(event.world) }
         }
-        if (world != null) world.loadData(event.chunk)
-        else EndReforked.LOGGER.error("Cant load chunk data {}", event.chunk.pos)
+        world.loadData(event.chunk)
     }
 
     @SubscribeEvent
@@ -58,12 +56,7 @@ object EntropyWorldHandler {
     fun onChunkUnLoad(event: ChunkEvent.Unload) {
         if (event.world.isRemote) return
         val dim = event.world.provider.dimension
-        var world = getEntropyWorld(dim)
-        if (world == null) {
-            EndReforked.LOGGER.warn("Chunk was unloaded after world was unloaded????")
-            world = worlds.put(dim, EntropyWorld(event.world))
-        }
-        if (world != null) world.unloadData(event.chunk)
-        else EndReforked.LOGGER.error("Cant unload chunk data {}", event.chunk.pos)
+        // no world means its chunk map is already gone
+        getEntropyWorld(dim)?.unloadData(event.chunk)
     }
 }

@@ -11,6 +11,9 @@ import java.util.Optional
 import java.util.concurrent.ConcurrentHashMap
 
 class EntropyWorld(private val world: World) {
+    // one map per world, so dimensions never share entries; dropped with the world
+    private val chunks = ConcurrentHashMap<Long, EntropyChunk>()
+
     fun getEntropyChunk(chunkX: Int, chunkZ: Int): Optional<EntropyChunk> =
         if (world.isAreaLoaded(BlockPos(chunkX shl 4, 0, chunkZ shl 4), 0)) {
             Optional.ofNullable(chunks[ChunkPos.asLong(chunkX, chunkZ)])
@@ -29,10 +32,5 @@ class EntropyWorld(private val world: World) {
 
     fun unloadData(chunk: Chunk) {
         chunks.remove(ChunkPos.asLong(chunk.x, chunk.z))
-    }
-
-    private companion object {
-        // shared by every world, keyed by chunk position only
-        val chunks = ConcurrentHashMap<Long, EntropyChunk>()
     }
 }

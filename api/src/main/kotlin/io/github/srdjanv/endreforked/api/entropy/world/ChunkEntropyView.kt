@@ -27,7 +27,7 @@ class ChunkEntropyView(
     fun buildView() {
         val pos = centerPosSup.get() ?: return
         val center = centerEntropy
-        if (center != null && center.dimPos == pos && sortedEntropies.size == radius.chunks && !validateView()) return
+        if (center != null && center.dimPos == pos && sortedEntropies.size == radius.chunks && validateView()) return
 
         val resolved = resolver.apply(pos).orElse(null)
         if (resolved == null) {

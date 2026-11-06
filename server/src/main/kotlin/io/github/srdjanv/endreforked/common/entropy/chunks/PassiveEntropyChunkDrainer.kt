@@ -13,7 +13,7 @@ class PassiveEntropyChunkDrainer(
     private val radius: () -> EntropyRadius,
 ) : EntropyDataProvider.PassiveDrainer {
     override val frequency: OptionalInt = OptionalInt.of(ticker.frequency)
-    override val drained get() = baseEntropy * radius().radius
+    override val drained get() = baseEntropy * radius().chunks
 
     fun drain() {
         if (ticker.tick()) reader.entropyView.drainEntropy(drained, false)

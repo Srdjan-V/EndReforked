@@ -19,7 +19,8 @@ class ChunkEntropyProvider(chunk: Chunk) : ICapabilitySerializable<NBTTagCompoun
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? = when {
         capability === STORAGE -> STORAGE.cast(instance)
         capability === WEEK_STORAGE -> WEEK_STORAGE.cast(instance)
-        else -> ENTROPY_CHUNK.cast(instance)
+        capability === ENTROPY_CHUNK -> ENTROPY_CHUNK.cast(instance)
+        else -> null
     }
 
     override fun serializeNBT(): NBTTagCompound = instance.serializeNBT()
