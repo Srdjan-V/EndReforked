@@ -22,8 +22,8 @@ object ModItems {
     private val ITEMS = mutableListOf<Supplier<out Item?>>()
 
     // Materials
-    @JvmField val TOOL_MAGNIFIER: Supplier<ToolMaterial> =
-        Suppliers.memoize { EnumHelper.addToolMaterial("magnifier", 4, 256, 5.5F, 1.0F, 13)!! }
+    @JvmField val WAND_MATERIAL: Supplier<ToolMaterial> =
+        Suppliers.memoize { EnumHelper.addToolMaterial("entropy_wand", 4, 256, 5.5F, 1.0F, 13)!! }
 
 
     // Items
@@ -52,10 +52,10 @@ object ModItems {
         register { ItemEntropyRadiusUpgrade(EntropyRadius.THREE) }
 
     // Tools
-    @JvmField val ENTROPY_WAND: Supplier<Item> = maybeRegister { ToolEntropyWand("entropy_wand", TOOL_MAGNIFIER.get()) }
-    @JvmField val ENDER_HOOK: Supplier<Item> = maybeRegister { ItemDeather("tool_magnifier", TOOL_MAGNIFIER.get()) }
+    @JvmField val ENTROPY_WAND: Supplier<Item> = maybeRegister { ToolEntropyWand("entropy_wand", WAND_MATERIAL.get()) }
 
     @JvmField val ENTROPY_READER: Supplier<ItemEntropyReader> = register(::ItemEntropyReader)
+    @JvmField val LORMYTE_CHARM: Supplier<ItemLormyteCharm> = register(::ItemLormyteCharm)
     @JvmField val ENTROPY_WINGS: Supplier<ItemEntropyWings> = register(::ItemEntropyWings)
 
     // Food

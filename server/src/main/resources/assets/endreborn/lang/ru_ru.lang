@@ -48,8 +48,8 @@ tile.entropy_user.name=Материализер
 tile.broken_ender_flower.name=Сломанный цветок эндера
 
 # Tools -
-item.tool_magnifier.name=Магнитизер
 item.entropy_wand.name=Посох энтропии
+item.lormyte_charm.name=Lormyte Charm
 
 #Armors
 
@@ -81,10 +81,6 @@ enchantment.ender_killer=Убийца эндеров
 
 #Other
 tile.a_pearl.tooltip=Без задержки, и больше стак
-tile.deather.tooltip=Магнит для сущностей
-tile.deather_mode.tooltip=Режим магнита
-tile.deather_mode.off=Притягивание
-tile.deather_mode.on=Отталкивание
 tile.mirror.tooltip_0=Телепортирует в нулевой координат
 tile.mirror.tooltip_1=За последствия ответственности не несем
 tile.soup.tooltip=Имеет положительные эффекты
@@ -178,8 +174,6 @@ advancements.endreborn.end_rune.description=Создать: Руна Края
 advancements.endreborn.lormyte_crystal.title=Что-то новое
 advancements.endreborn.lormyte_crystal.description=Добыть: Кристалл лормита
 
-advancements.endreborn.tool_magnifier.title=Дуэт металлов
-advancements.endreborn.tool_magnifier.description=Получить: Магнитизер
 
 advancements.endreborn.item_ingot_wolframium.title=Он расплавился!
 advancements.endreborn.item_ingot_wolframium.description=Получить: Вольфрамовый слиток
@@ -200,3 +194,7 @@ advancements.endreborn.entropy.description=Добыть: Сущность энт
 
 advancements.endreborn.entropy_user.title=Шайтан-машина
 advancements.endreborn.entropy_user.description=Получить: Материализер
+hud.entropy.level.stable=Stable
+hud.entropy.level.charged=Charged
+hud.entropy.level.critical=Critical
+hud.entropy.chunk=Chunk entropy: %s

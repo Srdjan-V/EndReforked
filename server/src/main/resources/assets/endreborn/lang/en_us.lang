@@ -63,8 +63,8 @@ tile.broken_ender_flower.name=Broken Enderemus
 tile.chiseled_end_bricks.name=Chiseled End Bricks
 
 # Tools -
-item.tool_magnifier.name=Magnetor
 item.entropy_wand.name=Wand Of Entropy
+item.lormyte_charm.name=Lormyte Charm
 
 #Armors
 
@@ -105,10 +105,6 @@ enchantment.endreborn.ender_killer.desc=Higher damage while in the End
 
 #Other
 tile.a_pearl.tooltip=No more delay!
-tile.deather.tooltip=Magnet for mobs
-tile.deather_mode.tooltip=Magnet mode
-tile.deather_mode.off=Pulling
-tile.deather_mode.on=Repulsion
 tile.mirror.tooltip_0=Teleports to zero coordinates
 tile.mirror.tooltip_1=We are not responsible for the consequences
 tile.soup.tooltip=Looks tasty
@@ -258,8 +254,6 @@ advancements.endreborn.end_rune.description=Collect: Purpur Rune
 advancements.endreborn.lormyte_crystal.title=Something new
 advancements.endreborn.lormyte_crystal.description=Obtain: Lormyte Crystal
 
-advancements.endreborn.tool_magnifier.title=Duet of Metals
-advancements.endreborn.tool_magnifier.description=Collect: Magnetor
 
 advancements.endreborn.tungsten_ingot.title=He melted!
 advancements.endreborn.tungsten_ingot.description=Collect: Tungsten Ingot
@@ -280,3 +274,7 @@ advancements.endreborn.entropy.description=Collect: Xorcite
 
 advancements.endreborn.entropy_user.title=Dangerous toy
 advancements.endreborn.entropy_user.description=Collect: Materializer
+hud.entropy.level.stable=Stable
+hud.entropy.level.charged=Charged
+hud.entropy.level.critical=Critical
+hud.entropy.chunk=Chunk entropy: %s

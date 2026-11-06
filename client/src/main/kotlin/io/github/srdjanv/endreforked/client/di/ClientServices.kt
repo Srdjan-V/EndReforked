@@ -17,7 +17,7 @@ class ClientServices(common: ModServices) {
         private set
 
     val packetHandler = ClientPacketHandler(common.net, registries) { chunkEntropy = it }
-    val proxy: CommonProxy = ClientProxy(Side.CLIENT, common.registrySync, registries)
+    val proxy: CommonProxy = ClientProxy(Side.CLIENT, common.registrySync, registries) { chunkEntropy }
 
     companion object {
         /** The one entry point that the server module calls by name, see Tags.CLIENTSERVICES. */

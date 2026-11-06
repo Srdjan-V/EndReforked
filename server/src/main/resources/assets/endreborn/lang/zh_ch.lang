@@ -48,8 +48,8 @@ tile.tech_portal.name=雕纹紫珀块
 tile.over_portal.name=主世界传送门
 
 # Tools -
-item.tool_magnifier.name=马尼蒂斯
 item.entropy_wand.name=熵之杖
+item.lormyte_charm.name=Lormyte Charm
 
 #Armors
 
@@ -114,8 +114,6 @@ advancements.endreborn.end_rune.description=合成末影符文
 advancements.endreborn.lormyte_crystal.title=新的东西
 advancements.endreborn.lormyte_crystal.description=取得洛米特水晶
 
-advancements.endreborn.tool_magnifier.title=金属二重奏
-advancements.endreborn.tool_magnifier.description=获得玛尼蒂斯
 
 advancements.endreborn.item_ingot_wolframium.title=他融化了!
 advancements.endreborn.item_ingot_wolframium.description=获得钨锭
@@ -136,3 +134,8 @@ advancements.endreborn.entropy.description=获得熵之本质
 
 advancements.endreborn.entropy_user.title=最好别碰
 advancements.endreborn.entropy_user.description=获得物质实化机
+
+hud.entropy.level.stable=Stable
+hud.entropy.level.charged=Charged
+hud.entropy.level.critical=Critical
+hud.entropy.chunk=Chunk entropy: %s

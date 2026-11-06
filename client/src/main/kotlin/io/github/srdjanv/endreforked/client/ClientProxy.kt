@@ -6,6 +6,7 @@ import io.github.srdjanv.endreforked.common.ModBlocks
 import io.github.srdjanv.endreforked.common.blocks.BlockOrganaFlowerStem
 import io.github.srdjanv.endreforked.common.registry.Registries
 import io.github.srdjanv.endreforked.common.registry.RegistrySync
+import io.github.srdjanv.endreforked.wire.s2c.ChunkEntropy
 import net.minecraft.block.Block
 import net.minecraft.block.properties.IProperty
 import net.minecraft.block.state.IBlockState
@@ -23,7 +24,8 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent
 import net.minecraftforge.fml.relauncher.Side
 
-class ClientProxy(side: Side, registrySync: RegistrySync, val clientRegistries: Registries) : CommonProxy(side, registrySync) {
+class ClientProxy(side: Side, registrySync: RegistrySync, val clientRegistries: Registries,
+                  private val chunkEntropy: () -> ChunkEntropy?) : CommonProxy(side, registrySync) {
     init {
         components.add(Registration())
     }
@@ -39,6 +41,7 @@ class ClientProxy(side: Side, registrySync: RegistrySync, val clientRegistries: 
         super.registerEventBus()
         MinecraftForge.EVENT_BUS.register(ParticleHandler::class.java)
         MinecraftForge.EVENT_BUS.register(TextureHandler::class.java)
+        MinecraftForge.EVENT_BUS.register(EntropyHud(chunkEntropy))
     }
 
     override fun registerItemRenderer(item: Item, meta: Int, id: String) =
