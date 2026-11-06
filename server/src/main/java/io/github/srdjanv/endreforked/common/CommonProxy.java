@@ -82,7 +82,13 @@ public class CommonProxy {
 
     public void init(FMLInitializationEvent event) {
         for (Initializer component : components) component.init(event);
-        // After the components: the mobs and the other content they register must exist for the id checks.
+    }
+
+    /**
+     * The registries are built here, not in init: GroovyScript runs the scripts of the post init loader after the post init of all mods
+     * and before this event. The mobs and the other content must exist for the id checks, and the scripts are in the script layers now.
+     */
+    public void loadComplete(FMLLoadCompleteEvent event) {
         registrySync.build();
         WorldGen.install(registrySync.getRegistries(), EndReforked.LOGGER);
     }

@@ -1,5 +1,6 @@
 package io.github.srdjanv.endreforked.common.registry
 
+import io.github.srdjanv.endreforked.api.registry.LoadReport
 import io.github.srdjanv.endreforked.common.network.Network
 import io.github.srdjanv.endreforked.wire.s2c.RegistrySnapshot
 import io.github.srdjanv.endreforked.wire.s2c.S2CPacket
@@ -16,13 +17,19 @@ import org.apache.logging.log4j.Logger
  * FML splits a payload above 1 MiB into parts itself, so a snapshot needs no chunking.
  */
 class RegistrySync(val registries: Registries, private val net: Network, private val logger: Logger) {
-    /** Applies the defaults and the script layer of every registry, logs the counts, and starts the sync on later rebuilds. Call it once in init. */
+    /**
+     * Applies the defaults and the script layer of every registry, logs the counts, and starts the sync on later rebuilds.
+     * Call it once, when the scripts of the startup have run (the load complete phase).
+     */
     fun build() {
-        for ((slot, report) in registries.rebuildAll()) {
-            logger.info("Built {} {}", report.total, slot.name)
-            report.errors.forEach { logger.error("{}: {}", slot.name, it) }
-        }
+        for ((slot, report) in registries.rebuildAll()) report(slot.name, report)
         registries.slots.forEach { slot -> slot.onSnapshot?.invoke { sendToAll(slot.name, it) } }
+    }
+
+    /** Logs the result of a rebuild of the registry [name]. */
+    fun report(name: String, report: LoadReport) {
+        logger.info("Built {} {}", report.total, name)
+        report.errors.forEach { logger.error("{}: {}", name, it) }
     }
 
     private fun sendToAll(name: String, snapshot: RegistrySnapshot) {

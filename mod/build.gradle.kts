@@ -35,6 +35,16 @@ dependencies {
 
     // Kotlin runtime on Cleanroom. Cleanroom 0.7.x does not ship the Kotlin stdlib.
     runtimeOnly(cleanroom.deobf("maven.modrinth:forgelin-continuous:2.4.20.0"))
+
+    // Optional mod for scripts, in the dev runs only (not shaded, not a dependency of the jar).
+    // Not needed to load it: CodeChickenLib, TOP, and two Cleanroom helper mods (one fails to apply its mixin).
+    // MixinBooter is built into Cleanroom, a second copy crashes the launch.
+    runtimeOnly("com.cleanroommc:groovyscript:${project.property("groovyScriptVersion")}") {
+        exclude(group = "codechicken")
+        exclude(group = "curse.maven")
+        exclude(group = "zone.rong")
+        exclude(group = "com.cleanroommc")
+    }
 }
 
 // JER or TiC bring in the old JEI 4.16 transitively, which clashes with HEI/JEI 4.36

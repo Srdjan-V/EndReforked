@@ -14,6 +14,7 @@ val modGroup = project.property("modGroup") as String
 
 val modularUI = "2.4.3"
 val netherAPI = "1.3.0"
+val groovyScript = project.property("groovyScriptVersion") as String
 
 dependencies {
     api(project(":impl"))
@@ -33,6 +34,11 @@ dependencies {
     api("com.cleanroommc:modularui:$modularUI")
     api(cleanroom.deobf("maven.modrinth:nether-api:$netherAPI"))
     api(cleanroom.deobf("curse.maven:just_enough_resources-240630:2728586"))
+
+    // Optional: the script API in compat/groovyscript. Compile only, the dev-named jar has the MCP names of this classpath.
+    // GroovyScript's own dependencies (CodeChickenLib, TOP, ...) are not needed to compile against it, Groovy is.
+    compileOnly("com.cleanroommc:groovyscript:$groovyScript") { isTransitive = false }
+    compileOnly("org.apache.groovy:groovy:4.0.30")
 
     // Dropped: CodeChickenLib, Redstone Flux, CoFH Core/World, Thermal Expansion/Foundation/Dynamics.
     // No source uses them, and CCL 3.2.3 crashes in the Cleanroom dev env (see report).

@@ -30,6 +30,10 @@ subprojects {
             forRepository { maven("https://maven.cleanroommc.com") { name = "CleanroomMC" } }
             filter { includeGroup("mezz") }
         }
+        maven("https://maven.cleanroommc.com") {
+            name = "CleanroomMCModules" // GroovyScript, the optional script engine
+            content { includeModule("com.cleanroommc", "groovyscript") }
+        }
         maven("https://maven.blamejared.com") { name = "BlameJared" }
         maven("https://nexus.gtnewhorizons.com/repository/public/") { name = "GTNH" }
         mavenCentral()

@@ -89,6 +89,11 @@ public class EndReforked {
     }
 
     @EventHandler
+    public void loadComplete(FMLLoadCompleteEvent event) {
+        proxy.loadComplete(event);
+    }
+
+    @EventHandler
     public void onServerStarted(FMLServerStartedEvent event) {
         proxy.onServerStarted(event);
     }
