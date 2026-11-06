@@ -9,7 +9,7 @@ import net.minecraft.world.chunk.Chunk
 import net.minecraftforge.fml.common.FMLCommonHandler
 import java.util.Optional
 
-class DefaultEntropyChunk(chunk: Chunk) : EntropyChunk {
+class DefaultEntropyChunk(private val chunk: Chunk) : EntropyChunk {
     private val world = chunk.world
     private val storage = world.rand.let { DefaultWeakEntropyStorage(maxOf(1000, it.nextInt(1200)), maxOf(5, it.nextInt(10))) }
     private var reference: EntropyStorage? = null
@@ -51,6 +51,7 @@ class DefaultEntropyChunk(chunk: Chunk) : EntropyChunk {
         var induced = storage.induceEntropy(entropy, simulate)
         val ref = reference
         if (ref != null && entropy > induced) induced += ref.induceEntropy(entropy - induced, simulate)
+        if (!simulate && induced > 0) chunk.markDirty()
         return induced
     }
 
@@ -58,6 +59,7 @@ class DefaultEntropyChunk(chunk: Chunk) : EntropyChunk {
         var drained = storage.drainEntropy(entropy, simulate)
         val ref = reference
         if (ref != null && entropy > drained) drained += ref.drainEntropy(entropy - drained, simulate)
+        if (!simulate && drained > 0) chunk.markDirty()
         return drained
     }
 

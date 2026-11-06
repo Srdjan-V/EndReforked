@@ -37,7 +37,7 @@ class EntropyTest {
     fun drainerUsesChunkCount() {
         val reader = EntropyChunkReader({ null })
         for (r in EntropyRadius.entries)
-            assertEquals(150 * r.chunks, PassiveEntropyChunkDrainer(reader, Ticker(200), 150) { r }.drained)
-        assertEquals(150, PassiveEntropyChunkDrainer(reader, Ticker(200), 150) { EntropyRadius.ONE }.drained)
+            assertEquals(150 * r.chunks, PassiveEntropyChunkDrainer(reader, Ticker(200), { 150 }) { r }.drained)
+        assertEquals(150, PassiveEntropyChunkDrainer(reader, Ticker(200), { 150 }) { EntropyRadius.ONE }.drained)
     }
 }

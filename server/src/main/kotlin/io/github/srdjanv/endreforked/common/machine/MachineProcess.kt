@@ -1,8 +1,10 @@
 package io.github.srdjanv.endreforked.common.machine
 
 import io.github.srdjanv.endreforked.api.base.crafting.TileStatus
+import io.github.srdjanv.endreforked.api.entropy.EntropyLevel
 import io.github.srdjanv.endreforked.api.entropy.world.ChunkEntropyView
 import io.github.srdjanv.endreforked.api.machine.MachineRecipe
+import io.github.srdjanv.endreforked.common.entropy.EntropyTuning
 import io.github.srdjanv.endreforked.impl.machine.MachineRecipes
 import io.github.srdjanv.endreforked.impl.machine.Match
 import net.minecraft.nbt.NBTTagCompound
@@ -46,6 +48,7 @@ class MachineProcess(
     private var cachedSnapshot: MachineRecipes? = null
     private var cachedMatch: Match? = null
     private var activeRecipe: ResourceLocation? = null
+    private val accumulator = ProgressAccumulator()
 
     fun inputChanged() {
         inputVersion++
@@ -66,8 +69,12 @@ class MachineProcess(
 
     fun progress(): Double = recipe?.let { ticksRun.toDouble() / it.ticks } ?: 0.0
 
-    /** One server tick. [entropy] is the entropy around the machine. A machine without entropy passes null, and only recipes with 0 entropy run. */
-    fun tick(entropy: ChunkEntropyView? = null) {
+    /**
+     * One server tick. [entropy] is the entropy around the machine. A machine without entropy passes null, and only recipes with 0 entropy run.
+     * [level] is the level of the chunk of the machine: it sets the speed and the chance of a bonus output.
+     * A recipe with world events is paused in a stable chunk.
+     */
+    fun tick(entropy: ChunkEntropyView? = null, level: EntropyLevel = EntropyLevel.STABLE) {
         val match = match
         if (match == null) {
             ticksRun = 0
@@ -84,6 +91,10 @@ class MachineProcess(
             status = TileStatus.NOT_ENOUGH_ENTROPY
             return
         }
+        if (recipe.worldEvents.isNotEmpty() && level == EntropyLevel.STABLE) {
+            status = TileStatus.NOT_ENOUGH_ENTROPY
+            return
+        }
         status = TileStatus.RUNNING
         if (!hooks.onRunning(recipe, ticksRun)) {
             io.extract(match, false)
@@ -93,7 +104,7 @@ class MachineProcess(
             return
         }
         if (ticksRun < recipe.ticks) {
-            ticksRun++
+            ticksRun = minOf(recipe.ticks, ticksRun + accumulator.step(EntropyTuning.speed(level)))
             return
         }
 
@@ -108,6 +119,9 @@ class MachineProcess(
             if (recipe.entropy > 0) entropy?.drainEntropy(recipe.entropy, false)
             io.extract(match, false)
             io.insertOutputs(recipe)
+            if (EntropyTuning.bonus(level, Math.random())) {
+                recipe.itemOutputs.firstOrNull()?.let { io.itemOutputs.insertInternal(it.copy().apply { count = 1 }, false) }
+            }
             ticksRun = 0
             hooks.onFinished(recipe)
         }

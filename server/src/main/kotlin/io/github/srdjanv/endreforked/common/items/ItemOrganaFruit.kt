@@ -83,7 +83,7 @@ class ItemOrganaFruit : ItemFoodBase("organa_fruit", 4, 0.3f, false) {
             return false
         }
         EndReforked.NET.sendToAll(S2CPacket(null, TpParticle(orgX, orgY, orgZ, player.posX, player.posY, player.posZ,
-            player.width.toDouble(), player.height.toDouble(), ByteString.EMPTY), null, ByteString.EMPTY))
+            player.width.toDouble(), player.height.toDouble(), ByteString.EMPTY), null, null, ByteString.EMPTY))
         return true
     }
 }

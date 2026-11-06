@@ -14,6 +14,7 @@ import com.cleanroommc.modularui.widgets.ProgressWidget
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import io.github.srdjanv.endreforked.api.base.crafting.TileStatus
 import io.github.srdjanv.endreforked.api.machine.MachineRecipe
+import io.github.srdjanv.endreforked.common.entropy.world.EntropyWorldHandler
 import io.github.srdjanv.endreforked.common.machine.InputHandler
 import io.github.srdjanv.endreforked.common.machine.InputTank
 import io.github.srdjanv.endreforked.common.machine.MachineIO
@@ -87,7 +88,7 @@ class EndForgeTile : BaseTileEntity(), ITickable, IGuiHolder<PosGuiData> {
     }
 
     override fun update() {
-        if (!world.isRemote) process.tick()
+        if (!world.isRemote) process.tick(level = EntropyWorldHandler.levelAt(world.provider.dimension, pos))
     }
 
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {

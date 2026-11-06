@@ -8,8 +8,9 @@ import java.util.OptionalInt
 class PassiveEntropyChunkInducer(
     private val reader: EntropyChunkReader,
     private val ticker: Ticker,
-    override val induced: Int,
+    private val amount: () -> Int,
 ) : EntropyDataProvider.PassiveInducer {
+    override val induced get() = amount()
     override val frequency: OptionalInt = OptionalInt.of(ticker.frequency)
 
     fun induce() {

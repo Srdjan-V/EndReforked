@@ -21,6 +21,7 @@ import io.github.srdjanv.endreforked.api.machine.WorldEvent
 import io.github.srdjanv.endreforked.api.machine.nextWorldEvent
 import io.github.srdjanv.endreforked.common.ModBlocks
 import io.github.srdjanv.endreforked.common.blocks.BlockMaterializer
+import io.github.srdjanv.endreforked.common.entropy.world.EntropyWorldHandler
 import io.github.srdjanv.endreforked.common.machine.InputHandler
 import io.github.srdjanv.endreforked.common.machine.MachineIO
 import io.github.srdjanv.endreforked.common.machine.MachineProcess
@@ -125,7 +126,7 @@ class MaterializerTile : BaseTileEntity(), ITickable, IGuiHolder<PosGuiData> {
     override fun update() {
         if (!world.isRemote) {
             updateBlockState()
-            process.tick()
+            process.tick(level = EntropyWorldHandler.levelAt(world.provider.dimension, pos))
             if (process.ticksRun == 0) lastEvent = 0 // a new run, or the last one ended
         } else if (process.status == TileStatus.FAILED || failTick > 0) {
             // show the failure text for 3 seconds

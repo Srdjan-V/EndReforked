@@ -10,7 +10,15 @@ message S2CPacket {
     PlayerParticle player_particle = 1;
     TpParticle tp_particle = 2;
     RegistrySnapshot registry_snapshot = 3;
+    ChunkEntropy chunk_entropy = 4;
   }
+}
+
+// The entropy of the chunk the player stands in. The server sends it every second, only when it changed.
+message ChunkEntropy {
+  int32 entropy = 1;
+  int32 capacity = 2;
+  int32 level = 3; // EntropyLevel ordinal
 }
 
 // Starts or stops a particle effect on the local player. The other fields are only used when remove is false.

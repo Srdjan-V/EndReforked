@@ -5,6 +5,7 @@ import io.github.srdjanv.endreforked.common.blocks.BlockOrganaFlowerStem
 import io.github.srdjanv.endreforked.common.capabilities.entropy.CapabilityEntropyHandler
 import io.github.srdjanv.endreforked.common.capabilities.timedflight.CapabilityTimedFlightHandler
 import io.github.srdjanv.endreforked.common.datafixers.Fixer
+import io.github.srdjanv.endreforked.common.entropy.ChunkEntropySync
 import io.github.srdjanv.endreforked.common.entropy.world.EntropyWorldHandler
 import io.github.srdjanv.endreforked.common.handlers.EventHandler
 import io.github.srdjanv.endreforked.common.handlers.TimedFlightHandler
@@ -35,7 +36,7 @@ open class CommonProxy(@JvmField val SIDE: Side, @JvmField val registrySync: Reg
         listOf<Any>(
             CapabilityTimedFlightHandler::class.java, CapabilityEntropyHandler::class.java, ModFluids::class.java,
             ModBlocks::class.java, ModItems::class.java, ModEnchants::class.java,
-            ModPotions::class.java, EventHandler::class.java, ModBioms::class.java, EntropyWorldHandler::class.java,
+            ModPotions::class.java, EventHandler::class.java, ModBioms::class.java, EntropyWorldHandler::class.java, ChunkEntropySync::class.java,
         ).forEach(MinecraftForge.EVENT_BUS::register)
     }
 

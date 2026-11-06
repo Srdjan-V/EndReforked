@@ -23,7 +23,9 @@ import io.github.srdjanv.endreforked.api.entropy.EntropyRadius
 import io.github.srdjanv.endreforked.api.entropy.EntropyRadiusUpgrade
 import io.github.srdjanv.endreforked.common.entropy.world.EntropyChunkReader
 import io.github.srdjanv.endreforked.api.util.Ticker
+import io.github.srdjanv.endreforked.common.entropy.EntropyTuning
 import io.github.srdjanv.endreforked.common.entropy.chunks.PassiveEntropyChunkDrainer
+import io.github.srdjanv.endreforked.common.entropy.world.EntropyWorldHandler
 import io.github.srdjanv.endreforked.common.machine.InputHandler
 import io.github.srdjanv.endreforked.common.machine.InputTank
 import io.github.srdjanv.endreforked.common.machine.MachineIO
@@ -55,7 +57,7 @@ import java.util.Optional
  */
 class EntropyChamberTile : BaseTileEntity(), ITickable, EntropyDataProvider, IGuiHolder<PosGuiData> {
     private val reader = EntropyChunkReader.ofTileEntity(this, EntropyRadius.ONE)
-    private val drainer = PassiveEntropyChunkDrainer(reader, Ticker(10 * 20), 150) { reader.radius }
+    private val drainer = PassiveEntropyChunkDrainer(reader, Ticker(10 * 20), { EntropyTuning.chamberDrain }) { reader.radius }
 
     private val upgradeSlot = object : InternalItemStackHandler(1) {
         override fun insertItem(slot: Int, stack: ItemStack, simulate: Boolean): ItemStack =
@@ -138,8 +140,9 @@ class EntropyChamberTile : BaseTileEntity(), ITickable, EntropyDataProvider, IGu
         if (world.isRemote) return
         drainer.drain()
         updateRange()
-        itemProcess.tick(reader.entropyView)
-        fluidProcess.tick(reader.entropyView)
+        val level = EntropyWorldHandler.levelAt(world.provider.dimension, pos)
+        itemProcess.tick(reader.entropyView, level)
+        fluidProcess.tick(reader.entropyView, level)
     }
 
     private fun updateRange() {

@@ -42,6 +42,7 @@ class EndRebornGroovy : GroovyPropertyContainer() {
         addProperty(FluidEntityInteractionGroovy(layer(registries.fluidEntityInteractions)))
         addProperty(WorldFeatureGroovy(layer(registries.worldFeatures)))
         addProperty(EndBiomeGroovy(layer(registries.endBiomes)))
+        addProperty(EntropyGroovy())
     }
 
     private companion object {

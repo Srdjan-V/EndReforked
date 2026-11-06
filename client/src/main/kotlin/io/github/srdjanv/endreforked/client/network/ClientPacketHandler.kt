@@ -8,6 +8,7 @@ import io.github.srdjanv.endreforked.impl.machine.toMachineRecipes
 import io.github.srdjanv.endreforked.impl.world.toFluidBlockInteractions
 import io.github.srdjanv.endreforked.impl.world.toFluidEntityInteractions
 import io.github.srdjanv.endreforked.impl.world.toWandConversions
+import io.github.srdjanv.endreforked.wire.s2c.ChunkEntropy
 import io.github.srdjanv.endreforked.wire.s2c.RegistrySnapshot
 import io.github.srdjanv.endreforked.wire.s2c.PlayerParticle
 import io.github.srdjanv.endreforked.wire.s2c.S2CPacket
@@ -19,7 +20,11 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.common.network.FMLNetworkEvent
 
 /** Receives the S2CPacket envelope and dispatches on the oneof field that is set. */
-class ClientPacketHandler(network: Network, private val registries: Registries) {
+class ClientPacketHandler(
+    network: Network,
+    private val registries: Registries,
+    private val onChunkEntropy: (ChunkEntropy?) -> Unit,
+) {
     init {
         network.channel.register(this)
         MinecraftForge.EVENT_BUS.register(this)
@@ -28,7 +33,7 @@ class ClientPacketHandler(network: Network, private val registries: Registries) 
     /** Back to the code defaults when the player leaves a server, so the menu and JEI do not show that server's recipes. */
     @SubscribeEvent
     fun onDisconnect(event: FMLNetworkEvent.ClientDisconnectionFromServerEvent) {
-        Minecraft.getMinecraft().addScheduledTask { registries.rebuildAll() }
+        Minecraft.getMinecraft().addScheduledTask { registries.rebuildAll(); onChunkEntropy(null) }
     }
 
     @SubscribeEvent
@@ -42,6 +47,7 @@ class ClientPacketHandler(network: Network, private val registries: Registries) 
             packet.player_particle?.let(::playerParticle)
             packet.tp_particle?.let(::tpParticle)
             packet.registry_snapshot?.let(::registrySnapshot)
+            packet.chunk_entropy?.let(onChunkEntropy)
         }
     }
 

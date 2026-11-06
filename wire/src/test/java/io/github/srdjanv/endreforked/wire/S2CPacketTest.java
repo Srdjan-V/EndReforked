@@ -47,7 +47,7 @@ class S2CPacketTest {
     @Test
     void playerParticle() throws IOException {
         var in = new PlayerParticle(false, "fly", 200, 7, ByteString.EMPTY);
-        var out = roundTrip(new S2CPacket(in, null, null, ByteString.EMPTY));
+        var out = roundTrip(new S2CPacket(in, null, null, null, ByteString.EMPTY));
         assertNull(out.getTp_particle());
         assertNotNull(out.getPlayer_particle());
         assertEquals(in, out.getPlayer_particle());
@@ -59,13 +59,13 @@ class S2CPacketTest {
     @Test
     void playerParticleRemove() throws IOException {
         var in = new PlayerParticle(true, "fly", 0, 0, ByteString.EMPTY);
-        assertEquals(in, roundTrip(new S2CPacket(in, null, null, ByteString.EMPTY)).getPlayer_particle());
+        assertEquals(in, roundTrip(new S2CPacket(in, null, null, null, ByteString.EMPTY)).getPlayer_particle());
     }
 
     @Test
     void tpParticle() throws IOException {
         var in = new TpParticle(1.5, 2.5, -3.5, 4, 5, 6, 0.6, 1.8, ByteString.EMPTY);
-        var out = roundTrip(new S2CPacket(null, in, null, ByteString.EMPTY));
+        var out = roundTrip(new S2CPacket(null, in, null, null, ByteString.EMPTY));
         assertNull(out.getPlayer_particle());
         assertEquals(in, out.getTp_particle());
         assertEquals(-3.5, out.getTp_particle().getPos_z());
@@ -84,7 +84,7 @@ class S2CPacketTest {
                 500, 150, 3, List.of(), ByteString.EMPTY);
         var snapshot = new RegistrySnapshot("endreborn:machine_recipes",
                 new MachineRecipes(List.of(recipe), ByteString.EMPTY), null, null, null, ByteString.EMPTY);
-        var out = roundTrip(new S2CPacket(null, null, snapshot, ByteString.EMPTY));
+        var out = roundTrip(new S2CPacket(null, null, snapshot, null, ByteString.EMPTY));
         assertNull(out.getPlayer_particle());
         assertEquals(snapshot, out.getRegistry_snapshot());
         var decoded = out.getRegistry_snapshot().getMachine_recipes().getRecipes().get(0);
@@ -110,7 +110,7 @@ class S2CPacketTest {
                 List.of(), List.of(), 600, 0, 0, List.of(setBlock, drop), ByteString.EMPTY);
         var snapshot = new RegistrySnapshot("endreborn:machine_recipes",
                 new MachineRecipes(List.of(recipe), ByteString.EMPTY), null, null, null, ByteString.EMPTY);
-        var out = roundTrip(new S2CPacket(null, null, snapshot, ByteString.EMPTY));
+        var out = roundTrip(new S2CPacket(null, null, snapshot, null, ByteString.EMPTY));
         assertEquals(snapshot, out.getRegistry_snapshot());
         var events = out.getRegistry_snapshot().getMachine_recipes().getRecipes().get(0).getWorld_events();
         assertEquals(2, events.size());
@@ -128,7 +128,7 @@ class S2CPacketTest {
         var unset = new WandConversion("endreborn:wand/b", stone, cobble, null, 0, List.of(), ByteString.EMPTY);
         var snapshot = new RegistrySnapshot("endreborn:wand_conversions", null,
                 new WandConversions(List.of(fixed, unset), ByteString.EMPTY), null, null, ByteString.EMPTY);
-        var out = roundTrip(new S2CPacket(null, null, snapshot, ByteString.EMPTY)).getRegistry_snapshot();
+        var out = roundTrip(new S2CPacket(null, null, snapshot, null, ByteString.EMPTY)).getRegistry_snapshot();
         assertEquals(snapshot, out);
         assertNull(out.getMachine_recipes());
         assertEquals(9, out.getWand_conversions().getConversions().get(0).getItem_damage());
@@ -141,7 +141,7 @@ class S2CPacketTest {
         var block = new FluidBlockInteraction("endreborn:b", "endreborn:entropy", endStone, endStone, 5, false, 0, 0, ByteString.EMPTY);
         var blocks = new RegistrySnapshot("endreborn:fluid_block_interactions", null, null,
                 new FluidBlockInteractions(List.of(block), ByteString.EMPTY), null, ByteString.EMPTY);
-        assertEquals(blocks, roundTrip(new S2CPacket(null, null, blocks, ByteString.EMPTY)).getRegistry_snapshot());
+        assertEquals(blocks, roundTrip(new S2CPacket(null, null, blocks, null, ByteString.EMPTY)).getRegistry_snapshot());
 
         var item = new FluidEntityInteraction("endreborn:e", "endreborn:entropy", "minecraft:item",
                 new Stack("minecraft:chorus_flower", 0, 4, ByteString.EMPTY), false,
@@ -154,7 +154,7 @@ class S2CPacketTest {
                 new EntityResult(null, null, endStone, ByteString.EMPTY), 20, true, 0, 0, ByteString.EMPTY);
         var entities = new RegistrySnapshot("endreborn:fluid_entity_interactions", null, null, null,
                 new FluidEntityInteractions(List.of(item, watcher, fluid), ByteString.EMPTY), ByteString.EMPTY);
-        var out = roundTrip(new S2CPacket(null, null, entities, ByteString.EMPTY)).getRegistry_snapshot();
+        var out = roundTrip(new S2CPacket(null, null, entities, null, ByteString.EMPTY)).getRegistry_snapshot();
         assertEquals(entities, out);
         var list = out.getFluid_entity_interactions().getInteractions();
         assertEquals("endreborn:watcher", list.get(1).getResult().getSpawn_entity());

@@ -2,11 +2,14 @@ package io.github.srdjanv.endreforked.common.entropy.world
 
 import io.github.srdjanv.endreforked.EndReforked
 import io.github.srdjanv.endreforked.api.capabilities.entropy.EntropyChunk
+import io.github.srdjanv.endreforked.api.entropy.EntropyLevel
 import io.github.srdjanv.endreforked.api.util.DimPos
+import io.github.srdjanv.endreforked.common.entropy.EntropyTuning
 import net.minecraft.util.math.BlockPos
 import net.minecraftforge.common.DimensionManager
 import net.minecraftforge.event.world.ChunkEvent
 import net.minecraftforge.event.world.WorldEvent
+import net.minecraftforge.fml.common.gameevent.TickEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import java.util.Optional
 import java.util.concurrent.ConcurrentHashMap
@@ -19,6 +22,10 @@ object EntropyWorldHandler {
 
     fun getEntropyChunkWorld(dim: Int, pos: BlockPos): Optional<EntropyChunk> =
         getEntropyWorld(dim)?.getEntropyChunk(pos.x shr 4, pos.z shr 4) ?: Optional.empty()
+
+    /** The level of the chunk at [pos]. Stable if the chunk has no entropy data. */
+    fun levelAt(dim: Int, pos: BlockPos): EntropyLevel =
+        getEntropyChunkWorld(dim, pos).map { EntropyTuning.level(it.currentEntropy, it.maxEntropy) }.orElse(EntropyLevel.STABLE)
 
     private fun getEntropyWorld(dim: Int): EntropyWorld? {
         val entropyWorld = worlds[dim] ?: return null
@@ -37,6 +44,14 @@ object EntropyWorldHandler {
     @JvmStatic
     fun onWorldUnLoad(event: WorldEvent.Unload) {
         worlds.remove(event.world.provider.dimension)
+    }
+
+    @SubscribeEvent
+    @JvmStatic
+    fun onWorldTick(event: TickEvent.WorldTickEvent) {
+        val world = event.world
+        if (event.phase != TickEvent.Phase.END || world.isRemote || world.totalWorldTime % EntropyTuning.DECAY_INTERVAL != 0L) return
+        getEntropyWorld(world.provider.dimension)?.decay()
     }
 
     @SubscribeEvent
