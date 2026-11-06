@@ -12,7 +12,7 @@
     {
         "0":
         {
-            "item": "endreborn:block_end_stone_smooth"
+            "item": "endreborn:end_stone_smooth_block"
         },
 	"3":
         {
@@ -26,7 +26,7 @@
     
     "result":
     {
-        "item": "endreborn:entropy_user",
+        "item": "endreborn:materializer_block",
         "count": 1
     }
 }

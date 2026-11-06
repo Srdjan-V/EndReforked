@@ -12,13 +12,13 @@
     {
         "0":
         {
-            "item": "endreborn:block_end_stone_smooth"
+            "item": "endreborn:end_stone_smooth_block"
         }
     },
     
     "result":
     {
-        "item": "endreborn:smooth_end_stone_wall",
+        "item": "endreborn:end_stone_smooth_wall",
         "count": 6
     }
 }

@@ -5,7 +5,7 @@
       "item": "minecraft:glass_bottle"
     },
     {
-      "item": "endreborn:food_dragonite_berries"
+      "item": "endreborn:dragonite_berries"
     },
 	{
       "item": "minecraft:sugar"
@@ -13,7 +13,7 @@
   ],
   "result": 
     {
-        "item": "endreborn:item_dragonite_tea",
+        "item": "endreborn:dragonite_tea",
         "count": 1
     }
 }

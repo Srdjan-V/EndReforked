@@ -12,13 +12,13 @@
     {
         "0":
         {
-            "item": "endreborn:item_ingot_wolframium"
+            "item": "endreborn:tungsten_ingot"
         }
     },
     
     "result":
     {
-        "item": "endreborn:block_wolframium",
+        "item": "endreborn:tungsten_block",
         "count": 1
     }
 }

@@ -12,7 +12,7 @@
     {
         "0":
         {
-            "item": "endreborn:block_end_stone_pillar"
+            "item": "endreborn:end_stone_pillar"
         },
 	"1":
         {
@@ -20,7 +20,7 @@
         },
 	"2":
         {
-            "item": "endreborn:chiseled_end_bricks"
+            "item": "endreborn:end_bricks_chiseled"
         },
 	"3":
         {
@@ -30,7 +30,7 @@
     
     "result":
     {
-        "item": "endreborn:block_end_forge",
+        "item": "endreborn:end_forge_block",
         "count": 1
     }
 }
