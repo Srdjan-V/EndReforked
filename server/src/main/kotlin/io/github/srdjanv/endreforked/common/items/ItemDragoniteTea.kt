@@ -28,7 +28,7 @@ class ItemDragoniteTea : ItemFoodBase("dragonite_tea", 2, 1f, false) {
             entityLiving.cooldownTracker.setCooldown(this, 40 * 20)
             entityLiving.addPotionEffect(PotionEffect(MobEffects.HUNGER, 50 * 20, 0))
             if (!worldIn.isRemote) {
-                entityLiving.getCapability(CapabilityTimedFlightHandler.INSTANCE, null)!!.flightDuration = 45 * 20
+                entityLiving.getCapability(CapabilityTimedFlightHandler.CAPABILITY, null)!!.flightDuration = 45 * 20
             }
         }
         return stack

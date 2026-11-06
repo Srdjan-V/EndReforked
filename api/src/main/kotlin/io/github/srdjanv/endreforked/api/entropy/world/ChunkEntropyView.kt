@@ -10,7 +10,7 @@ import java.util.function.Function
 import java.util.function.Supplier
 
 class ChunkEntropyView(
-    val centerPosSup: Supplier<DimPos>,
+    val centerPosSup: Supplier<DimPos?>,
     val resolver: Function<DimPos, Optional<EntropyChunk>>,
     private val radius: EntropyRadius,
 ) : WeakEntropyStorage, EntropyDataProvider {

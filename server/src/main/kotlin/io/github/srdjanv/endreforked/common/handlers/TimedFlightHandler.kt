@@ -19,7 +19,7 @@ object TimedFlightHandler : Initializer {
         if (event.phase == TickEvent.Phase.END) return
 
         for (player in FMLCommonHandler.instance().minecraftServerInstance.playerList.players) {
-            val cap = player.getCapability(CapabilityTimedFlightHandler.INSTANCE, null) ?: continue
+            val cap = player.getCapability(CapabilityTimedFlightHandler.CAPABILITY, null) ?: continue
             cap.tickPlayer(player)
             if (cap.flightDuration > 0) continue
             for (stack in PlayerUtils.getAllPlayerItems(player)) {

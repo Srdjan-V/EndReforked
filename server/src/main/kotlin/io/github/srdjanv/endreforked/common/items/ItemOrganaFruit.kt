@@ -45,7 +45,7 @@ class ItemOrganaFruit : ItemFoodBase("organa_fruit", 4, 0.3f, false) {
         if (entityLiving is EntityPlayerMP) {
             val flight = 25 * 20
             entityLiving.cooldownTracker.setCooldown(this, flight - 5 * 20)
-            entityLiving.getCapability(CapabilityTimedFlightHandler.INSTANCE, null)!!.flightDuration = flight
+            entityLiving.getCapability(CapabilityTimedFlightHandler.CAPABILITY, null)!!.flightDuration = flight
             entityLiving.capabilities.isFlying = true
             entityLiving.sendPlayerAbilities()
         }

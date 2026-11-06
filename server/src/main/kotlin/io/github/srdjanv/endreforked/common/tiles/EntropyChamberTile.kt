@@ -122,7 +122,7 @@ class EntropyChamberTile : BaseTileEntity(), ITickable, EntropyDataProvider, IGu
 
     override val entropyRadius: Optional<EntropyRadius> get() = Optional.of(reader.radius)
 
-    override val passiveDrainer: Optional<EntropyDataProvider.PassiveDrainer> get() = Optional.of(drainer.passiveDrainer)
+    override val passiveDrainer: Optional<EntropyDataProvider.PassiveDrainer> get() = Optional.of(drainer)
 
     override val activeDrainer: Optional<EntropyDataProvider.ActiveDrainer>
         get() {
@@ -223,7 +223,7 @@ class EntropyChamberTile : BaseTileEntity(), ITickable, EntropyDataProvider, IGu
         )
         syncManager.syncValue(
             "passive_entropy_drain",
-            IntSyncValue({ drainer.passiveDrainer.drained }, { passiveEntropyDrain = it }),
+            IntSyncValue({ drainer.drained }, { passiveEntropyDrain = it }),
         )
 
         if (data.isClient) {
