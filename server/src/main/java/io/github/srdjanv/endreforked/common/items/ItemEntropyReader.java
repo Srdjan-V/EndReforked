@@ -12,7 +12,7 @@ import net.minecraft.world.World;
 
 import io.github.srdjanv.endreforked.api.entropy.EntropyDataProvider;
 import io.github.srdjanv.endreforked.api.entropy.EntropyRadius;
-import io.github.srdjanv.endreforked.api.entropy.world.EntropyChunkReader;
+import io.github.srdjanv.endreforked.common.entropy.world.EntropyChunkReader;
 import io.github.srdjanv.endreforked.common.items.base.ItemBase;
 
 public class ItemEntropyReader extends ItemBase {

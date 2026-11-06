@@ -1,4 +1,4 @@
-package io.github.srdjanv.endreforked.api.entropy.world;
+package io.github.srdjanv.endreforked.common.entropy.world;
 
 import java.util.Map;
 import java.util.Optional;

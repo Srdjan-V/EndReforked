@@ -6,7 +6,7 @@ import java.util.function.Supplier;
 
 import io.github.srdjanv.endreforked.api.entropy.EntropyDataProvider;
 import io.github.srdjanv.endreforked.api.entropy.EntropyRadius;
-import io.github.srdjanv.endreforked.api.entropy.world.EntropyChunkReader;
+import io.github.srdjanv.endreforked.common.entropy.world.EntropyChunkReader;
 import io.github.srdjanv.endreforked.api.util.Ticker;
 
 public class PassiveEntropyChunkDrainer extends PassiveEntropyChunk {

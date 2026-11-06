@@ -24,7 +24,7 @@ import com.cleanroommc.modularui.widgets.ButtonWidget;
 
 import io.github.srdjanv.endreforked.api.capabilities.entropy.EntropyStorage;
 import io.github.srdjanv.endreforked.api.entropy.EntropyDataProvider;
-import io.github.srdjanv.endreforked.api.entropy.world.EntropyChunkReader;
+import io.github.srdjanv.endreforked.common.entropy.world.EntropyChunkReader;
 import io.github.srdjanv.endreforked.common.capabilities.entropy.CapabilityEntropyHandler;
 import io.github.srdjanv.endreforked.common.entropy.storage.DefaultEntropyStorage;
 import io.github.srdjanv.endreforked.common.widgets.BasicTextWidget;

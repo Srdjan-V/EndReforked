@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import com.github.bsideup.jabel.Desugar;
-
 import io.github.srdjanv.endreforked.common.configs.base.ResourceLocationWrapper;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -57,7 +55,6 @@ public class MobConfigSchema {
         return biomeWhiteListMap;
     }
 
-    @Desugar
     public record SpawnConfig(int spawnProbability, int maximumSpawnGroup, int minimumSpawnGroup) {}
 
     public static Builder builder() {

@@ -13,7 +13,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import io.github.srdjanv.endreforked.api.capabilities.timedflight.ITimedFlight;
 import io.github.srdjanv.endreforked.api.entropy.EntropyWings;
 import io.github.srdjanv.endreforked.api.entropy.world.ChunkEntropyView;
-import io.github.srdjanv.endreforked.api.entropy.world.EntropyChunkReader;
+import io.github.srdjanv.endreforked.common.entropy.world.EntropyChunkReader;
 import io.github.srdjanv.endreforked.common.capabilities.timedflight.CapabilityTimedFlightHandler;
 import io.github.srdjanv.endreforked.utils.Initializer;
 import io.github.srdjanv.endreforked.utils.PlayerUtils;

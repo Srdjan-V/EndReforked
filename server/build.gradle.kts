@@ -24,8 +24,6 @@ dependencies {
 
     compileOnly("zone.rong:mixinbooter:9.1")
     compileOnly("org.jetbrains:annotations:24.1.0")
-    // Only for the @Desugar annotation used in the sources. Jabel is not applied (Java 25 target).
-    compileOnly("com.github.bsideup.jabel:jabel-javac-plugin:1.0.0")
 
     api("mezz:jei:4.36.1:dev")
 
@@ -60,7 +58,6 @@ val tags = mapOf(
     "MOD_PREFIX" to "\"$modId:\"",
     "DATAFIXER_VERSION" to "1",
     "CLIENTSERVICES" to "\"$modGroup.client.di.ClientServices\"",
-    "COMMONPROXY" to "\"$modGroup.common.CommonProxy\"",
     "ISSUES_URL" to "\"https://github.com/Srdjan-V/EndReforked/issues\"",
 )
 val tagsDir = layout.buildDirectory.dir("generated/tags")

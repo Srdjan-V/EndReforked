@@ -34,8 +34,6 @@ subprojects {
             name = "CleanroomMCModules" // GroovyScript, the optional script engine
             content { includeModule("com.cleanroommc", "groovyscript") }
         }
-        maven("https://maven.blamejared.com") { name = "BlameJared" }
-        maven("https://nexus.gtnewhorizons.com/repository/public/") { name = "GTNH" }
         mavenCentral()
     }
 

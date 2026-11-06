@@ -35,10 +35,6 @@ public final class Fixer implements Initializer {
 
     private final ModFixs modFixer;
 
-    public ModFixs getModFixer() {
-        return modFixer;
-    }
-
     private Fixer() {
         modFixer = FMLCommonHandler.instance().getDataFixer()
                 .init(Tags.MODID, Tags.DATAFIXER_VERSION);

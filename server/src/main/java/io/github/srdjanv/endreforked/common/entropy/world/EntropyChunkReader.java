@@ -1,4 +1,4 @@
-package io.github.srdjanv.endreforked.api.entropy.world;
+package io.github.srdjanv.endreforked.common.entropy.world;
 
 import java.util.Optional;
 import java.util.function.Function;
@@ -12,6 +12,7 @@ import org.jetbrains.annotations.Nullable;
 
 import io.github.srdjanv.endreforked.api.capabilities.entropy.EntropyChunk;
 import io.github.srdjanv.endreforked.api.entropy.EntropyRadius;
+import io.github.srdjanv.endreforked.api.entropy.world.ChunkEntropyView;
 import io.github.srdjanv.endreforked.api.util.DimPos;
 
 public final class EntropyChunkReader {

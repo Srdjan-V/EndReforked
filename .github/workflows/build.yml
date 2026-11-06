@@ -23,4 +23,4 @@ jobs:
           name: EndReforked
           path: |
             mod/build/libs/*.jar
-            !mod/build/libs/*-mcp.jar
+            !mod/build/libs/*-mcp*.jar

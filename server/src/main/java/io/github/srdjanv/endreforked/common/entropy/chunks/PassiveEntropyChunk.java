@@ -2,7 +2,7 @@ package io.github.srdjanv.endreforked.common.entropy.chunks;
 
 import java.util.function.IntSupplier;
 
-import io.github.srdjanv.endreforked.api.entropy.world.EntropyChunkReader;
+import io.github.srdjanv.endreforked.common.entropy.world.EntropyChunkReader;
 import io.github.srdjanv.endreforked.api.util.Ticker;
 
 abstract class PassiveEntropyChunk {

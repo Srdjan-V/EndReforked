@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 
 import io.github.srdjanv.endreforked.api.entropy.EntropyDataProvider;
 import io.github.srdjanv.endreforked.api.entropy.EntropyRadius;
-import io.github.srdjanv.endreforked.api.entropy.world.EntropyWorldHandler;
+import io.github.srdjanv.endreforked.common.entropy.world.EntropyWorldHandler;
 import io.github.srdjanv.endreforked.common.ModItems;
 import io.github.srdjanv.endreforked.common.blocks.base.BlockBase;
 

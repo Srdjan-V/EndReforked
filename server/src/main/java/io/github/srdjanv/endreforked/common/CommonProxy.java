@@ -15,7 +15,7 @@ import org.jetbrains.annotations.Nullable;
 
 import io.github.srdjanv.endreforked.EndReforked;
 import io.github.srdjanv.endreforked.common.blocks.BlockOrganaFlowerStem;
-import io.github.srdjanv.endreforked.api.entropy.world.EntropyWorldHandler;
+import io.github.srdjanv.endreforked.common.entropy.world.EntropyWorldHandler;
 import io.github.srdjanv.endreforked.common.capabilities.entropy.CapabilityEntropyHandler;
 import io.github.srdjanv.endreforked.common.capabilities.timedflight.CapabilityTimedFlightHandler;
 import io.github.srdjanv.endreforked.common.configs.JsonConfigs;

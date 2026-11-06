@@ -8,7 +8,6 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -26,8 +25,4 @@ public class PlayerUtils {
                 .collect(Collectors.toCollection(ObjectArrayList::new));
     }
 
-    public static void syncInventory(EntityPlayerMP player) {
-        player.inventory.markDirty();
-        player.server.getPlayerList().syncPlayerInventory(player);
-    }
 }

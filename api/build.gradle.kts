@@ -11,4 +11,5 @@ val cleanroom_version = project.property("cleanroom_version") as String
 dependencies {
     // Only for compiling and tests. The mod jar takes the class output of each project, not its dependencies.
     api(cleanroom.userdev(cleanroom_version))
+    compileOnly("org.jetbrains:annotations:24.1.0")
 }

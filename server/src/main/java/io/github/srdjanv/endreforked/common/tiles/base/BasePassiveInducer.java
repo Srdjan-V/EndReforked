@@ -7,7 +7,7 @@ import net.minecraft.util.ITickable;
 
 import io.github.srdjanv.endreforked.api.entropy.EntropyDataProvider;
 import io.github.srdjanv.endreforked.api.entropy.EntropyRadius;
-import io.github.srdjanv.endreforked.api.entropy.world.EntropyChunkReader;
+import io.github.srdjanv.endreforked.common.entropy.world.EntropyChunkReader;
 import io.github.srdjanv.endreforked.api.util.Ticker;
 import io.github.srdjanv.endreforked.common.entropy.chunks.PassiveEntropyChunkInducer;
 
