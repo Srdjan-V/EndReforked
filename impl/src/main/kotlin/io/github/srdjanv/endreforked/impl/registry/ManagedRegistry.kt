@@ -6,18 +6,7 @@ import io.github.srdjanv.endreforked.api.registry.Registry
 import io.github.srdjanv.endreforked.api.registry.RegistryEntry
 import io.github.srdjanv.endreforked.api.registry.RegistryKey
 import io.github.srdjanv.endreforked.api.registry.RegistryScripts
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonArray
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.JsonPrimitive
-import kotlinx.serialization.json.booleanOrNull
-import kotlinx.serialization.json.contentOrNull
-import java.nio.file.Files
-import java.nio.file.Path
 import java.util.concurrent.CopyOnWriteArrayList
-import kotlin.io.path.isRegularFile
-import kotlin.io.path.name
-import kotlin.io.path.readText
 
 /** An immutable registry. The entries are ordered by id, so iteration is deterministic. */
 open class FrozenRegistry<E : RegistryEntry>(override val key: RegistryKey<E>, entries: Collection<E>) : Registry<E> {
@@ -27,29 +16,18 @@ open class FrozenRegistry<E : RegistryEntry>(override val key: RegistryKey<E>, e
     override fun get(id: Id): E? = byId[id]
 }
 
-/** Reads one entry from a JSON object. Throws when the object is invalid. The "remove" key never reaches the codec. */
-fun interface EntryCodec<E : RegistryEntry> {
-    fun decode(json: JsonObject): E
-}
-
 /**
  * The one lifecycle of every registry. A rebuild applies ordered layers to an empty map:
- * 1. code defaults, 2. JSON files, 3. scripts ([RegistryScripts]).
+ * 1. code defaults, 2. scripts ([RegistryScripts]).
  * Each layer is a list of operations: put (add or replace), remove by id, remove by predicate.
  * Then every entry is validated, a new immutable snapshot is built ([current]) and it replaces the old one atomically.
  * Readers see either the old or the new snapshot. Listeners are called after the swap.
  *
- * The JSON layer is read from disk by [reload] only. [rebuild] reuses the last read, so a JSON reload keeps the script layer
- * and a script change does not touch the disk. Before the first rebuild [current] is empty.
- *
- * JSON files (`*.json`, read in path order): one file holds one object or an array of objects.
- * An object with the id of an existing entry replaces it. `{"id": "...", "remove": true}` removes an entry.
- * An invalid entry is reported, skipped, and never stops a rebuild.
+ * An invalid entry is reported, skipped, and never stops a rebuild. Before the first rebuild [current] is empty.
  */
 class ManagedRegistry<E : RegistryEntry, R : Registry<E>>(
     val key: RegistryKey<E>,
     private val defaults: () -> Collection<E>,
-    private val codec: EntryCodec<E>,
     private val validate: (E) -> String?,
     private val freeze: (Collection<E>) -> R,
 ) : RegistryScripts<E> {
@@ -73,7 +51,6 @@ class ManagedRegistry<E : RegistryEntry, R : Registry<E>>(
         private set
 
     private val listeners = CopyOnWriteArrayList<(R) -> Unit>()
-    private var jsonOps: List<Op> = emptyList()
     private val scriptOps = ArrayList<Op>()
 
     /** Called with every new snapshot, on the thread that replaced it. */
@@ -105,22 +82,12 @@ class ManagedRegistry<E : RegistryEntry, R : Registry<E>>(
         scriptOps.clear()
     }
 
-    /** Reads the JSON files under [dir] (may be null or missing), then rebuilds. */
-    @Synchronized
-    fun reload(dir: Path?): LoadReport {
-        val errors = ArrayList<String>()
-        jsonOps = if (dir != null && Files.isDirectory(dir)) readJson(dir, errors) else emptyList()
-        val report = rebuild()
-        return report.copy(errors = errors + report.errors)
-    }
-
     @Synchronized
     override fun rebuild(): LoadReport {
         val entries = LinkedHashMap<Id, E>()
         val errors = ArrayList<String>()
         val applied = LinkedHashMap<String, Int>()
         applied["defaults"] = applyOps(entries, defaults().map { Op.Put("code defaults", it) }, errors)
-        applied["json"] = applyOps(entries, jsonOps, errors)
         applied["scripts"] = applyOps(entries, scriptOps, errors)
         isFrozen = true
         replace(entries.values)
@@ -162,38 +129,6 @@ class ManagedRegistry<E : RegistryEntry, R : Registry<E>>(
             }
         }
         return changed
-    }
-
-    private fun readJson(dir: Path, errors: MutableList<String>): List<Op> {
-        val ops = ArrayList<Op>()
-        val files = Files.walk(dir).use { s -> s.filter { it.isRegularFile() && it.name.endsWith(".json") }.sorted().toList() }
-        for (file in files) {
-            val name = dir.relativize(file).toString()
-            val root = try {
-                Json.parseToJsonElement(file.readText())
-            } catch (e: Exception) {
-                errors += "$name: not valid JSON: ${e.message}"
-                continue
-            }
-            for (element in (root as? JsonArray) ?: JsonArray(listOf(root))) {
-                val obj = element as? JsonObject
-                if (obj == null) {
-                    errors += "$name: entry is not a JSON object"
-                    continue
-                }
-                val id = (obj["id"] as? JsonPrimitive)?.contentOrNull?.let(Id::parseOrNull)
-                if (id == null) {
-                    errors += "$name: entry has no valid 'id'"
-                } else if ((obj["remove"] as? JsonPrimitive)?.booleanOrNull == true) {
-                    ops += Op.Remove(name, id)
-                } else try {
-                    ops += Op.Put(name, codec.decode(JsonObject(obj - "remove")))
-                } catch (e: Exception) {
-                    errors += "$name: $id: ${e.message}"
-                }
-            }
-        }
-        return ops
     }
 
     private companion object {

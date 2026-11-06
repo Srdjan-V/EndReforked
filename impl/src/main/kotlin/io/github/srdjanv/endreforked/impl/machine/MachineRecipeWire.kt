@@ -67,7 +67,7 @@ private fun WorldEvent.toWire() = WireEvent(
     },
 )
 
-private fun BlockSpec.toWire() = WireBlock(block.toString(), properties)
+internal fun BlockSpec.toWire() = WireBlock(block.toString(), properties)
 
 private fun WireRecipe.toRecipe() = MachineRecipe(
     id = Id.parse(id),
@@ -86,7 +86,8 @@ private fun WireRecipe.toRecipe() = MachineRecipe(
     fluidOutputs = fluid_outputs.map { FluidOut(Id.parse(it.id), it.amount) },
     ticks = ticks,
     entropy = entropy,
-    priority = priority,    worldEvents = world_events.map { it.toEvent() },
+    priority = priority,
+    worldEvents = world_events.map { it.toEvent() },
 )
 
 private fun WireEvent.toEvent(): WorldEvent {
@@ -115,4 +116,4 @@ private fun WireEvent.toEvent(): WorldEvent {
     )
 }
 
-private fun WireBlock.toSpec() = BlockSpec(Id.parse(block), properties)
+internal fun WireBlock.toSpec() = BlockSpec(Id.parse(block), properties)

@@ -13,6 +13,11 @@ import org.junit.jupiter.api.Test;
 import io.github.srdjanv.endreforked.wire.s2c.Aisle;
 import io.github.srdjanv.endreforked.wire.s2c.BlockSpec;
 import io.github.srdjanv.endreforked.wire.s2c.DropItemAction;
+import io.github.srdjanv.endreforked.wire.s2c.EntityResult;
+import io.github.srdjanv.endreforked.wire.s2c.FluidBlockInteraction;
+import io.github.srdjanv.endreforked.wire.s2c.FluidBlockInteractions;
+import io.github.srdjanv.endreforked.wire.s2c.FluidEntityInteraction;
+import io.github.srdjanv.endreforked.wire.s2c.FluidEntityInteractions;
 import io.github.srdjanv.endreforked.wire.s2c.FluidAmount;
 import io.github.srdjanv.endreforked.wire.s2c.Ingredient;
 import io.github.srdjanv.endreforked.wire.s2c.ItemIngredient;
@@ -27,6 +32,9 @@ import io.github.srdjanv.endreforked.wire.s2c.SetBlockAction;
 import io.github.srdjanv.endreforked.wire.s2c.StructureSpec;
 import io.github.srdjanv.endreforked.wire.s2c.SymbolSpec;
 import io.github.srdjanv.endreforked.wire.s2c.TpParticle;
+import io.github.srdjanv.endreforked.wire.s2c.WandConversion;
+import io.github.srdjanv.endreforked.wire.s2c.WandConversions;
+import io.github.srdjanv.endreforked.wire.s2c.WorldEffect;
 import io.github.srdjanv.endreforked.wire.s2c.WorldAction;
 import io.github.srdjanv.endreforked.wire.s2c.WorldEvent;
 import okio.ByteString;
@@ -76,7 +84,7 @@ class S2CPacketTest {
                 List.of(new FluidAmount("minecraft:water", 1000, ByteString.EMPTY)),
                 500, 150, 3, List.of(), ByteString.EMPTY);
         var snapshot = new RegistrySnapshot("endreborn:machine_recipes",
-                new MachineRecipes(List.of(recipe), ByteString.EMPTY), ByteString.EMPTY);
+                new MachineRecipes(List.of(recipe), ByteString.EMPTY), null, null, null, ByteString.EMPTY);
         var out = roundTrip(new S2CPacket(null, null, snapshot, ByteString.EMPTY));
         assertNull(out.getPlayer_particle());
         assertEquals(snapshot, out.getRegistry_snapshot());
@@ -102,7 +110,7 @@ class S2CPacketTest {
         var recipe = new MachineRecipe("endreborn:materializer/example", "endreborn:materializer", List.of(), List.of(),
                 List.of(), List.of(), 600, 0, 0, List.of(setBlock, drop), ByteString.EMPTY);
         var snapshot = new RegistrySnapshot("endreborn:machine_recipes",
-                new MachineRecipes(List.of(recipe), ByteString.EMPTY), ByteString.EMPTY);
+                new MachineRecipes(List.of(recipe), ByteString.EMPTY), null, null, null, ByteString.EMPTY);
         var out = roundTrip(new S2CPacket(null, null, snapshot, ByteString.EMPTY));
         assertEquals(snapshot, out.getRegistry_snapshot());
         var events = out.getRegistry_snapshot().getMachine_recipes().getRecipes().get(0).getWorld_events();
@@ -111,5 +119,47 @@ class S2CPacketTest {
         assertEquals("minecraft:iron_block", events.get(0).getAction().getSet_block().getBlock().getBlock());
         assertNull(events.get(1).getAction().getSet_block());
         assertEquals(2, events.get(1).getAction().getDrop_item().getItem().getCount());
+    }
+
+    @Test
+    void wandConversions() throws IOException {
+        var stone = new BlockSpec("minecraft:stone", Map.of("variant", "stone"), ByteString.EMPTY);
+        var cobble = new BlockSpec("minecraft:cobblestone", Map.of(), ByteString.EMPTY);
+        var fixed = new WandConversion("endreborn:wand/a", stone, cobble, 9, 1, List.of(WorldEffect.FLINT_SOUND), ByteString.EMPTY);
+        var unset = new WandConversion("endreborn:wand/b", stone, cobble, null, 0, List.of(), ByteString.EMPTY);
+        var snapshot = new RegistrySnapshot("endreborn:wand_conversions", null,
+                new WandConversions(List.of(fixed, unset), ByteString.EMPTY), null, null, ByteString.EMPTY);
+        var out = roundTrip(new S2CPacket(null, null, snapshot, ByteString.EMPTY)).getRegistry_snapshot();
+        assertEquals(snapshot, out);
+        assertNull(out.getMachine_recipes());
+        assertEquals(9, out.getWand_conversions().getConversions().get(0).getItem_damage());
+        assertNull(out.getWand_conversions().getConversions().get(1).getItem_damage());
+    }
+
+    @Test
+    void fluidInteractions() throws IOException {
+        var endStone = new BlockSpec("minecraft:end_stone", Map.of(), ByteString.EMPTY);
+        var block = new FluidBlockInteraction("endreborn:b", "endreborn:entropy", endStone, endStone, 5, false, 0, 0, ByteString.EMPTY);
+        var blocks = new RegistrySnapshot("endreborn:fluid_block_interactions", null, null,
+                new FluidBlockInteractions(List.of(block), ByteString.EMPTY), null, ByteString.EMPTY);
+        assertEquals(blocks, roundTrip(new S2CPacket(null, null, blocks, ByteString.EMPTY)).getRegistry_snapshot());
+
+        var item = new FluidEntityInteraction("endreborn:e", "endreborn:entropy", "minecraft:item",
+                new ItemIngredient("minecraft:chorus_flower", 0, 4, ByteString.EMPTY), false,
+                new EntityResult(new ItemResult("minecraft:dirt", 0, 4, ByteString.EMPTY), null, null, ByteString.EMPTY),
+                10, true, 0, 0, ByteString.EMPTY);
+        var watcher = new FluidEntityInteraction("endreborn:w", "endreborn:entropy", "minecraft:enderman", null, true,
+                new EntityResult(null, "endreborn:watcher", null, ByteString.EMPTY), 1, true, 0, 0, ByteString.EMPTY);
+        var fluid = new FluidEntityInteraction("endreborn:f", "endreborn:entropy", "minecraft:item",
+                new ItemIngredient("minecraft:apple", 32767, 1, ByteString.EMPTY), false,
+                new EntityResult(null, null, endStone, ByteString.EMPTY), 20, true, 0, 0, ByteString.EMPTY);
+        var entities = new RegistrySnapshot("endreborn:fluid_entity_interactions", null, null, null,
+                new FluidEntityInteractions(List.of(item, watcher, fluid), ByteString.EMPTY), ByteString.EMPTY);
+        var out = roundTrip(new S2CPacket(null, null, entities, ByteString.EMPTY)).getRegistry_snapshot();
+        assertEquals(entities, out);
+        var list = out.getFluid_entity_interactions().getInteractions();
+        assertEquals("endreborn:watcher", list.get(1).getResult().getSpawn_entity());
+        assertNull(list.get(1).getItem());
+        assertEquals("minecraft:end_stone", list.get(2).getResult().getSet_fluid_block().getBlock());
     }
 }

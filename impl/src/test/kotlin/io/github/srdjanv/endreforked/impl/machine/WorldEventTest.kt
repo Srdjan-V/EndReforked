@@ -14,9 +14,6 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.io.TempDir
-import java.nio.file.Path
-import kotlin.io.path.writeText
 
 class WorldEventTest {
     private val materializer = Id("endreborn", "materializer")
@@ -47,26 +44,6 @@ class WorldEventTest {
         assertEquals(listOf(recipe), decoded.toMachineRecipes())
     }
 
-    @Test
-    fun jsonDecodesWorldEvents(@TempDir dir: Path) {
-        dir.resolve("m.json").writeText(
-            """{"id":"test:m","machine":"endreborn:materializer","ticks":600,
-                "itemInputs":[{"item":"minecraft:diamond"},{"item":"endreborn:catalyst"}],
-                "itemOutputs":[{"item":"minecraft:diamond"}],
-                "worldEvents":[
-                  {"atPercent":30,"chance":15,
-                   "structure":{"aisles":[["SS","S "],["S ","  "]],"symbols":{"S":{"block":"minecraft:stone","properties":{"variant":"granite"}}}},
-                   "action":{"type":"set_block","block":"minecraft:iron_block"}},
-                  {"atPercent":90,"chance":2,
-                   "structure":{"aisles":[["SS","S "],["S ","  "]],"symbols":{"S":{"block":"minecraft:stone","properties":{"variant":"granite"}}}},
-                   "action":{"type":"drop_item","item":"minecraft:diamond","count":2}}]}""",
-        )
-        val registry = registry()
-        val report = registry.reload(dir)
-        assertEquals(emptyList<String>(), report.errors)
-        assertEquals(listOf(setBlock, drop), registry.current[Id("test", "m")]?.worldEvents)
-    }
-
     private fun bad(event: WorldEvent) = MachineRecipes.validate(recipe.copy(worldEvents = listOf(event)))
 
     @Test
@@ -84,24 +61,13 @@ class WorldEventTest {
     }
 
     @Test
-    fun badJsonWorldEventsAreReportedAndSkipped(@TempDir dir: Path) {
-        val common = """"machine":"endreborn:materializer","ticks":10,"itemInputs":[{"item":"minecraft:diamond"}],"itemOutputs":[{"item":"minecraft:dirt"}]"""
-        val structure = """"structure":{"aisles":[["S"]],"symbols":{"S":{"block":"minecraft:stone"}}}"""
-        dir.resolve("bad.json").writeText(
-            """[{"id":"test:type",$common,"worldEvents":[{"atPercent":5,"chance":5,$structure,"action":{"type":"explode"}}]},
-                {"id":"test:both",$common,"worldEvents":[{"atPercent":5,"chance":5,$structure,"action":{"type":"set_block","block":"minecraft:dirt","item":"minecraft:dirt"}}]},
-                {"id":"test:symbol",$common,"worldEvents":[{"atPercent":5,"chance":5,"structure":{"aisles":[["S"]],"symbols":{"SS":{"block":"minecraft:stone"}}},"action":{"type":"set_block","block":"minecraft:dirt"}}]},
-                {"id":"test:range",$common,"worldEvents":[{"atPercent":500,"chance":5,$structure,"action":{"type":"set_block","block":"minecraft:dirt"}}]},
-                {"id":"test:typo",$common,"worldEvents":[{"atPercent":5,"chance":5,$structure,"action":{"type":"set_block","block":"minecraft:dirt"},"extra":1}]}]""",
-        )
+    fun badScriptedWorldEventIsReportedAndSkipped() {
         val registry = registry()
-        val report = registry.reload(dir)
-        assertEquals(5, report.errors.size, report.errors.toString())
-        assertTrue(report.errors.any { it.startsWith("bad.json: test:type: unknown action type 'explode'") })
-        assertTrue(report.errors.any { it.startsWith("bad.json: test:both: set_block has no 'item'") })
-        assertTrue(report.errors.any { it.startsWith("bad.json: test:symbol: symbol 'SS'") })
-        assertTrue(report.errors.any { it.startsWith("bad.json: test:range: world event at 500%") })
-        assertTrue(report.errors.any { it.startsWith("bad.json: test:typo") })
-        assertEquals(1, registry.current.size) // only the default
+        registry.add(recipe.copy(id = Id("test", "range"), worldEvents = listOf(setBlock.copy(atPercent = 500))))
+        registry.add(recipe.copy(id = Id("test", "good"), worldEvents = listOf(setBlock)))
+        val report = registry.rebuild()
+        assertEquals(1, report.errors.size, report.errors.toString())
+        assertTrue(report.errors.single().startsWith("scripts: test:range: world event at 500%"))
+        assertEquals(2, registry.current.size) // the default and test:good
     }
 }

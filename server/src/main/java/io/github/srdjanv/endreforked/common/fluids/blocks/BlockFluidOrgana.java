@@ -2,7 +2,6 @@ package io.github.srdjanv.endreforked.common.fluids.blocks;
 
 import java.util.Random;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -17,19 +16,13 @@ import net.minecraft.world.World;
 
 import org.jetbrains.annotations.Nullable;
 
-import io.github.srdjanv.endreforked.api.base.crafting.HandlerRegistry;
-import io.github.srdjanv.endreforked.api.fluids.IFluidInteractable;
-import io.github.srdjanv.endreforked.api.fluids.base.CollisionRecipe;
-import io.github.srdjanv.endreforked.api.fluids.base.FluidEntityCollisionHandler;
-import io.github.srdjanv.endreforked.api.fluids.organa.OrganaFluidAnyStateCollisionHandler;
-import io.github.srdjanv.endreforked.api.fluids.organa.OrganaFluidCollisionHandler;
-import io.github.srdjanv.endreforked.api.fluids.organa.OrganaFluidEntityCollisionHandler;
 import io.github.srdjanv.endreforked.common.ModFluids;
+import io.github.srdjanv.endreforked.common.world.FluidInteractions;
 import io.github.srdjanv.endreforked.common.fluids.base.BaseBlockFluid;
 import io.github.srdjanv.endreforked.common.tiles.passiveinducers.FluidEntropyTile;
 import io.github.srdjanv.endreforked.utils.WorldUtils;
 
-public class BlockFluidOrgana extends BaseBlockFluid implements IFluidInteractable {
+public class BlockFluidOrgana extends BaseBlockFluid {
 
     public BlockFluidOrgana() {
         super("organa", ModFluids.ORGANA.get(), Material.WATER, MapColor.PURPLE);
@@ -53,7 +46,7 @@ public class BlockFluidOrgana extends BaseBlockFluid implements IFluidInteractab
 
     @Override
     public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
-        onEntityCollisionIFluidInteractable(worldIn, pos, state, entityIn);
+        FluidInteractions.entityCollision(worldIn, pos, state, entityIn, getFluid());
         if (WorldUtils.isClientWorld(worldIn)) return;
         entityIn.fallDistance = 0;
         if (entityIn instanceof EntityPlayer player) {
@@ -70,21 +63,6 @@ public class BlockFluidOrgana extends BaseBlockFluid implements IFluidInteractab
 
     @Override
     public void randomTick(World world, BlockPos pos, IBlockState state, Random random) {
-        randomTickIFluidInteractable(world, pos, state, random);
-    }
-
-    @Override
-    public @Nullable HandlerRegistry<IBlockState, CollisionRecipe<IBlockState, IBlockState>> getFluidCollisionRegistry() {
-        return OrganaFluidCollisionHandler.INSTANCE;
-    }
-
-    @Override
-    public @Nullable HandlerRegistry<Block, CollisionRecipe<Block, IBlockState>> getAnyFluidCollisionRegistry() {
-        return OrganaFluidAnyStateCollisionHandler.INSTANCE;
-    }
-
-    @Override
-    public @Nullable FluidEntityCollisionHandler getEntityFluidCollisionRegistry() {
-        return OrganaFluidEntityCollisionHandler.INSTANCE;
+        FluidInteractions.randomTick(world, pos, state, random, getFluid());
     }
 }

@@ -87,8 +87,9 @@ public class CommonProxy {
     }
 
     public void init(FMLInitializationEvent event) {
-        registrySync.getRegistries().loadDefaults();
         for (Initializer component : components) component.init(event);
+        // After the components: the mobs and the other content they register must exist for the id checks.
+        registrySync.build();
     }
 
     public void postInit(FMLPostInitializationEvent event) {

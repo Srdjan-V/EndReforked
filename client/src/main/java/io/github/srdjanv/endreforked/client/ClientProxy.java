@@ -43,7 +43,7 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void init(FMLInitializationEvent event) {
         super.init(event);
-        clientRegistries.loadDefaults();
+        clientRegistries.rebuildAll();
     }
 
     @Override

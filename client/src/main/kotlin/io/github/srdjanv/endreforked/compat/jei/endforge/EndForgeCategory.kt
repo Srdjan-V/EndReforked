@@ -23,6 +23,6 @@ class EndForgeCategory(helper: IGuiHelper) : MachineCategory(helper, UID, "tile.
         const val UID = Tags.MODID + ".endforge"
 
         @JvmField
-        val FEED = RecipeFeed(UID, MachineRecipeDefaults.END_FORGE)
+        val FEED = RecipeFeed.machine(UID, MachineRecipeDefaults.END_FORGE)
     }
 }

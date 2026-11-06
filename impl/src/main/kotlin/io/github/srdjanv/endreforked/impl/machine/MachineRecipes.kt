@@ -143,7 +143,7 @@ class MachineRecipes(entries: Collection<MachineRecipe>) : FrozenRegistry<Machin
             defaults: () -> Collection<MachineRecipe>,
             extraValidation: (MachineRecipe) -> String? = { null },
         ) = ManagedRegistry(
-            KEY, defaults, MachineRecipeJson, { validate(it) ?: extraValidation(it) }, ::MachineRecipes,
+            KEY, defaults, { validate(it) ?: extraValidation(it) }, ::MachineRecipes,
         )
 
         /** Returns a message when the recipe cannot work, else null. */

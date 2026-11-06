@@ -12,17 +12,15 @@ import io.github.srdjanv.endreforked.compat.jei.entropywand.EntropyWandCategory;
 import io.github.srdjanv.endreforked.compat.jei.fluids.FluidInteractionEntityCategory;
 import io.github.srdjanv.endreforked.compat.jei.fluids.FluidInteractionStateCategory;
 import io.github.srdjanv.endreforked.compat.jei.materializer.MaterializerCategory;
-import io.github.srdjanv.endreforked.api.machine.MachineRecipe;
-import io.github.srdjanv.endreforked.impl.machine.MachineRecipes;
-import io.github.srdjanv.endreforked.impl.registry.ManagedRegistry;
+import io.github.srdjanv.endreforked.common.registry.Registries;
 import mezz.jei.api.*;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 
 @mezz.jei.api.JEIPlugin
 public class JEIPlugin implements IModPlugin {
 
-    private static ManagedRegistry<MachineRecipe, MachineRecipes> clientMachineRecipes() {
-        return ((ClientProxy) EndReforked.getProxy()).getClientRegistries().getMachineRecipes();
+    private static Registries clientRegistries() {
+        return ((ClientProxy) EndReforked.getProxy()).getClientRegistries();
     }
 
     @Override
@@ -40,28 +38,38 @@ public class JEIPlugin implements IModPlugin {
 
     @Override
     public void register(IModRegistry registry) {
-        var machineRecipes = clientMachineRecipes().getCurrent();
+        var registries = clientRegistries();
+        var machineRecipes = registries.getMachineRecipes().getCurrent();
         registry.addRecipes(EndForgeCategory.FEED.load(machineRecipes), EndForgeCategory.UID);
         registry.addRecipeCatalyst(new ItemStack(ModBlocks.BLOCK_END_FORGE.get()), EndForgeCategory.UID);
 
         registry.addRecipes(MaterializerCategory.FEED.load(machineRecipes), MaterializerCategory.UID);
         registry.addRecipeCatalyst(new ItemStack(ModBlocks.MATERIALIZER_BLOCK.get()), MaterializerCategory.UID);
 
-        registry.addRecipes(EntropyWandCategory.getRecipes(), EntropyWandCategory.UID);
+        registry.addRecipes(EntropyWandCategory.FEED.load(registries.getWandConversions().getCurrent()),
+                EntropyWandCategory.UID);
         registry.addRecipeCatalyst(new ItemStack(ModItems.ENTROPY_WAND.get()), EntropyWandCategory.UID);
 
         registry.addRecipes(EntropyChamberCategory.FEED.load(machineRecipes), EntropyChamberCategory.UID);
         registry.addRecipeCatalyst(new ItemStack(ModBlocks.ENTROPY_CHAMBER.get()), EntropyChamberCategory.UID);
 
-        registry.addRecipes(FluidInteractionEntityCategory.getRecipes(), FluidInteractionEntityCategory.UID);
-        registry.addRecipes(FluidInteractionStateCategory.getRecipes(), FluidInteractionStateCategory.UID);
+        registry.addRecipes(
+                FluidInteractionEntityCategory.FEED.load(registries.getFluidEntityInteractions().getCurrent()),
+                FluidInteractionEntityCategory.UID);
+        registry.addRecipes(
+                FluidInteractionStateCategory.FEED.load(registries.getFluidBlockInteractions().getCurrent()),
+                FluidInteractionStateCategory.UID);
     }
 
     @Override
     public void onRuntimeAvailable(IJeiRuntime runtime) {
         var jei = runtime.getRecipeRegistry();
-        EntropyChamberCategory.FEED.watch(jei, clientMachineRecipes());
-        EndForgeCategory.FEED.watch(jei, clientMachineRecipes());
-        MaterializerCategory.FEED.watch(jei, clientMachineRecipes());
+        var registries = clientRegistries();
+        EntropyChamberCategory.FEED.watch(jei, registries.getMachineRecipes());
+        EndForgeCategory.FEED.watch(jei, registries.getMachineRecipes());
+        MaterializerCategory.FEED.watch(jei, registries.getMachineRecipes());
+        EntropyWandCategory.FEED.watch(jei, registries.getWandConversions());
+        FluidInteractionEntityCategory.FEED.watch(jei, registries.getFluidEntityInteractions());
+        FluidInteractionStateCategory.FEED.watch(jei, registries.getFluidBlockInteractions());
     }
 }

@@ -39,6 +39,9 @@ message RegistrySnapshot {
   string registry = 1; // registry id, for example endreborn:machine_recipes
   oneof entries {
     MachineRecipes machine_recipes = 2;
+    WandConversions wand_conversions = 3;
+    FluidBlockInteractions fluid_block_interactions = 4;
+    FluidEntityInteractions fluid_entity_interactions = 5;
   }
 }
 
@@ -129,4 +132,63 @@ message SetBlockAction {
 
 message DropItemAction {
   ItemResult item = 1;
+}
+
+// World interaction registries, see api WorldInteraction.kt.
+message WandConversions {
+  repeated WandConversion conversions = 1;
+}
+
+message WandConversion {
+  string id = 1;
+  BlockSpec match = 2;
+  BlockSpec result = 3;
+  optional int32 item_damage = 4; // not set: the server config value
+  int32 priority = 5;
+  repeated WorldEffect effects = 6;
+}
+
+enum WorldEffect {
+  WORLD_EFFECT_UNKNOWN = 0;
+  FLINT_SOUND = 1;
+}
+
+message FluidBlockInteractions {
+  repeated FluidBlockInteraction interactions = 1;
+}
+
+message FluidBlockInteraction {
+  string id = 1;
+  string fluid = 2;
+  BlockSpec match = 3;
+  BlockSpec result = 4;
+  int32 chance = 5;
+  bool consume_source = 6;
+  int32 consume_chance = 7;
+  int32 priority = 8;
+}
+
+message FluidEntityInteractions {
+  repeated FluidEntityInteraction interactions = 1;
+}
+
+message FluidEntityInteraction {
+  string id = 1;
+  string fluid = 2;
+  string entity = 3;
+  ItemIngredient item = 4; // only for minecraft:item
+  bool remove_entity = 5;
+  EntityResult result = 6;
+  int32 chance = 7;
+  bool consume_source = 8;
+  int32 consume_chance = 9;
+  int32 priority = 10;
+}
+
+message EntityResult {
+  oneof kind {
+    ItemResult spawn_item = 1;
+    string spawn_entity = 2;
+    BlockSpec set_fluid_block = 3;
+  }
 }

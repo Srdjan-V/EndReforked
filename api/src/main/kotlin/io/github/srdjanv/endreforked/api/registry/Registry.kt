@@ -47,7 +47,7 @@ data class LoadReport(val total: Int, val applied: Map<String, Int>, val errors:
 /**
  * The script layer of a registry. CraftTweaker and GroovyScript adapters use it, and they convert their stacks to ids first.
  *
- * The layer is the last of three, applied in order on every rebuild: code defaults, JSON config, scripts.
+ * The layer is the last of two, applied in order on every rebuild: code defaults, scripts.
  * Operations are only recorded. Nothing becomes visible until [rebuild], which applies all layers and swaps the snapshot.
  * Before the first rebuild this is how scripts that run early (CraftTweaker at init) add their operations.
  * After the first rebuild a script reload calls [clear], runs the scripts again, then [rebuild] (GroovyScript `/gs reload`).

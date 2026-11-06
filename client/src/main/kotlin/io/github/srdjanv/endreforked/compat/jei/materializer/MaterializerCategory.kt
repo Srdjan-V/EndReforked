@@ -29,6 +29,6 @@ class MaterializerCategory(helper: IGuiHelper) : MachineCategory(helper, UID, "t
         const val UID = Tags.MODID + ".materializer"
 
         @JvmField
-        val FEED = RecipeFeed(UID, MachineRecipeDefaults.MATERIALIZER)
+        val FEED = RecipeFeed.machine(UID, MachineRecipeDefaults.MATERIALIZER)
     }
 }

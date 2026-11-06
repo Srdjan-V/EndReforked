@@ -39,6 +39,6 @@ class EntropyChamberCategory(helper: IGuiHelper) : IRecipeCategory<MachineRecipe
         const val UID = Tags.MODID + ".entropy_chamber"
 
         @JvmField
-        val FEED = RecipeFeed(UID, MachineRecipeDefaults.ENTROPY_CHAMBER)
+        val FEED = RecipeFeed.machine(UID, MachineRecipeDefaults.ENTROPY_CHAMBER)
     }
 }

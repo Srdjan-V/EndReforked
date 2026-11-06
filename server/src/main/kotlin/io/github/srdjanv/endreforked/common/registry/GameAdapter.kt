@@ -7,6 +7,10 @@ import io.github.srdjanv.endreforked.api.machine.ItemOut
 import io.github.srdjanv.endreforked.api.machine.MachineRecipe
 import io.github.srdjanv.endreforked.api.machine.WorldAction
 import io.github.srdjanv.endreforked.api.registry.Id
+import io.github.srdjanv.endreforked.api.world.EntityResult
+import io.github.srdjanv.endreforked.api.world.FluidBlockInteraction
+import io.github.srdjanv.endreforked.api.world.FluidEntityInteraction
+import io.github.srdjanv.endreforked.api.world.WandConversion
 import io.github.srdjanv.endreforked.impl.machine.FluidInput
 import io.github.srdjanv.endreforked.impl.machine.ItemInput
 import io.github.srdjanv.endreforked.impl.machine.ItemKey
@@ -14,13 +18,17 @@ import io.github.srdjanv.endreforked.impl.machine.OreResolver
 import net.minecraft.block.Block
 import net.minecraft.block.properties.IProperty
 import net.minecraft.block.state.IBlockState
+import net.minecraft.entity.Entity
+import net.minecraft.entity.EntityList
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.fluids.Fluid
 import net.minecraftforge.fluids.FluidRegistry
 import net.minecraftforge.fluids.FluidStack
+import net.minecraft.world.World
 import net.minecraftforge.oredict.OreDictionary
+import java.util.concurrent.ConcurrentHashMap
 
 /** The edge between the id based registries and Minecraft: ItemStack, FluidStack and the ore dictionary. */
 object GameAdapter {
@@ -37,8 +45,13 @@ object GameAdapter {
 
     fun block(id: Id): Block? = Block.REGISTRY.getObject(id.toLocation()).takeIf { Block.REGISTRY.containsKey(id.toLocation()) }
 
+    // Only found states are kept, so a lookup before the blocks exist does not stick.
+    private val states = ConcurrentHashMap<BlockSpec, IBlockState>()
+
     /** The default state of the block with the properties set. Null when the block, a property or a value does not exist. */
-    fun state(spec: BlockSpec): IBlockState? {
+    fun state(spec: BlockSpec): IBlockState? = states[spec] ?: build(spec)?.also { states[spec] = it }
+
+    private fun build(spec: BlockSpec): IBlockState? {
         var state = block(spec.block)?.defaultState ?: return null
         for ((name, value) in spec.properties) {
             val property = state.propertyKeys.firstOrNull { it.name == name } ?: return null
@@ -46,6 +59,20 @@ object GameAdapter {
         }
         return state
     }
+
+    /** True when every property of [spec] has its value in this state. The block itself is not compared. */
+    fun IBlockState.matches(spec: BlockSpec): Boolean = spec.properties.all { (name, value) ->
+        propertyKeys.firstOrNull { it.name == name }?.let { valueName(this, it) == value } ?: false
+    }
+
+    private fun <T : Comparable<T>> valueName(state: IBlockState, property: IProperty<T>): String = property.getName(state.getValue(property))
+
+    /** The id of the entity type, or null when it is not registered. */
+    fun entityId(entity: Entity): Id? = EntityList.getKey(entity)?.toId()
+
+    fun hasEntity(id: Id): Boolean = EntityList.getClass(id.toLocation()) != null
+
+    fun createEntity(id: Id, world: World): Entity? = EntityList.createEntityByIDFromName(id.toLocation(), world)
 
     private fun <T : Comparable<T>> with(state: IBlockState, property: IProperty<T>, value: String): IBlockState? =
         property.parseValue(value).orNull()?.let { state.withProperty(property, it) }
@@ -83,5 +110,26 @@ object GameAdapter {
             }
         }
         return null
+    }
+
+    private fun blockProblem(spec: BlockSpec): String? = if (state(spec) == null) "unknown block or property in $spec" else null
+
+    private fun fluidProblem(id: Id): String? = if (fluid(id) == null) "unknown fluid $id" else null
+
+    private fun itemProblem(id: Id): String? = if (item(id) == null) "unknown item $id" else null
+
+    fun validate(c: WandConversion): String? = blockProblem(c.match) ?: blockProblem(c.result)
+
+    fun validate(i: FluidBlockInteraction): String? = fluidProblem(i.fluid) ?: blockProblem(i.match) ?: blockProblem(i.result)
+
+    fun validate(i: FluidEntityInteraction): String? {
+        fluidProblem(i.fluid)?.let { return it }
+        if (!hasEntity(i.entity)) return "unknown entity ${i.entity}"
+        i.item?.let { itemProblem(it.id)?.let { problem -> return problem } }
+        return when (val r = i.result) {
+            is EntityResult.SpawnItem -> itemProblem(r.item.id)
+            is EntityResult.SpawnEntity -> if (hasEntity(r.entity)) null else "unknown entity ${r.entity}"
+            is EntityResult.SetFluidBlock -> blockProblem(r.block)
+        }
     }
 }
