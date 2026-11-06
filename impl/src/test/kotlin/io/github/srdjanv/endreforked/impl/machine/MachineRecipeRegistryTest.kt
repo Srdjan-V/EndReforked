@@ -159,6 +159,19 @@ class MachineRecipeRegistryTest {
     }
 
     @Test
+    fun clearingOneOwnerKeepsTheOperationsOfTheOthers() {
+        val registry = registry()
+        registry.remove(a, "crafttweaker")
+        registry.add(default.copy(id = id("x")), "groovyscript")
+        registry.removeIf("groovyscript") { it.id == b }
+        registry.rebuild()
+        assertEquals(listOf(id("x")), registry.current.entries.map { it.id })
+        registry.clear("groovyscript")
+        registry.rebuild()
+        assertEquals(listOf(b), registry.current.entries.map { it.id }) // only the removal of a is left
+    }
+
+    @Test
     fun clearingTheScriptLayerRestoresThePreviousState() {
         val registry = registry()
         registry.rebuild()

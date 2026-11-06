@@ -50,7 +50,7 @@ class ManagedRegistry<E : RegistryEntry, R : Registry<E>>(
         private set
 
     private val listeners = CopyOnWriteArrayList<(R) -> Unit>()
-    private val scriptOps = ArrayList<Op>()
+    private val scriptOps = ArrayList<Pair<String, Op>>() // owner, operation
 
     /** Called with every new snapshot, on the thread that replaced it. */
     fun addListener(listener: (R) -> Unit) {
@@ -62,18 +62,18 @@ class ManagedRegistry<E : RegistryEntry, R : Registry<E>>(
     }
 
     @Synchronized
-    override fun add(entry: E) {
-        scriptOps += Op.Put(SCRIPTS, entry)
+    override fun add(entry: E, owner: String) {
+        scriptOps += owner to Op.Put(SCRIPTS, entry)
     }
 
     @Synchronized
-    override fun remove(id: ResourceLocation) {
-        scriptOps += Op.Remove(SCRIPTS, id)
+    override fun remove(id: ResourceLocation, owner: String) {
+        scriptOps += owner to Op.Remove(SCRIPTS, id)
     }
 
     @Synchronized
-    override fun removeIf(predicate: (E) -> Boolean) {
-        scriptOps += Op.RemoveIf(SCRIPTS, predicate)
+    override fun removeIf(owner: String, predicate: (E) -> Boolean) {
+        scriptOps += owner to Op.RemoveIf(SCRIPTS, predicate)
     }
 
     @Synchronized
@@ -82,12 +82,17 @@ class ManagedRegistry<E : RegistryEntry, R : Registry<E>>(
     }
 
     @Synchronized
+    override fun clear(owner: String) {
+        scriptOps.removeAll { it.first == owner }
+    }
+
+    @Synchronized
     override fun rebuild(): LoadReport {
         val entries = LinkedHashMap<ResourceLocation, E>()
         val errors = ArrayList<String>()
         val applied = LinkedHashMap<String, Int>()
         applied["defaults"] = applyOps(entries, defaults().map { Op.Put("code defaults", it) }, errors)
-        applied["scripts"] = applyOps(entries, scriptOps, errors)
+        applied["scripts"] = applyOps(entries, scriptOps.map { it.second }, errors)
         isFrozen = true
         replace(entries.values)
         return LoadReport(entries.size, applied, errors)

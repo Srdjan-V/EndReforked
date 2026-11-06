@@ -30,21 +30,25 @@ data class LoadReport(val total: Int, val applied: Map<String, Int>, val errors:
  *
  * The layer is the last of two, applied in order on every rebuild: code defaults, scripts.
  * Operations are only recorded. Nothing becomes visible until [rebuild], which applies all layers and swaps the snapshot.
- * Before the first rebuild this is how scripts that run early (CraftTweaker at init) add their operations.
+ * Before the first rebuild this is how scripts that run early (CraftTweaker) add their operations.
  * After the first rebuild a script reload calls [clear], runs the scripts again, then [rebuild] (GroovyScript `/gs reload`).
+ * Every operation has an owner (one script engine). [clear] with an owner drops only the operations of that owner, so a reload of one engine keeps the others.
  * Scripted entries are validated like any other and are synced to clients like any other.
  */
 interface RegistryScripts<E : RegistryEntry> {
     /** Adds an entry, or replaces the one with the same id. */
-    fun add(entry: E)
+    fun add(entry: E, owner: String = "scripts")
 
-    fun remove(id: ResourceLocation)
+    fun remove(id: ResourceLocation, owner: String = "scripts")
 
     /** Removes every entry the predicate accepts, from the result of the earlier operations. */
-    fun removeIf(predicate: (E) -> Boolean)
+    fun removeIf(owner: String = "scripts", predicate: (E) -> Boolean)
 
     /** Drops all recorded script operations. */
     fun clear()
+
+    /** Drops the recorded script operations of [owner] only. */
+    fun clear(owner: String)
 
     /** Applies all layers, validates, and swaps the snapshot. Listeners are called. */
     fun rebuild(): LoadReport

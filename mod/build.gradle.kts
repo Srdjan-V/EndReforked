@@ -45,6 +45,9 @@ dependencies {
         exclude(group = "zone.rong")
         exclude(group = "com.cleanroommc")
     }
+
+    // Optional mod for scripts, in the dev runs only. One jar: it has the CraftTweaker API and ZenScript inside.
+    runtimeOnly(cleanroom.deobf("curse.maven:crafttweaker-239197:${project.property("craftTweakerFileId")}"))
 }
 
 // JER or TiC bring in the old JEI 4.16 transitively, which clashes with HEI/JEI 4.36

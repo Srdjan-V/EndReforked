@@ -15,6 +15,7 @@ val modGroup = project.property("modGroup") as String
 val modularUI = "2.4.3"
 val netherAPI = "1.3.0"
 val groovyScript = project.property("groovyScriptVersion") as String
+val craftTweaker = project.property("craftTweakerFileId") as String
 
 dependencies {
     api(project(":impl"))
@@ -39,6 +40,9 @@ dependencies {
     // GroovyScript's own dependencies (CodeChickenLib, TOP, ...) are not needed to compile against it, Groovy is.
     compileOnly("com.cleanroommc:groovyscript:$groovyScript") { isTransitive = false }
     compileOnly("org.apache.groovy:groovy:4.0.30")
+
+    // Optional: the script API in compat/crafttweaker. Compile only, deobfuscated to the MCP names of this classpath.
+    compileOnly(cleanroom.deobf("curse.maven:crafttweaker-239197:$craftTweaker"))
 
     // Dropped: CodeChickenLib, Redstone Flux, CoFH Core/World, Thermal Expansion/Foundation/Dynamics.
     // No source uses them, and CCL 3.2.3 crashes in the Cleanroom dev env (see report).
