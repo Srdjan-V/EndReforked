@@ -98,6 +98,8 @@ class Registration : Initializer {
 
     private fun handleOreDictionary() {
         OreDictionary.registerOre("ingotEndorium", ModItems.INGOT_ENDORIUM.get())
+        OreDictionary.registerOre("blockEndorium", ModItems.BLOCK_ENDORIUM.get())
+        OreDictionary.registerOre("ingotInfused", ModItems.INFUSED_METALL.get())
 
         // todo dont register a null block
         OreDictionary.registerOre("ingotTungsten", ModItems.TUNGSTEN_INGOT.get())

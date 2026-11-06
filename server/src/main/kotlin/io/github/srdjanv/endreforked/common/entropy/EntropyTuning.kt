@@ -43,6 +43,12 @@ object EntropyTuning {
     @Volatile var flightCellCost = 100
     @Volatile var flightCellExtension = 20 * 20
 
+    /** Siphon trait: entropy drained per broken block, ticks of the speed bonus, speed bonus per drained point, and entropy per repaired durability. */
+    @Volatile var siphonDrain = 10
+    @Volatile var siphonBonusTicks = 3 * 20
+    @Volatile var siphonSpeedPerPoint = 0.05
+    @Volatile var siphonEntropyPerDurability = 2
+
     val organaWeed = Inducer(5)
     val organaFlower = Inducer(10)
     val entropyCrop = Inducer(25)
@@ -72,6 +78,10 @@ object EntropyTuning {
         flightCriticalFactor = 2.0
         flightCellCost = 100
         flightCellExtension = 20 * 20
+        siphonDrain = 10
+        siphonBonusTicks = 3 * 20
+        siphonSpeedPerPoint = 0.05
+        siphonEntropyPerDurability = 2
         inducers.values.forEach(Inducer::reset)
     }
 

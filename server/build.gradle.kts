@@ -59,7 +59,7 @@ val tags = mapOf(
     "MODID" to "\"$modId\"",
     "MODNAME" to "\"$modName\"",
     "VERSION" to "\"$modVersion\"",
-    "MOD_DEPS" to "\"required-after:modularui@[$modularUI,);required-after:nether_api@[$netherAPI,);required-after:forgelin_continuous@[2.4.20.0,)\"",
+    "MOD_DEPS" to "\"required-after:modularui@[$modularUI,);required-after:nether_api@[$netherAPI,);required-after:forgelin_continuous@[2.4.20.0,);after:tconstruct;after:mantle\"",
     "MOD_PREFIX" to "\"$modId:\"",
     "DATAFIXER_VERSION" to "1",
     "CLIENTSERVICES" to "\"$modGroup.client.di.ClientServices\"",

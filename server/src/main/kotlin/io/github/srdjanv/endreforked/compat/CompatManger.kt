@@ -1,6 +1,7 @@
 package io.github.srdjanv.endreforked.compat
 
 import io.github.srdjanv.endreforked.compat.baubles.BaublesCompat
+import io.github.srdjanv.endreforked.compat.tconstruct.TConstruct
 import io.github.srdjanv.endreforked.utils.Initializer
 import net.minecraftforge.fml.common.Loader
 import net.minecraftforge.fml.common.event.*
@@ -11,6 +12,7 @@ class CompatManger private constructor() : Initializer {
     // Check the mod id before construction: a compat class must not load when its mod is missing
     private val mods: List<ModCompat> = listOf<Pair<String, () -> ModCompat>>(
         "baubles" to { BaublesCompat() },
+        "tconstruct" to { TConstruct() },
     ).filter { Loader.isModLoaded(it.first) }.map { it.second() }
 
     override fun registerEventBus() = mods.forEach { it.registerEventBus() }
