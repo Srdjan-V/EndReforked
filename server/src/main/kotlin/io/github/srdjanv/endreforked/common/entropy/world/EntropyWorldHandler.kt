@@ -56,6 +56,14 @@ object EntropyWorldHandler {
 
     @SubscribeEvent
     @JvmStatic
+    fun onWorldTickCritical(event: TickEvent.WorldTickEvent) {
+        val world = event.world
+        if (event.phase != TickEvent.Phase.END || world.isRemote || world.totalWorldTime % EntropyTuning.criticalInterval != 0L) return
+        getEntropyWorld(world.provider.dimension)?.fireCriticalEvents()
+    }
+
+    @SubscribeEvent
+    @JvmStatic
     fun onChunkLoad(event: ChunkEvent.Load) {
         if (event.world.isRemote) return
         val dim = event.world.provider.dimension

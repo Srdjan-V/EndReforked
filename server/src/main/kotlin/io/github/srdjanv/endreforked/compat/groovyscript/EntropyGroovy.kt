@@ -24,6 +24,12 @@ class EntropyGroovy : NamedRegistry(Alias.generateOf("Entropy")), IScriptReloada
     /** The entropy that an Entropy Chamber drains per chunk of its radius, every 10 s (default 150). */
     fun chamberDrain(amount: Int) = run { EntropyTuning.chamberDrain = amount }
 
+    /** The critical events: a roll every [interval] ticks (default 600), with [baseChance] percent at the critical threshold (default 50). */
+    fun criticalEvents(interval: Int, baseChance: Int) = run {
+        EntropyTuning.criticalInterval = interval.coerceAtLeast(1)
+        EntropyTuning.criticalBaseChance = baseChance.coerceIn(0, 100)
+    }
+
     /** An inducer adds [amount] to its chunk every [interval] ticks. */
     fun inducer(name: String, amount: Int, interval: Int) {
         val inducer = EntropyTuning.inducer(name)

@@ -36,6 +36,7 @@ internal object CtLayers {
     val fluidEntities by lazy { layer(registries.fluidEntityInteractions) }
     val worldFeatures by lazy { layer(registries.worldFeatures) }
     val endBiomes by lazy { layer(registries.endBiomes) }
+    val criticalEvents by lazy { layer(registries.criticalEvents) }
 }
 
 /** Runs [run] as a CraftTweaker action. */

@@ -1,6 +1,7 @@
 package io.github.srdjanv.endreforked.common.registry
 
 import io.github.srdjanv.endreforked.api.machine.MachineRecipe
+import io.github.srdjanv.endreforked.api.entropy.CriticalEvent
 import io.github.srdjanv.endreforked.api.registry.LoadReport
 import io.github.srdjanv.endreforked.api.world.FluidBlockInteraction
 import io.github.srdjanv.endreforked.api.world.FluidEntityInteraction
@@ -10,6 +11,7 @@ import io.github.srdjanv.endreforked.api.worldgen.WorldFeature
 import io.github.srdjanv.endreforked.impl.machine.MachineRecipes
 import io.github.srdjanv.endreforked.impl.machine.toSnapshot
 import io.github.srdjanv.endreforked.impl.registry.ManagedRegistry
+import io.github.srdjanv.endreforked.impl.world.CriticalEvents
 import io.github.srdjanv.endreforked.impl.world.FluidBlockInteractions
 import io.github.srdjanv.endreforked.impl.world.FluidEntityInteractions
 import io.github.srdjanv.endreforked.impl.world.WandConversions
@@ -22,7 +24,7 @@ import net.minecraft.world.biome.Biome
 /**
  * All registries of one side. The server and the client each have their own instance, also in single player.
  * A new registry is added here: a property and a [Slot] in [slots]. A synced one also needs one case in the client packet handler.
- * The world features and the End biomes are server only: nothing on the client reads them, so they have no snapshot,
+ * The world features, the End biomes and the critical events are server only: nothing on the client reads them, so they have no snapshot,
  * and a client instance ([withWorldGen] false) leaves them out of [slots] and never builds them.
  */
 class Registries(
@@ -32,6 +34,7 @@ class Registries(
     val fluidEntityInteractions: ManagedRegistry<FluidEntityInteraction, FluidEntityInteractions>,
     val worldFeatures: ManagedRegistry<WorldFeature, WorldFeatures>,
     val endBiomes: ManagedRegistry<EndBiome, EndBiomes>,
+    val criticalEvents: ManagedRegistry<CriticalEvent, CriticalEvents>,
     withWorldGen: Boolean,
 ) {
     /**
@@ -61,6 +64,7 @@ class Registries(
     ) + if (withWorldGen) listOf(
         Slot(worldFeatures.key.path, worldFeatures::rebuild),
         Slot(endBiomes.key.path, endBiomes::rebuild),
+        Slot(criticalEvents.key.path, criticalEvents::rebuild),
     ) else emptyList()
 
     /** The current content of every synced registry, ready to send to a client. */
@@ -78,6 +82,7 @@ class Registries(
             FluidEntityInteractions.managed(WorldInteractionDefaults::fluidEntityInteractions),
             WorldFeatures.managed(WorldFeatureDefaults::all, ::validate),
             EndBiomes.managed(WorldFeatureDefaults::endBiomes, ::validate),
+            CriticalEvents.managed(CriticalEventDefaults::all),
             withWorldGen,
         )
 

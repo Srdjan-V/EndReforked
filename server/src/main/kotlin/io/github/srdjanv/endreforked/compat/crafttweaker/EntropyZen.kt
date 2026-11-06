@@ -22,6 +22,13 @@ object EntropyZen {
 
     @JvmStatic
     @ZenMethod
+    fun criticalEvents(interval: Int, baseChance: Int) = act("Setting the critical events to every $interval ticks, base chance $baseChance %") {
+        EntropyTuning.criticalInterval = interval.coerceAtLeast(1)
+        EntropyTuning.criticalBaseChance = baseChance.coerceIn(0, 100)
+    }
+
+    @JvmStatic
+    @ZenMethod
     fun inducer(name: String, amount: Int, interval: Int) {
         val inducer = EntropyTuning.inducer(name) ?: return fail("Entropy: unknown inducer $name")
         if (interval < 1) return fail("Entropy: the interval must be 1 or more")

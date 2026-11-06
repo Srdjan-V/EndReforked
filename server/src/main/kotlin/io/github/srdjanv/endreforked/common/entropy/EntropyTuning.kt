@@ -28,6 +28,10 @@ object EntropyTuning {
     /** Entropy drained per chunk of the radius, every 10 s. */
     @Volatile var chamberDrain = 150
 
+    /** Ticks between two critical event rolls of a world, and the chance in percent at the critical threshold. It rises to 100 % at a full chunk. */
+    @Volatile var criticalInterval = 30 * 20
+    @Volatile var criticalBaseChance = 50
+
     val organaWeed = Inducer(5)
     val organaFlower = Inducer(10)
     val entropyCrop = Inducer(25)
@@ -50,6 +54,8 @@ object EntropyTuning {
         criticalPercent = 80
         entropyBiomePercent = 50
         chamberDrain = 150
+        criticalInterval = 30 * 20
+        criticalBaseChance = 50
         inducers.values.forEach(Inducer::reset)
     }
 
@@ -59,6 +65,15 @@ object EntropyTuning {
         EntropyLevel.STABLE -> 1.0
         EntropyLevel.CHARGED -> 1.5
         EntropyLevel.CRITICAL -> 2.0
+    }
+
+    /** The chance (0 to 1) of a critical event: the base chance at the critical threshold, rising linearly to 1 at a full chunk. */
+    fun criticalChance(entropy: Int, capacity: Int): Double {
+        if (capacity <= 0) return 0.0
+        val base = criticalBaseChance / 100.0
+        val span = 100.0 - criticalPercent
+        val t = if (span <= 0) 1.0 else ((entropy * 100.0 / capacity - criticalPercent) / span).coerceIn(0.0, 1.0)
+        return base + (1 - base) * t
     }
 
     fun spawnFactor(level: EntropyLevel) = level.ordinal + 1
