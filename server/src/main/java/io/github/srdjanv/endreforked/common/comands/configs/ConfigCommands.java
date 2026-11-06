@@ -6,8 +6,6 @@ import net.minecraftforge.server.command.CommandTreeBase;
 public class ConfigCommands extends CommandTreeBase {
 
     public ConfigCommands() {
-        super.addSubcommand(new ReloadConfigCommand());
-        super.addSubcommand(new LoadDefaultConfigCommand());
         super.addSubcommand(new SaveDefaultConfigCommand());
     }
 

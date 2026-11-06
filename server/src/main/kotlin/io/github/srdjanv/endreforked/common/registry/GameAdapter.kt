@@ -11,6 +11,8 @@ import io.github.srdjanv.endreforked.api.world.EntityResult
 import io.github.srdjanv.endreforked.api.world.FluidBlockInteraction
 import io.github.srdjanv.endreforked.api.world.FluidEntityInteraction
 import io.github.srdjanv.endreforked.api.world.WandConversion
+import io.github.srdjanv.endreforked.api.worldgen.EndBiome
+import io.github.srdjanv.endreforked.api.worldgen.WorldFeature
 import io.github.srdjanv.endreforked.impl.machine.FluidInput
 import io.github.srdjanv.endreforked.impl.machine.ItemInput
 import io.github.srdjanv.endreforked.impl.machine.ItemKey
@@ -22,6 +24,7 @@ import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityList
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
+import net.minecraft.world.biome.Biome
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.fluids.Fluid
 import net.minecraftforge.fluids.FluidRegistry
@@ -132,4 +135,9 @@ object GameAdapter {
             is EntityResult.SetFluidBlock -> blockProblem(r.block)
         }
     }
+
+    fun validate(f: WorldFeature): String? =
+        (f.biomes.allow.keys + f.biomes.deny).firstOrNull { !Biome.REGISTRY.containsKey(it) }?.let { "unknown biome $it" }
+
+    fun validate(b: EndBiome): String? = if (Biome.REGISTRY.containsKey(b.id.toLocation())) null else "unknown biome ${b.id}"
 }

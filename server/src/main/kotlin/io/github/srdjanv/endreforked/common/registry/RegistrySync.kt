@@ -22,7 +22,7 @@ class RegistrySync(val registries: Registries, private val net: Network, private
             logger.info("Built {} {}", report.total, slot.name)
             report.errors.forEach { logger.error("{}: {}", slot.name, it) }
         }
-        registries.slots.forEach { slot -> slot.onSnapshot { sendToAll(slot.name, it) } }
+        registries.slots.forEach { slot -> slot.onSnapshot?.invoke { sendToAll(slot.name, it) } }
     }
 
     private fun sendToAll(name: String, snapshot: RegistrySnapshot) {

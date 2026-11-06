@@ -13,22 +13,20 @@ import net.minecraftforge.fml.relauncher.Side;
 
 import org.jetbrains.annotations.Nullable;
 
+import io.github.srdjanv.endreforked.EndReforked;
 import io.github.srdjanv.endreforked.common.blocks.BlockOrganaFlowerStem;
 import io.github.srdjanv.endreforked.api.entropy.world.EntropyWorldHandler;
 import io.github.srdjanv.endreforked.common.capabilities.entropy.CapabilityEntropyHandler;
 import io.github.srdjanv.endreforked.common.capabilities.timedflight.CapabilityTimedFlightHandler;
 import io.github.srdjanv.endreforked.common.configs.JsonConfigs;
-import io.github.srdjanv.endreforked.common.configs.bioms.EndBiomesConfig;
 import io.github.srdjanv.endreforked.common.configs.content.DisabledContentConfig;
 import io.github.srdjanv.endreforked.common.configs.mobs.MobConfig;
-import io.github.srdjanv.endreforked.common.configs.worldgen.GenericGenConfig;
-import io.github.srdjanv.endreforked.common.configs.worldgen.OreGenConfig;
-import io.github.srdjanv.endreforked.common.configs.worldgen.StructureGenConfig;
 import io.github.srdjanv.endreforked.common.datafixers.Fixer;
 import io.github.srdjanv.endreforked.common.handlers.EventHandler;
 import io.github.srdjanv.endreforked.common.handlers.TimedFlightHandler;
 import io.github.srdjanv.endreforked.common.registry.Registries;
 import io.github.srdjanv.endreforked.common.registry.RegistrySync;
+import io.github.srdjanv.endreforked.common.worldgen.WorldGen;
 import io.github.srdjanv.endreforked.compat.CompatManger;
 import io.github.srdjanv.endreforked.utils.Initializer;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -55,10 +53,6 @@ public class CommonProxy {
     protected void loadStaticCLasses() {
         MobConfig.getInstance();
         DisabledContentConfig.getInstance();
-        EndBiomesConfig.getInstance();
-        GenericGenConfig.getInstance();
-        OreGenConfig.getInstance();
-        StructureGenConfig.getInstance();
     }
 
     /** The registries a world reads: the client copy for a client world, else the server ones. */
@@ -90,6 +84,7 @@ public class CommonProxy {
         for (Initializer component : components) component.init(event);
         // After the components: the mobs and the other content they register must exist for the id checks.
         registrySync.build();
+        WorldGen.install(registrySync.getRegistries(), EndReforked.LOGGER);
     }
 
     public void postInit(FMLPostInitializationEvent event) {

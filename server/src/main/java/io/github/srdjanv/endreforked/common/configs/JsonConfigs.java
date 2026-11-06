@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import io.github.srdjanv.endreforked.common.configs.base.BaseServerSideConfig;
-import io.github.srdjanv.endreforked.common.configs.base.ReloadableServerSideConfig;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 
 public final class JsonConfigs {
@@ -38,30 +37,7 @@ public final class JsonConfigs {
                 .collect(Collectors.toList());
     }
 
-    public static List<String> getReloadableTabCompletions(String name) {
-        return getMatchingReloadableConfigs(config -> config.getConfigName().contains(name))
-                .map(BaseServerSideConfig::getConfigName)
-                .collect(Collectors.toList());
-    }
-
-    public static Optional<? extends ReloadableServerSideConfig<?>> getReloadableConfig(String name) {
-        return getMatchingReloadableConfigs(config -> config.getConfigName().contains(name))
-                .findFirst();
-    }
-
-    public static List<? extends ReloadableServerSideConfig<?>> getReloadableConfigs(String name) {
-        return getMatchingReloadableConfigs(config -> config.getConfigName().contains(name))
-                .collect(Collectors.toList());
-    }
-
     public static Stream<? extends BaseServerSideConfig<?>> getMatchingConfigs(Predicate<BaseServerSideConfig<?>> predicate) {
         return configs.stream().filter(predicate);
-    }
-
-    public static Stream<? extends ReloadableServerSideConfig<?>> getMatchingReloadableConfigs(Predicate<ReloadableServerSideConfig<?>> predicate) {
-        return configs.stream()
-                .filter(config -> config instanceof ReloadableServerSideConfig)
-                .map(config -> (ReloadableServerSideConfig<?>) config)
-                .filter(predicate);
     }
 }

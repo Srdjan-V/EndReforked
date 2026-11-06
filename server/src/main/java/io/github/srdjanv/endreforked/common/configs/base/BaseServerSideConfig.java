@@ -43,11 +43,6 @@ public abstract class BaseServerSideConfig<D> implements Initializer {
         return configName;
     }
 
-    public void loadDefaults() {
-        EndReforked.LOGGER.info("Loading default data for config '{}'", configName);
-        dataChanged(getDefaultData(), false);
-    }
-
     public void saveDefaults() {
         EndReforked.LOGGER.info("Saving default data for config '{}'", configName);
         writeData(getDefaultData());
