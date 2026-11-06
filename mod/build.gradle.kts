@@ -27,10 +27,6 @@ dependencies {
     modProjects.forEach { implementation(project(it)) }
 
     // Shaded and relocated into the mod jar, see shadowJar
-    shade("com.google.dagger:dagger:2.60.1") {
-        exclude(group = "org.jspecify") // annotations only
-    }
-
     // Kotlin stdlib comes from Forgelin-Continuous, the annotations are not needed at runtime
     shade("com.squareup.wire:wire-runtime:${project.property("wireVersion")}") {
         exclude(group = "org.jetbrains.kotlin")
@@ -77,16 +73,10 @@ tasks.jar {
 tasks.shadowJar {
     configurations = listOf(shade)
     from(tasks.jar.map { zipTree(it.archiveFile) })
-    relocate("dagger", "$modGroup.shadow.dagger")
-    relocate("javax.inject", "$modGroup.shadow.javax.inject")
-    relocate("jakarta.inject", "$modGroup.shadow.jakarta.inject")
     relocate("com.squareup.wire", "$modGroup.shadow.wire")
     relocate("okio", "$modGroup.shadow.okio")
     archiveClassifier = "mcp-shaded"
     addMultiReleaseAttribute = false
-    // dagger.internal.Provider extends javax.inject.Provider, Scope is a meta-annotation of dagger.Reusable, the rest is unused
-    exclude("javax/inject/Inject.class", "javax/inject/Named.class", "javax/inject/Qualifier.class")
-    exclude("javax/inject/Singleton.class")
     exclude("META-INF/*.kotlin_module", "META-INF/versions/**")
 }
 tasks.named<RenameJar>("reobfJar") {

@@ -25,9 +25,6 @@ import io.github.srdjanv.endreforked.common.CommonProxy;
 import io.github.srdjanv.endreforked.common.comands.EndRebornCommands;
 import io.github.srdjanv.endreforked.common.network.Network;
 import io.github.srdjanv.endreforked.compat.CompatManger;
-import io.github.srdjanv.endreforked.di.CommonComponent;
-import io.github.srdjanv.endreforked.di.DaggerCommonComponent;
-import io.github.srdjanv.endreforked.di.DaggerServerComponent;
 
 @Mod(modid = Tags.MODID, name = Tags.MODNAME, version = Tags.VERSION, dependencies = Tags.MOD_DEPS)
 public class EndReforked {
@@ -58,20 +55,20 @@ public class EndReforked {
     public EndReforked() {
         instance = this;
         Side side = FMLCommonHandler.instance().getSide();
-        CommonComponent component = DaggerCommonComponent.factory().create(side);
-        NET = component.net();
-        proxy = side.isClient() ? newClientProxy(component) : DaggerServerComponent.factory().create(component).proxy();
+        ModServices services = new ModServices(side, LOGGER);
+        NET = services.getNet();
+        proxy = side.isClient() ? newClientProxy(services) : services.getServerProxy();
         proxy.registerEventBus();
         MinecraftForge.EVENT_BUS.register(EndReforked.class);
     }
 
-    // The client module is not visible to this module, so the client component is created by name
-    private static CommonProxy newClientProxy(CommonComponent component) {
+    // The client module is not visible to this module, so the client services are created by name
+    private static CommonProxy newClientProxy(ModServices services) {
         try {
-            return (CommonProxy) Class.forName(Tags.CLIENTCOMPONENT).getMethod("create", CommonComponent.class)
-                    .invoke(null, component);
+            return (CommonProxy) Class.forName(Tags.CLIENTSERVICES).getMethod("create", ModServices.class)
+                    .invoke(null, services);
         } catch (ReflectiveOperationException e) {
-            throw new IllegalStateException("Failed to create the client component " + Tags.CLIENTCOMPONENT, e);
+            throw new IllegalStateException("Failed to create the client services " + Tags.CLIENTSERVICES, e);
         }
     }
 

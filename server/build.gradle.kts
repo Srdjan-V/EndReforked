@@ -3,7 +3,6 @@
 plugins {
     `java-library`
     kotlin("jvm")
-    id("com.google.devtools.ksp")
     id("com.cleanroommc.cleanroomgradle")
 }
 
@@ -17,10 +16,6 @@ val modularUI = "2.4.3"
 val netherAPI = "1.3.0"
 
 dependencies {
-    // The runtime is shaded into the mod jar by :mod
-    compileOnly("com.google.dagger:dagger:2.60.1")
-    ksp("com.google.dagger:dagger-compiler:2.60.1")
-
     api(project(":impl"))
 
     api(cleanroom.userdev(cleanroom_version))
@@ -54,7 +49,7 @@ val tags = mapOf(
     "MOD_DEPS" to "\"required-after:modularui@[$modularUI,);required-after:nether_api@[$netherAPI,);required-after:forgelin_continuous@[2.4.20.0,)\"",
     "MOD_PREFIX" to "\"$modId:\"",
     "DATAFIXER_VERSION" to "1",
-    "CLIENTCOMPONENT" to "\"$modGroup.client.di.ClientComponentFactory\"",
+    "CLIENTSERVICES" to "\"$modGroup.client.di.ClientServices\"",
     "COMMONPROXY" to "\"$modGroup.common.CommonProxy\"",
     "ISSUES_URL" to "\"https://github.com/Srdjan-V/EndReforked/issues\"",
 )
