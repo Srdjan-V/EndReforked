@@ -32,6 +32,17 @@ object EntropyTuning {
     @Volatile var criticalInterval = 30 * 20
     @Volatile var criticalBaseChance = 50
 
+    /** Entropy cell capacity. */
+    @Volatile var cellCapacity = 1000
+
+    /** Timed flight: duration factor in a charged and in a critical chunk (stable is x1). */
+    @Volatile var flightChargedFactor = 1.5
+    @Volatile var flightCriticalFactor = 2.0
+
+    /** When the flight ends, a carried cell pays [flightCellCost] entropy for [flightCellExtension] more ticks. */
+    @Volatile var flightCellCost = 100
+    @Volatile var flightCellExtension = 20 * 20
+
     val organaWeed = Inducer(5)
     val organaFlower = Inducer(10)
     val entropyCrop = Inducer(25)
@@ -56,6 +67,11 @@ object EntropyTuning {
         chamberDrain = 150
         criticalInterval = 30 * 20
         criticalBaseChance = 50
+        cellCapacity = 1000
+        flightChargedFactor = 1.5
+        flightCriticalFactor = 2.0
+        flightCellCost = 100
+        flightCellExtension = 20 * 20
         inducers.values.forEach(Inducer::reset)
     }
 
@@ -75,6 +91,13 @@ object EntropyTuning {
         val t = if (span <= 0) 1.0 else ((entropy * 100.0 / capacity - criticalPercent) / span).coerceIn(0.0, 1.0)
         return base + (1 - base) * t
     }
+
+    /** The timed flight duration of [base] ticks, scaled by the chunk [level]. */
+    fun flightDuration(base: Int, level: EntropyLevel) = (base * when (level) {
+        EntropyLevel.STABLE -> 1.0
+        EntropyLevel.CHARGED -> flightChargedFactor
+        EntropyLevel.CRITICAL -> flightCriticalFactor
+    }).toInt()
 
     fun spawnFactor(level: EntropyLevel) = level.ordinal + 1
 

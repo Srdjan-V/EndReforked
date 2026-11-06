@@ -2,6 +2,7 @@ package io.github.srdjanv.endreforked.common.items
 
 import io.github.srdjanv.endreforked.EndReforked
 import io.github.srdjanv.endreforked.common.capabilities.timedflight.CapabilityTimedFlightHandler
+import io.github.srdjanv.endreforked.common.handlers.TimedFlightHandler
 import io.github.srdjanv.endreforked.common.items.base.ItemFoodBase
 import io.github.srdjanv.endreforked.wire.s2c.S2CPacket
 import io.github.srdjanv.endreforked.wire.s2c.TpParticle
@@ -43,7 +44,7 @@ class ItemOrganaFruit : ItemFoodBase("organa_fruit", 4, 0.3f, false) {
             }
         }
         if (entityLiving is EntityPlayerMP) {
-            val flight = 25 * 20
+            val flight = TimedFlightHandler.scaled(entityLiving, 25 * 20)
             entityLiving.cooldownTracker.setCooldown(this, flight - 5 * 20)
             entityLiving.getCapability(CapabilityTimedFlightHandler.CAPABILITY, null)!!.flightDuration = flight
             entityLiving.capabilities.isFlying = true

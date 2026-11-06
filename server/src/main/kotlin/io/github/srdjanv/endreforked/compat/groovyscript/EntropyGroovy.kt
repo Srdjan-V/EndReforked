@@ -30,6 +30,21 @@ class EntropyGroovy : NamedRegistry(Alias.generateOf("Entropy")), IScriptReloada
         EntropyTuning.criticalBaseChance = baseChance.coerceIn(0, 100)
     }
 
+    /** The capacity of an entropy cell (default 1000). */
+    fun cellCapacity(capacity: Int) = run { EntropyTuning.cellCapacity = capacity.coerceAtLeast(1) }
+
+    /** The timed flight factor in a charged chunk (default 1.5) and in a critical chunk (default 2). */
+    fun flightFactors(charged: Double, critical: Double) = run {
+        EntropyTuning.flightChargedFactor = charged
+        EntropyTuning.flightCriticalFactor = critical
+    }
+
+    /** A carried cell pays [cost] entropy (default 100) for [ticks] more flight ticks (default 400) when the flight ends. */
+    fun flightCell(cost: Int, ticks: Int) = run {
+        EntropyTuning.flightCellCost = cost.coerceAtLeast(1)
+        EntropyTuning.flightCellExtension = ticks
+    }
+
     /** An inducer adds [amount] to its chunk every [interval] ticks. */
     fun inducer(name: String, amount: Int, interval: Int) {
         val inducer = EntropyTuning.inducer(name)

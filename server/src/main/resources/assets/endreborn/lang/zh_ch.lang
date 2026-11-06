@@ -50,6 +50,10 @@ tile.over_portal.name=主世界传送门
 # Tools -
 item.entropy_wand.name=熵之杖
 item.lormyte_charm.name=Lormyte Charm
+item.entropy_cell.name=Entropy Cell
+entropy_cell.tooltip=Entropy: %s / %s
+entropy_cell.filled=Cell filled: +%s (%s / %s)
+entropy_cell.emptied=Cell emptied: -%s (%s / %s)
 
 #Armors
 

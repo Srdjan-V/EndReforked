@@ -27,6 +27,22 @@ object EntropyZen {
         EntropyTuning.criticalBaseChance = baseChance.coerceIn(0, 100)
     }
 
+    @JvmStatic @ZenMethod fun cellCapacity(capacity: Int) = act("Setting the entropy cell capacity to $capacity") { EntropyTuning.cellCapacity = capacity.coerceAtLeast(1) }
+
+    @JvmStatic
+    @ZenMethod
+    fun flightFactors(charged: Double, critical: Double) = act("Setting the timed flight factors to x$charged and x$critical") {
+        EntropyTuning.flightChargedFactor = charged
+        EntropyTuning.flightCriticalFactor = critical
+    }
+
+    @JvmStatic
+    @ZenMethod
+    fun flightCell(cost: Int, ticks: Int) = act("Setting the entropy cell flight extension to $ticks ticks for $cost entropy") {
+        EntropyTuning.flightCellCost = cost.coerceAtLeast(1)
+        EntropyTuning.flightCellExtension = ticks
+    }
+
     @JvmStatic
     @ZenMethod
     fun inducer(name: String, amount: Int, interval: Int) {

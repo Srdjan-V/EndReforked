@@ -19,6 +19,8 @@ class TimedFlight : ITimedFlight {
             sendStartUpdate = true
         }
 
+    override val isExpiring get() = duration <= 0 && sendStopUpdate
+
     override fun tickPlayer(playerMP: EntityPlayerMP) {
         if (duration > 0) {
             if (sendStartUpdate) {

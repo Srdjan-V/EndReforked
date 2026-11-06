@@ -56,6 +56,7 @@ object ModItems {
 
     @JvmField val ENTROPY_READER: Supplier<ItemEntropyReader> = register(::ItemEntropyReader)
     @JvmField val LORMYTE_CHARM: Supplier<ItemLormyteCharm> = register(::ItemLormyteCharm)
+    @JvmField val ENTROPY_CELL: Supplier<ItemEntropyCell> = register(::ItemEntropyCell)
     @JvmField val ENTROPY_WINGS: Supplier<ItemEntropyWings> = register(::ItemEntropyWings)
 
     // Food

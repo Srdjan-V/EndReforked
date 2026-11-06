@@ -65,6 +65,10 @@ tile.chiseled_end_bricks.name=Chiseled End Bricks
 # Tools -
 item.entropy_wand.name=Wand Of Entropy
 item.lormyte_charm.name=Lormyte Charm
+item.entropy_cell.name=Entropy Cell
+entropy_cell.tooltip=Entropy: %s / %s
+entropy_cell.filled=Cell filled: +%s (%s / %s)
+entropy_cell.emptied=Cell emptied: -%s (%s / %s)
 
 #Armors
 

@@ -1,6 +1,7 @@
 package io.github.srdjanv.endreforked.common.items
 
 import io.github.srdjanv.endreforked.common.capabilities.timedflight.CapabilityTimedFlightHandler
+import io.github.srdjanv.endreforked.common.handlers.TimedFlightHandler
 import io.github.srdjanv.endreforked.common.items.base.ItemFoodBase
 import net.minecraft.client.resources.I18n
 import net.minecraft.client.util.ITooltipFlag
@@ -28,7 +29,7 @@ class ItemDragoniteTea : ItemFoodBase("dragonite_tea", 2, 1f, false) {
             entityLiving.cooldownTracker.setCooldown(this, 40 * 20)
             entityLiving.addPotionEffect(PotionEffect(MobEffects.HUNGER, 50 * 20, 0))
             if (!worldIn.isRemote) {
-                entityLiving.getCapability(CapabilityTimedFlightHandler.CAPABILITY, null)!!.flightDuration = 45 * 20
+                entityLiving.getCapability(CapabilityTimedFlightHandler.CAPABILITY, null)!!.flightDuration = TimedFlightHandler.scaled(entityLiving, 45 * 20)
             }
         }
         return stack
