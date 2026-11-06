@@ -20,7 +20,6 @@ import io.github.srdjanv.endreforked.common.ModFluids;
 import io.github.srdjanv.endreforked.common.world.FluidInteractions;
 import io.github.srdjanv.endreforked.common.fluids.base.BaseBlockFluid;
 import io.github.srdjanv.endreforked.common.tiles.passiveinducers.FluidEntropyTile;
-import io.github.srdjanv.endreforked.utils.WorldUtils;
 
 public class BlockFluidOrgana extends BaseBlockFluid {
 
@@ -47,7 +46,7 @@ public class BlockFluidOrgana extends BaseBlockFluid {
     @Override
     public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
         FluidInteractions.entityCollision(worldIn, pos, state, entityIn, getFluid());
-        if (WorldUtils.isClientWorld(worldIn)) return;
+        if (worldIn.isRemote) return;
         entityIn.fallDistance = 0;
         if (entityIn instanceof EntityPlayer player) {
             if (player.isSneaking()) return;

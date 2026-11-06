@@ -38,7 +38,7 @@ public class CommonProxy {
         this.SIDE = SIDE;
         this.registrySync = registrySync;
         components.add(CompatManger.getInstance());
-        components.add(Fixer.getInstance());
+        components.add(Fixer.INSTANCE);
         components.add(new Registration());
         components.add(new LootHandler());
         components.add(ModEntities.INSTANCE);

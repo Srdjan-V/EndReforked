@@ -90,23 +90,23 @@ public class EntityLord extends EntityMob {
         if (world.isRemote) return;
         if (ticksExisted % 400 == 0) {
             if (getHealth() < 150 && getHealth() > 120)
-                MessageHelper.LordGroup(world, "Lord: You... Are you still fighting?");
+                MessageHelper.customGroup(world, "Lord: You... Are you still fighting?");
             if (this.getHealth() < 120 && this.getHealth() > 90)
-                MessageHelper.LordGroup(world, "Lord: Are you trying to kill everyone?");
+                MessageHelper.customGroup(world, "Lord: Are you trying to kill everyone?");
             if (this.getHealth() < 90 && this.getHealth() > 50)
-                MessageHelper.LordGroup(world, "Lord: You know nothing!");
+                MessageHelper.customGroup(world, "Lord: You know nothing!");
             if (this.getHealth() < 30 && this.getHealth() > 10)
-                MessageHelper.LordGroup(world, "Lord: To rise you need to fall!");
+                MessageHelper.customGroup(world, "Lord: To rise you need to fall!");
         }
 
         for (Entity entity : world.getEntitiesWithinAABBExcludingEntity(this,
                 getEntityBoundingBox().grow(64.0D, 64.0D, 64.0D))) {
             if (entity instanceof EntityWither) {
                 world.removeEntity(entity);
-                MessageHelper.LordGroup(world, "Lord: You can not compare the creation and creator!");
+                MessageHelper.customGroup(world, "Lord: You can not compare the creation and creator!");
             } else if (entity instanceof EntityLord) {
                 world.removeEntity(entity);
-                MessageHelper.LordGroup(world, "Lord: This is not fair now!");
+                MessageHelper.customGroup(world, "Lord: This is not fair now!");
             }
         }
         this.bossInfo.setPercent(this.getHealth() / this.getMaxHealth());
@@ -228,7 +228,7 @@ public class EntityLord extends EntityMob {
     @Override
     protected void onDeathUpdate() {
         setDead();
-        MessageHelper.LordGroup(world, "Lord: Ha-ha-ha...");
+        MessageHelper.customGroup(world, "Lord: Ha-ha-ha...");
         if (!world.isRemote) {
             EntityEnderman ender = new EntityEnderman(world);
             ender.setLocationAndAngles(posX, posY + 1, posZ, rotationYaw, rotationPitch);

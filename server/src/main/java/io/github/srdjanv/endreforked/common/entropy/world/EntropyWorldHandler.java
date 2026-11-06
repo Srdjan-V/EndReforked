@@ -20,8 +20,8 @@ public final class EntropyWorldHandler {
     private static final Map<Integer, EntropyWorld> worlds = new ConcurrentHashMap<>();
 
     public static Optional<EntropyChunk> getEntropyChunkWorld(DimPos pos) {
-        return getEntropyWorld(pos.dim())
-                .flatMap(entropyWorld -> entropyWorld.getEntropyChunk(pos.chunkPosX(), pos.chunkPosZ()));
+        return getEntropyWorld(pos.getDim())
+                .flatMap(entropyWorld -> entropyWorld.getEntropyChunk(pos.getChunkPosX(), pos.getChunkPosZ()));
     }
 
     public static Optional<EntropyChunk> getEntropyChunkWorld(int dim, ChunkPos pos) {

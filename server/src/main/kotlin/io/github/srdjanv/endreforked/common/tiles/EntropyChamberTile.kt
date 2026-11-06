@@ -120,16 +120,19 @@ class EntropyChamberTile : BaseTileEntity(), ITickable, EntropyDataProvider, IGu
         return super.writeToNBT(compound)
     }
 
-    override fun getEntropyRadius(): Optional<EntropyRadius> = Optional.of(reader.radius)
+    override val entropyRadius: Optional<EntropyRadius> get() = Optional.of(reader.radius)
 
-    override fun getPassiveDrainer(): Optional<EntropyDataProvider.PassiveDrainer> = Optional.of(drainer.passiveDrainer)
+    override val passiveDrainer: Optional<EntropyDataProvider.PassiveDrainer> get() = Optional.of(drainer.passiveDrainer)
 
-    override fun getActiveDrainer(): Optional<EntropyDataProvider.ActiveDrainer> {
-        if (itemProcess.recipe == null && fluidProcess.recipe == null) return Optional.empty()
-        return Optional.of(
-            EntropyDataProvider.ActiveDrainer { (itemProcess.recipe?.entropy ?: 0) + (fluidProcess.recipe?.entropy ?: 0) },
-        )
-    }
+    override val activeDrainer: Optional<EntropyDataProvider.ActiveDrainer>
+        get() {
+            if (itemProcess.recipe == null && fluidProcess.recipe == null) return Optional.empty()
+            return Optional.of(
+                object : EntropyDataProvider.ActiveDrainer {
+                    override val drained get() = (itemProcess.recipe?.entropy ?: 0) + (fluidProcess.recipe?.entropy ?: 0)
+                },
+            )
+        }
 
     override fun update() {
         if (world.isRemote) return
