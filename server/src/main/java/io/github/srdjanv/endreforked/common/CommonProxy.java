@@ -42,7 +42,7 @@ public class CommonProxy {
         components.add(new Registration());
         components.add(new LootHandler());
         components.add(ModEntities.INSTANCE);
-        components.add(TimedFlightHandler.getInstance());
+        components.add(TimedFlightHandler.INSTANCE);
         components.add(new ModGameRules());
     }
 
