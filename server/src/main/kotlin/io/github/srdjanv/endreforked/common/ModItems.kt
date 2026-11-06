@@ -2,7 +2,6 @@ package io.github.srdjanv.endreforked.common
 
 import com.google.common.base.Suppliers
 import io.github.srdjanv.endreforked.EndReforked
-import io.github.srdjanv.endreforked.Tags
 import io.github.srdjanv.endreforked.api.entropy.EntropyRadius
 import io.github.srdjanv.endreforked.common.configs.Configs
 import io.github.srdjanv.endreforked.common.items.*
@@ -10,11 +9,8 @@ import io.github.srdjanv.endreforked.common.items.base.*
 import io.github.srdjanv.endreforked.common.items.tools.*
 import io.github.srdjanv.endreforked.utils.models.IAsset
 import net.minecraft.block.Block
-import net.minecraft.init.SoundEvents
-import net.minecraft.inventory.EntityEquipmentSlot
 import net.minecraft.item.Item
 import net.minecraft.item.Item.ToolMaterial
-import net.minecraft.item.ItemArmor.ArmorMaterial
 import net.minecraft.item.ItemBlock
 import net.minecraftforge.client.event.ModelRegistryEvent
 import net.minecraftforge.common.util.EnumHelper
@@ -26,36 +22,20 @@ object ModItems {
     private val ITEMS = mutableListOf<Supplier<out Item?>>()
 
     // Materials
-    @JvmField val TOOL_ENDORIUM: Supplier<ToolMaterial> =
-        Suppliers.memoize { EnumHelper.addToolMaterial("endorium", 4, 1024, 6.5F, 4.0F, 13)!! }
-    @JvmField val TUNGSTEN: Supplier<ToolMaterial> =
-        Suppliers.memoize { EnumHelper.addToolMaterial("tungsten", 3, 512, 5.5F, 2.5F, 11)!! }
     @JvmField val TOOL_MAGNIFIER: Supplier<ToolMaterial> =
         Suppliers.memoize { EnumHelper.addToolMaterial("magnifier", 4, 256, 5.5F, 1.0F, 13)!! }
-    @JvmField val TOOL_END: Supplier<ToolMaterial> =
-        Suppliers.memoize { EnumHelper.addToolMaterial("tool_end", 5, 1024, 6.5F, 9.0F, 14)!! }
 
-    @JvmField val ARMOUR_OBSIDIAN: Supplier<ArmorMaterial> = Suppliers.memoize {
-        EnumHelper.addArmorMaterial("obsidian", Tags.MOD_PREFIX + "obsidian", 33, intArrayOf(4, 7, 8, 4), 10,
-            SoundEvents.ITEM_ARMOR_EQUIP_IRON, 3.0F)!!
-    }
-    @JvmField val ARMOUR_DRAGON: Supplier<ArmorMaterial> = Suppliers.memoize {
-        EnumHelper.addArmorMaterial("dragon", Tags.MOD_PREFIX + "dragon", 44, intArrayOf(6, 9, 10, 6), 10,
-            SoundEvents.ITEM_ARMOR_EQUIP_IRON, 5.0F)!!
-    }
 
     // Items
     @JvmField val INGOT_ENDORIUM: Supplier<Item> = maybeRegister { ItemBase("item_ingot_endorium") }
     @JvmField val SHARD_OBSIDIAN: Supplier<Item> = maybeRegister { ItemBase("item_shard_obsidian") }
     @JvmField val RAW_ENDORIUM: Supplier<Item> = maybeRegister { ItemBase("item_raw_endorium") }
-    @JvmField val ADVANCED_PEARL: Supplier<Item> = maybeRegister { ItemAdvancedEnderPearl("item_advanced_ender_pearl") }
     @JvmField val END_ESSENCE: Supplier<Item> = maybeRegister { ItemBase("item_end_essence") }
     @JvmField val END_SHARD: Supplier<Item> = maybeRegister { ItemBase("item_end_shard") }
     @JvmField val END_RUNE: Supplier<Item> = maybeRegister { ItemLegendary("item_end_rune") }
     @JvmField val ITEM_LORMYTE_CRYSTAL: Supplier<Item> = maybeRegister { ItemBase("item_lormyte_crystal") }
     @JvmField val TUNGSTEN_INGOT: Supplier<Item> = maybeRegister { ItemBase("tungsten_ingot") }
     @JvmField val ENDER_STRING: Supplier<Item> = maybeRegister { ItemLegendary("item_ender_string") }
-    @JvmField val WORLD_MIRROR: Supplier<Item> = maybeRegister { ItemWorldMirror("item_world_mirror") }
 
     @JvmField val ANGEL_FEATHER: Supplier<Item> = maybeRegister { ItemBase("item_angel_feather") }
     @JvmField val DRAGON_SCALES: Supplier<Item> = maybeRegister { ItemBase("dragon_scales") }
@@ -64,7 +44,6 @@ object ModItems {
     @JvmField val INFUSED_METALL: Supplier<Item> = maybeRegister { ItemBase("ingot_infused") }
     @JvmField val SWORD_SHARD: Supplier<Item> = maybeRegister { ItemBase("sword_shard") }
     @JvmField val CATALYST: Supplier<Item> = maybeRegister { ItemCatalyst("catalyst") }
-    @JvmField val RECORD: Supplier<Item> = maybeRegister { ItemEndRecord("end_record", ModSounds.THE_VOID) }
     @JvmField val TUNGSTEN_NUGGET: Supplier<Item> = maybeRegister { ItemBase("tungsten_nugget") }
 
     @JvmField val ENTROPY_RANGE_UPGRADE_TWO: Supplier<ItemEntropyRadiusUpgrade> =
@@ -73,35 +52,8 @@ object ModItems {
         register { ItemEntropyRadiusUpgrade(EntropyRadius.THREE) }
 
     // Tools
-    @JvmField val PICKAXE_ENDORIUM: Supplier<Item> = maybeRegister { ToolPickaxe("tool_pickaxe_endorium", TOOL_ENDORIUM.get()) }
-    @JvmField val SWORD_ENDORIUM: Supplier<Item> = maybeRegister { ToolSword("tool_sword_endorium", TOOL_ENDORIUM.get()) }
-    @JvmField val HOE_ENDORIUM: Supplier<Item> = maybeRegister { ToolHoe("tool_hoe_endorium", TOOL_ENDORIUM.get()) }
-    @JvmField val AXE_ENDORIUM: Supplier<Item> = maybeRegister { ToolAxe("tool_axe_endorium", TOOL_ENDORIUM.get()) }
-    @JvmField val SHOVEL_ENDORIUM: Supplier<Item> = maybeRegister { ToolShovel("tool_shovel_endorium", TOOL_ENDORIUM.get()) }
-    @JvmField val PICKAXE_WOLFRAMIUM: Supplier<Item> = maybeRegister { ToolPickaxe("tool_pickaxe_wolframium", TUNGSTEN.get()) }
-    @JvmField val SWORD_WOLFRAMIUM: Supplier<Item> = maybeRegister { ToolSword("tool_sword_wolframium", TUNGSTEN.get()) }
-    @JvmField val HOE_WOLFRAMIUM: Supplier<Item> = maybeRegister { ToolHoe("tool_hoe_wolframium", TUNGSTEN.get()) }
-    @JvmField val AXE_WOLFRAMIUM: Supplier<Item> = maybeRegister { ToolAxe("tool_axe_wolframium", TUNGSTEN.get()) }
-    @JvmField val SHOVEL_WOLFRAMIUM: Supplier<Item> = maybeRegister { ToolShovel("tool_shovel_wolframium", TUNGSTEN.get()) }
     @JvmField val ENTROPY_WAND: Supplier<Item> = maybeRegister { ToolEntropyWand("entropy_wand", TOOL_MAGNIFIER.get()) }
-    @JvmField val HAMMER_IRON: Supplier<Item> = maybeRegister { ItemHammer("tool_hammer_iron") }
-    @JvmField val ENDER_BOW: Supplier<Item> = maybeRegister { ItemEnderBow("ender_bow") }
-    @JvmField val ENDER_SWORD: Supplier<Item> = maybeRegister { ItemEnderSword("ender_sword", TOOL_END.get()) }
     @JvmField val ENDER_HOOK: Supplier<Item> = maybeRegister { ItemDeather("tool_magnifier", TOOL_MAGNIFIER.get()) }
-
-    // Armors (the helmets need a client model, not registered)
-    @JvmField val CHESTPLATE_OBSIDIAN: Supplier<Item> =
-        maybeRegister { ArmourBase("armour_chestplate_obsidian", ARMOUR_OBSIDIAN.get(), 1, EntityEquipmentSlot.CHEST) }
-    @JvmField val LEGGINGS_OBSIDIAN: Supplier<Item> =
-        maybeRegister { ArmourBase("armour_leggings_obsidian", ARMOUR_OBSIDIAN.get(), 2, EntityEquipmentSlot.LEGS) }
-    @JvmField val BOOTS_OBSIDIAN: Supplier<Item> =
-        maybeRegister { ArmourBase("armour_boots_obsidian", ARMOUR_OBSIDIAN.get(), 1, EntityEquipmentSlot.FEET) }
-    @JvmField val CHESTPLATE_DRAGON: Supplier<Item> =
-        maybeRegister { ArmourBase("armour_chestplate_dragon", ARMOUR_DRAGON.get(), 1, EntityEquipmentSlot.CHEST) }
-    @JvmField val LEGGINGS_DRAGON: Supplier<Item> =
-        maybeRegister { ArmourBase("armour_leggings_dragon", ARMOUR_DRAGON.get(), 2, EntityEquipmentSlot.LEGS) }
-    @JvmField val BOOTS_DRAGON: Supplier<Item> =
-        maybeRegister { ArmourBase("armour_boots_dragon", ARMOUR_DRAGON.get(), 1, EntityEquipmentSlot.FEET) }
 
     @JvmField val ENTROPY_READER: Supplier<ItemEntropyReader> = register(::ItemEntropyReader)
     @JvmField val ENTROPY_WINGS: Supplier<ItemEntropyWings> = register(::ItemEntropyWings)

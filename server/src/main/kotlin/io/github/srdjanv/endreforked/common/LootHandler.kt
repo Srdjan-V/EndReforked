@@ -14,7 +14,6 @@ class LootHandler : Initializer {
     companion object {
         @JvmField val END_GUARD = ResourceLocation(Tags.MODID, "entities/endguard")
         @JvmField val WATCHER = ResourceLocation(Tags.MODID, "entities/watcher")
-        @JvmField val LORD = ResourceLocation(Tags.MODID, "entities/lord")
 
         // TODO: 08/02/2024 add shipWreck loot table
         private val INJECTED_CHEST_TABLES = listOf(
@@ -40,7 +39,7 @@ class LootHandler : Initializer {
     }
 
     override fun preInit(event: FMLPreInitializationEvent) {
-        listOf(END_GUARD, WATCHER, LORD).forEach(LootTableList::register)
+        listOf(END_GUARD, WATCHER).forEach(LootTableList::register)
     }
 
     @SubscribeEvent

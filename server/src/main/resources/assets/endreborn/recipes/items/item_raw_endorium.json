@@ -4,17 +4,12 @@
     {
       "item": "minecraft:ender_pearl"
     },
-	{
-      "item": "minecraft:ender_pearl"
-    },
     {
-      "item": "endreborn:tool_hammer_iron",
-	  "data": 32767
+      "item": "minecraft:ender_pearl"
     }
   ],
-  "result": 
-    {
-        "item": "endreborn:item_raw_endorium",
-        "count": 1
-    }
+  "result": {
+    "item": "endreborn:item_raw_endorium",
+    "count": 1
+  }
 }

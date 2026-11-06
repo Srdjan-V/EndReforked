@@ -1,6 +1,6 @@
 ﻿{
     "name": "Обсерватория",
-    "icon": "endreborn:tool_sword_wolframium",
+    "icon": "endreborn:tungsten_ingot",
     "category": "world",
     "priority": true,
     "pages": [

@@ -2,16 +2,11 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "endreborn:tool_hammer_iron",
-	  "data": 32767
-    },
-    {
       "item": "minecraft:dragon_egg"
     }
   ],
-  "result": 
-    {
-        "item": "endreborn:dragon_scales",
-        "count": 8
-    }
+  "result": {
+    "item": "endreborn:dragon_scales",
+    "count": 8
+  }
 }

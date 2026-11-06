@@ -17,7 +17,6 @@ internal class Registration : Initializer {
         RenderingRegistry.registerEntityRenderingHandler(EntityEntropyFireball::class.java, ::RenderColdFireball)
         RenderingRegistry.registerEntityRenderingHandler(EntityEndGuard::class.java, ::RenderEGuard)
         RenderingRegistry.registerEntityRenderingHandler(EntityWatcher::class.java, ::RenderWatcher)
-        RenderingRegistry.registerEntityRenderingHandler(EntityLord::class.java, ::RenderLord)
         RenderingRegistry.registerEntityRenderingHandler(EntityChronologist::class.java, ::RenderChronologist)
     }
 

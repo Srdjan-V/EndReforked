@@ -22,21 +22,16 @@ item.tungsten_nugget.name=Tungsten Nugget
 item.item_shard_obsidian.name=Obsidian Shard
 item.item_raw_endorium.name=Endorium Nugget
 item.item_dragonite_seeds.name=Dragonite Seeds
-item.ender_bow.name=Endorium Bow
-item.ender_sword.name=End-Mage Barclay Sword
 item.item_end_essence.name=Essence
-item.item_advanced_ender_pearl.name=Advanced Ender Pearl
 item.item_end_shard.name=Purpur Shards
 item.item_end_rune.name=Purpur Rune
 item.item_lormyte_crystal.name=Lormyte Crystal
 item.item_ender_string.name=String of Life
-item.item_world_mirror.name=World Mirror
 item.item_dragonite_tea.name=Dragonite Tea
 item.item_angel_feather.name=Angel Feather
 item.dragon_scales.name=Dragon Scales
 item.xorcite_ingot.name=Xorcite Shard
 item.catalyst.name=Obsidian Dust
-item.end_record.name=Music Disc
 item.sword_shard.name=Broken Sword Part
 item.ingot_infused.name=Infused Endorium
 
@@ -68,29 +63,10 @@ tile.broken_ender_flower.name=Broken Enderemus
 tile.chiseled_end_bricks.name=Chiseled End Bricks
 
 # Tools -
-item.tool_axe_endorium.name=Endorium Axe
-item.tool_pickaxe_endorium.name=Endorium Pickaxe
-item.tool_sword_endorium.name=Endorium Sword
-item.tool_hoe_endorium.name=Endorium Hoe
-item.tool_shovel_endorium.name=Endorium Shovel
-item.tool_axe_wolframium.name=Tungsten Axe
-item.tool_pickaxe_wolframium.name=Tungsten Pickaxe
-item.tool_sword_wolframium.name=Tungsten Sword
-item.tool_hoe_wolframium.name=Tungsten Hoe
-item.tool_shovel_wolframium.name=Tungsten Shovel
-item.tool_hammer_iron.name=Sledgehammer
 item.tool_magnifier.name=Magnetor
 item.entropy_wand.name=Wand Of Entropy
 
 #Armors
-item.armour_helmet_helmet.name=Obsidian Helmet
-item.armour_chestplate_obsidian.name=Obsidian Chestplate
-item.armour_leggings_obsidian.name=Obsidian Leggins
-item.armour_boots_obsidian.name=Obsidian Boots
-item.armour_helmet_dragon.name=Dragon Helmet
-item.armour_chestplate_dragon.name=Dragon Chestplate
-item.armour_leggings_dragon.name=Dragon Leggins
-item.armour_boots_dragon.name=Dragon Boots
 
 #Food
 item.food_ender_flesh.name=Mysical Flesh
@@ -100,7 +76,6 @@ item.food_chorus_soup.name=Chorus Soup
 #Entities
 entity.endguard.name=Purpur Guard
 entity.watcher.name=Watcher
-entity.endlord.name=End-Mage Barclay
 entity.chronologist.name=Chronologist
 entity.cold_fireball.name=Cold Fireball
 entity.Villager.endreborn.nether_explorer.name=Nether Explorer
@@ -108,12 +83,6 @@ entity.Villager.endreborn.end_explorer.name=End Explorer
 entity.Villager.endreborn.overworld_explorer.name=World Explorer
 
 #Compat
-modifier.endorium.name=Rage
-modifier.endorium.desc=�oWhere is physics!?�r\nCritical strike increases attack speed.
-modifier.wolframium.name=Moon Voice
-modifier.wolframium.desc=�oThe loneliness echo...�r\nGives strength on a full moon.
-material.endorium.name=Endorium
-material.wolframium.name=Tungsten
 
 #JEI
 endreborn.jei.entropy_wand.item_cost=Damage to item to convert
@@ -135,7 +104,6 @@ enchantment.ender_killer=Ender Killer
 enchantment.endreborn.ender_killer.desc=Higher damage while in the End
 
 #Other
-tile.ender_sword.tooltip=Right click to teleport
 tile.a_pearl.tooltip=No more delay!
 tile.deather.tooltip=Magnet for mobs
 tile.deather_mode.tooltip=Magnet mode
@@ -150,19 +118,10 @@ tile.dragon_essence.tooltip=Small crystals that slowly spread as they grow
 tile.essence.tooltip=Substance that appearing among obsidian
 tile.user.tooltip=Allows to double some resources
 tile.tea.tooltip=Allows one to fly
-tile.block_rune.tooltip=What if I surround it by eight purpur blocks...
 tile.block_forge.tooltip=The heat of this forge changes the properties of some materials
 tile.wand.tooltip=Changes some blocks to their destroyed state
-tile.ender_lord.rage_1=Lord: You... Are you still fighting?
-tile.ender_lord.rage_2=Lord: Are you trying to kill everyone?
-tile.ender_lord.rage_3=Lord: You know nothing!
-tile.ender_lord.rage_4=Lord: To rise you need to fall!
-tile.ender_lord.wither=You can not compare the creation and creator!
-tile.ender_lord.lord=Lord: This is not fair now!
-tile.ender_lord.name=Lord
 tile.catalyst.tooltip=Materializer recipes �atalyst
 
-item.endreborn.record.end.desc=Yozhh - The Void
 
 effect.ender_eyes=Ender eyes
 
@@ -283,20 +242,12 @@ advancements.endreborn.raw_endorium.description=Collect: Endorium
 advancements.endreborn.crop_ender_flower.title=Mutation
 advancements.endreborn.crop_ender_flower.description=Collect: Ender`s Flower
 
-advancements.endreborn.obsidian_armor.title=I need moonlight!
-advancements.endreborn.obsidian_armor.description=Equip: Obsidian Armor
 
-advancements.endreborn.endermen_curse.title=How ironic...
-advancements.endreborn.endermen_curse.description=Collect: Endorium Sword
 
 advancements.endreborn.ender_flesh.title=Delicacy
 advancements.endreborn.ender_flesh.description=Eat: Ender`s Flesh
 
-advancements.endreborn.iron_hammer.title=Hephaestus
-advancements.endreborn.iron_hammer.description=Collect: Sledgehammer
 
-advancements.endreborn.ender_sword.title=Lord of the End
-advancements.endreborn.ender_sword.description=Collect: End-Mage Barclay`s Sword
 
 advancements.endreborn.mine_essence.title=Power of Obsidian 
 advancements.endreborn.mine_essence.description=Obtain: Essence Ore
@@ -313,11 +264,7 @@ advancements.endreborn.tool_magnifier.description=Collect: Magnetor
 advancements.endreborn.tungsten_ingot.title=He melted!
 advancements.endreborn.tungsten_ingot.description=Collect: Tungsten Ingot
 
-advancements.endreborn.lord.title=Last of them
-advancements.endreborn.lord.description=Collect: String of Life
 
-advancements.endreborn.world_mirror.title=Also try Terraria
-advancements.endreborn.world_mirror.description=Collect: World Mirror
 
 advancements.endreborn.food_chorus_soup.title=Like a borscht!
 advancements.endreborn.food_chorus_soup.description=Collect: Chorus Soup

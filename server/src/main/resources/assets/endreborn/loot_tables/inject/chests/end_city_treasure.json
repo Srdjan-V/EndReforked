@@ -63,21 +63,6 @@
                             }
                         }
                     ]
-                },
-	      {
-                    "type": "item",
-                    "entryName": "endreborn:end_record",
-                    "name": "endreborn:end_record",
-                    "weight": 6,
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 1
-                            }
-                        }
-                    ]
                 }
             ]
         }

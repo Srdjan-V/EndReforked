@@ -41,7 +41,6 @@ object EndVillagerHandler {
 
         VillagerCareer(profExplorer, Tags.MODID + ".overworld_explorer").addTrade(
             1,
-            sells(ItemStack(ModItems.HAMMER_IRON.get(), 1, 0), PriceInfo(1, 1)),
             sells(ItemStack(ModItems.TUNGSTEN_INGOT.get(), 1, 0), PriceInfo(-4, -1)),
             buys(ItemStack(Blocks.IRON_ORE, 1, 0), PriceInfo(1, 3)),
         )

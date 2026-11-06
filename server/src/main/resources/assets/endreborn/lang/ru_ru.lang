@@ -8,21 +8,16 @@ item.tungsten_nugget.name=Tungsten Nugget
 item.item_shard_obsidian.name=Обсидиановый осколок
 item.item_raw_endorium.name=Сырой эндориум
 item.item_dragonite_seeds.name=Семена драгонита
-item.ender_bow.name=Эндориумовый лук
-item.ender_sword.name=Меч Энд-Мага Барклая
 item.item_end_essence.name=Эссенция края
-item.item_advanced_ender_pearl.name=Улучшеный жемчуг края
 item.item_end_shard.name=Фрагмент Края
 item.item_end_rune.name=Скрижаль Края
 item.item_lormyte_crystal.name=Кристалл лормита
 item.item_ender_string.name=Нить жизни
-item.item_world_mirror.name=Зеркало мира
 item.item_dragonite_tea.name=Драгонитовый чай
 item.item_angel_feather.name=Ангельское перо
 item.dragon_scales.name=Драконья чешуя
 item.xorcite_ingot.name=Ксорцит
 item.catalyst.name=Пыль обсидиана
-item.end_record.name=Пластинка края
 item.sword_shard.name=Часть сломанного меча
 item.ingot_infused.name=Заряженный эндориум
 
@@ -53,29 +48,10 @@ tile.entropy_user.name=Материализер
 tile.broken_ender_flower.name=Сломанный цветок эндера
 
 # Tools -
-item.tool_axe_endorium.name=Эндориумовый топор
-item.tool_pickaxe_endorium.name=Эндориумовая кирка
-item.tool_sword_endorium.name=Эндориумовый меч
-item.tool_hoe_endorium.name=Эндориумовая мотыга
-item.tool_shovel_endorium.name=Эндориумовая лопата
-item.tool_axe_wolframium.name=Вольфрамовый топор
-item.tool_pickaxe_wolframium.name=Вольфрамовая кирка
-item.tool_sword_wolframium.name=Вольфрамовый меч
-item.tool_hoe_wolframium.name=Вольфрамовая мотыга
-item.tool_shovel_wolframium.name=Вольфрамовая лопата
-item.tool_hammer_iron.name=Кувалда
 item.tool_magnifier.name=Магнитизер
 item.entropy_wand.name=Посох энтропии
 
 #Armors
-item.armour_helmet_helmet.name=Обсидиановый шлем
-item.armour_chestplate_obsidian.name=Обсидиановый нагрудник
-item.armour_leggings_obsidian.name=Обсидиановые поножи
-item.armour_boots_obsidian.name=Обсидиановые ботинки
-item.armour_helmet_dragon.name=Драконий шлем
-item.armour_chestplate_dragon.name=Драконий нагрудник
-item.armour_leggings_dragon.name=Дракониевые поножи
-item.armour_boots_dragon.name=Дракониевые ботинки
 
 #Food
 item.food_ender_flesh.name=Плоть эндера
@@ -85,7 +61,6 @@ item.food_chorus_soup.name=Настой из коруса
 #Entities
 entity.endguard.name=Страж Края
 entity.watcher.name=Наблюдатель
-entity.endlord.name=Энд-Маг Барклай
 entity.chronologist.name=Хронолог
 entity.end_fireball.name=Огненный шар стража
 entity.Villager.endreborn.nether_explorer=Исследователь Нижнего мира
@@ -93,12 +68,6 @@ entity.Villager.endreborn.end_explorer=Исследователь Края
 entity.Villager.endreborn.overworld_explorer=Исследователь мира
 
 #Compat
-modifier.endorium.name=Ярость
-modifier.endorium.desc=§oГде физика!?§r\nПри критическом ударе повышается скорость ударов.
-modifier.wolframium.name=Зов Луны
-modifier.wolframium.desc=§oЗдесь кто-нибудь есть?§r\nДается эффект силы при полной луне.
-material.endorium.name=Эндориум.
-material.wolframium.name=Вольфрам.
 
 #Book
 item.endreborn.book.name=Книга Края
@@ -111,7 +80,6 @@ enchantment.ender_core=Ядро Эндера
 enchantment.ender_killer=Убийца эндеров
 
 #Other
-tile.ender_sword.tooltip=ПКМ для телепортации
 tile.a_pearl.tooltip=Без задержки, и больше стак
 tile.deather.tooltip=Магнит для сущностей
 tile.deather_mode.tooltip=Режим магнита
@@ -126,20 +94,10 @@ tile.dragon_essence.tooltip=Разлом мира, который медленн
 tile.essence.tooltip=Вещество, появляющееся среди обсидиана
 tile.user.tooltip=Позволяет удваивать руды
 tile.tea.tooltip=Работает как и обычный корус
-tile.block_rune.tooltip=Призывает сущность, если окружить восемью пурпурными блоками...
 tile.block_forge.tooltip=Жар этой кузни меняет свойства эндориума 
 tile.wand.tooltip=Меняет некоторые блоки в их разрушенное состояние
-tile.ender_lord.rage_1=Лорд: Ты... Ты продолжаешь сражаться?
-tile.ender_lord.rage_2=Лорд: Ты пытаешься убить всех?
-tile.ender_lord.rage_3=Лорд: Ты ничего не знаешь!
-tile.ender_lord.rage_4=Лорд: Чтобы встать, сначала упади!
-tile.ender_lord.wither=Лорд: Нельзя сравнивать создание и создателя!
-tile.ender_lord.lord=Лорд: Это уже не честно!
-tile.ender_lord.rage_5=Лорд: Ты это читаешь?
-tile.ender_lord.name=Лорд
 tile.catalyst.tooltip=Действует как катализатор
 container.entropy_user=Материализер
-item.endreborn.record.end.desc=Yozhh - The Void
 
 #Banners
 item.banner.endreborn_rune.white=Белая руна 
@@ -204,20 +162,12 @@ advancements.endreborn.raw_endorium.description=Создать: Эндориум
 advancements.endreborn.crop_ender_flower.title=Мутация
 advancements.endreborn.crop_ender_flower.description=Создать: Цветок эндера
 
-advancements.endreborn.obsidian_armor.title=Я танкую!
-advancements.endreborn.obsidian_armor.description=Одеть: Обсидиановую броню
 
-advancements.endreborn.endermen_curse.title=Преступление и наказание
-advancements.endreborn.endermen_curse.description=Создать: Эндориумовый меч
 
 advancements.endreborn.ender_flesh.title=Деликатес
 advancements.endreborn.ender_flesh.description=Съесть: Плоть эндера
 
-advancements.endreborn.iron_hammer.title=Гефест
-advancements.endreborn.iron_hammer.description=Создать: Кувалда
 
-advancements.endreborn.ender_sword.title=Лорд Края
-advancements.endreborn.ender_sword.description=Создать: Меч Энд-Мага Барклая
 
 advancements.endreborn.mine_essence.title=Сила обсидиана
 advancements.endreborn.mine_essence.description=Добыть: Руда эссенции
@@ -234,11 +184,7 @@ advancements.endreborn.tool_magnifier.description=Получить: Магнит
 advancements.endreborn.item_ingot_wolframium.title=Он расплавился!
 advancements.endreborn.item_ingot_wolframium.description=Получить: Вольфрамовый слиток
 
-advancements.endreborn.lord.title=Часть Мага Барклая
-advancements.endreborn.lord.description=Получить: Нить жизни
 
-advancements.endreborn.world_mirror.title=Также попобуйте тер...
-advancements.endreborn.world_mirror.description=Создать: Зеркало мира
 
 advancements.endreborn.food_chorus_soup.title=Вкус борща!
 advancements.endreborn.food_chorus_soup.description=Создать: Настой из коруса

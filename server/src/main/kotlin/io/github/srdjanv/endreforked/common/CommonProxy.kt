@@ -34,7 +34,7 @@ open class CommonProxy(@JvmField val SIDE: Side, @JvmField val registrySync: Reg
         components.forEach { it.registerEventBus() }
         listOf<Any>(
             CapabilityTimedFlightHandler::class.java, CapabilityEntropyHandler::class.java, ModFluids::class.java,
-            ModBlocks::class.java, ModItems::class.java, ModEnchants::class.java, ModSounds::class.java,
+            ModBlocks::class.java, ModItems::class.java, ModEnchants::class.java,
             ModPotions::class.java, EventHandler::class.java, ModBioms::class.java, EntropyWorldHandler::class.java,
         ).forEach(MinecraftForge.EVENT_BUS::register)
     }

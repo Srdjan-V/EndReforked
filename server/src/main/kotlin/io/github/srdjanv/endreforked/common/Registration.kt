@@ -108,8 +108,6 @@ class Registration : Initializer {
 
         OreDictionary.registerOre("dustObsidian", ModItems.CATALYST.get())
         OreDictionary.registerOre("shardObsidian", ModItems.SHARD_OBSIDIAN.get())
-        OreDictionary.registerOre("hammerIron", ModItems.HAMMER_IRON.get())
-        OreDictionary.registerOre("hammer", ModItems.HAMMER_IRON.get())
         OreDictionary.registerOre("shardLormyte", ModItems.LORMYTE_CRYSTAL.get())
         OreDictionary.registerOre("essence", ModItems.END_ESSENCE.get())
     }

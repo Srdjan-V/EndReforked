@@ -32,7 +32,6 @@ object ModEntities : Initializer {
         Def("entropy_fireball", EntityEntropyFireball::class.java, 1, 30, 1, true, null, emptyList()),
         Def("watcher", EntityWatcher::class.java, 2, 64, 3, false, 461076 to 2236447,
             end(10, 1, 3) + listOf(Spawn({ Biomes.SKY }, 10, 1, 3), Spawn({ Biomes.PLAINS }, 4, 1, 1))),
-        Def("endlord", EntityLord::class.java, 3, 64, 3, false, 461076 to 681365, emptyList()),
         Def("chronologist", EntityChronologist::class.java, 4, 64, 3, false, 461076 to 13680725,
             end(5, 1, 4) + listOf(Spawn({ Biomes.SKY }, 4, 1, 3))),
     )

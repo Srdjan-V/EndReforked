@@ -3,15 +3,10 @@
   "ingredients": [
     {
       "item": "endreborn:lormyte_crystal_block"
-    },
-    {
-      "item": "endreborn:tool_hammer_iron",
-	  "data": 32767
     }
   ],
-  "result": 
-    {
-        "item": "endreborn:item_lormyte_crystal",
-        "count": 2
-    }
+  "result": {
+    "item": "endreborn:item_lormyte_crystal",
+    "count": 2
+  }
 }
