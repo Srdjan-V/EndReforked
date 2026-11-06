@@ -18,9 +18,6 @@ import io.github.srdjanv.endreforked.common.blocks.BlockOrganaFlowerStem;
 import io.github.srdjanv.endreforked.common.entropy.world.EntropyWorldHandler;
 import io.github.srdjanv.endreforked.common.capabilities.entropy.CapabilityEntropyHandler;
 import io.github.srdjanv.endreforked.common.capabilities.timedflight.CapabilityTimedFlightHandler;
-import io.github.srdjanv.endreforked.common.configs.JsonConfigs;
-import io.github.srdjanv.endreforked.common.configs.content.DisabledContentConfig;
-import io.github.srdjanv.endreforked.common.configs.mobs.MobConfig;
 import io.github.srdjanv.endreforked.common.datafixers.Fixer;
 import io.github.srdjanv.endreforked.common.handlers.EventHandler;
 import io.github.srdjanv.endreforked.common.handlers.TimedFlightHandler;
@@ -40,19 +37,13 @@ public class CommonProxy {
     public CommonProxy(Side SIDE, RegistrySync registrySync) {
         this.SIDE = SIDE;
         this.registrySync = registrySync;
-        loadStaticCLasses();
         components.add(CompatManger.getInstance());
         components.add(Fixer.getInstance());
         components.add(new Registration());
         components.add(new LootHandler());
-        components.addAll(JsonConfigs.getConfigs());
+        components.add(ModEntities.INSTANCE);
         components.add(TimedFlightHandler.getInstance());
         components.add(new ModGameRules());
-    }
-
-    protected void loadStaticCLasses() {
-        MobConfig.getInstance();
-        DisabledContentConfig.getInstance();
     }
 
     /** The registries a world reads: the client copy for a client world, else the server ones. */

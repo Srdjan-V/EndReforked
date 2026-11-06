@@ -19,7 +19,7 @@ import io.github.srdjanv.endreforked.common.blocks.base.BaseBlockBush;
 import io.github.srdjanv.endreforked.common.blocks.base.BlockEndBase;
 import io.github.srdjanv.endreforked.common.blocks.base.BlockStairsBase;
 import io.github.srdjanv.endreforked.common.blocks.base.BlockWallBase;
-import io.github.srdjanv.endreforked.common.configs.content.DisabledContentConfig;
+import io.github.srdjanv.endreforked.common.configs.Configs;
 import io.github.srdjanv.endreforked.common.fluids.blocks.BlockFluidEndMagma;
 import io.github.srdjanv.endreforked.common.fluids.blocks.BlockFluidEntropy;
 import io.github.srdjanv.endreforked.common.fluids.blocks.BlockFluidOrgana;
@@ -125,8 +125,7 @@ public final class ModBlocks {
     public static <B extends Block> Supplier<B> maybeRegister(final com.google.common.base.Supplier<B> supplier) {
         var memorized = Suppliers.memoize(() -> {
             var block = supplier.get();
-            var blackList = DisabledContentConfig.getInstance().getLoadedData();
-            if (Objects.nonNull(blackList) && blackList.blocks.contains(block.getRegistryName().getPath())) {
+            if (java.util.Arrays.asList(Configs.SERVER_SIDE_CONFIGS.disabledBlocks).contains(block.getRegistryName().getPath())) {
                 EndReforked.LOGGER.info("Skipping registration of Block: '{}'", block.getRegistryName());
                 return null;
             }

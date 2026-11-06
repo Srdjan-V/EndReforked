@@ -23,7 +23,7 @@ import com.google.common.base.Suppliers;
 import io.github.srdjanv.endreforked.EndReforked;
 import io.github.srdjanv.endreforked.Tags;
 import io.github.srdjanv.endreforked.api.entropy.EntropyRadius;
-import io.github.srdjanv.endreforked.common.configs.content.DisabledContentConfig;
+import io.github.srdjanv.endreforked.common.configs.Configs;
 import io.github.srdjanv.endreforked.common.items.*;
 import io.github.srdjanv.endreforked.common.items.ItemChorusSoup;
 import io.github.srdjanv.endreforked.common.items.ItemDragoniteBerries;
@@ -242,8 +242,7 @@ public final class ModItems {
     static <I extends Item> Supplier<I> maybeRegister(final com.google.common.base.Supplier<I> supplier) {
         var memorized = Suppliers.memoize(() -> {
             var item = supplier.get();
-            var blackList = DisabledContentConfig.getInstance().getLoadedData();
-            if (Objects.nonNull(blackList) && blackList.items.contains(item.getRegistryName().getPath())) {
+            if (java.util.Arrays.asList(Configs.SERVER_SIDE_CONFIGS.disabledItems).contains(item.getRegistryName().getPath())) {
                 EndReforked.LOGGER.info("Skipping registration of Item: '{}'", item.getRegistryName());
                 return null;
             }

@@ -7,13 +7,11 @@ import net.minecraftforge.fml.relauncher.FMLLaunchHandler;
 import net.minecraftforge.server.command.CommandTreeBase;
 
 import io.github.srdjanv.endreforked.Tags;
-import io.github.srdjanv.endreforked.common.comands.configs.ConfigCommands;
 import io.github.srdjanv.endreforked.common.comands.dev.DevCommands;
 
 public class EndRebornCommands extends CommandTreeBase {
 
     public EndRebornCommands() {
-        super.addSubcommand(new ConfigCommands());
 
         if (FMLLaunchHandler.isDeobfuscatedEnvironment())
             super.addSubcommand(new DevCommands());
