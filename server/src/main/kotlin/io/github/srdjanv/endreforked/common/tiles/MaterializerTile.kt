@@ -228,7 +228,7 @@ class MaterializerTile : BaseTileEntity(), ITickable, IGuiHolder<PosGuiData> {
                     button.onMousePressed { mouseButton -> (mouseButton == 0).also { if (it) onClick() } }
                     renderControls.child(button)
                 }
-            button(20, "tile.materializer.render.followStruct") { render.setDisableOnUpdateListener(!render.isDisableOnUpdateListener) }
+            button(20, "tile.materializer.render.followStruct") { render.isDisableOnUpdateListener = !render.isDisableOnUpdateListener }
             button(60, "tile.materializer.render.toggleFullRender") { render.setRenderLayer(render.maxRenderLayer) }
             button(80, "tile.materializer.render.nextLayer") { render.nextRenderLayer() }
             button(100, "tile.materializer.render.prevLayer") { render.prevRenderLayer() }
