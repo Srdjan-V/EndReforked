@@ -1,6 +1,5 @@
 package io.github.srdjanv.endreforked.impl.worldgen
 
-import io.github.srdjanv.endreforked.api.registry.Id
 import io.github.srdjanv.endreforked.api.worldgen.Condition
 import io.github.srdjanv.endreforked.api.worldgen.EndBiome
 import io.github.srdjanv.endreforked.api.worldgen.Feature
@@ -21,7 +20,7 @@ import java.util.Random
 class WorldFeatureTest {
     // Template needs no block state, so these tests run without a Minecraft bootstrap.
     private val feature = Feature.Template(ResourceLocation("test:structure"))
-    private fun id(path: String) = Id("test", path)
+    private fun id(path: String) = ResourceLocation("test", path)
     private fun loc(path: String) = ResourceLocation("minecraft", path)
     private fun type(name: String) = BiomeDictionary.Type.getType(name)
     private fun params(rarity: Int = 0, amount: Int = 0) = GenParams(0, 64, rarity = rarity, amount = amount)

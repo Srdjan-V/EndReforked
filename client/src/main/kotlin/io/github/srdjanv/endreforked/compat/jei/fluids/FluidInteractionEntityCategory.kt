@@ -3,8 +3,6 @@ package io.github.srdjanv.endreforked.compat.jei.fluids
 import io.github.srdjanv.endreforked.Tags
 import io.github.srdjanv.endreforked.api.world.EntityResult
 import io.github.srdjanv.endreforked.api.world.FluidEntityInteraction
-import io.github.srdjanv.endreforked.common.registry.GameAdapter
-import io.github.srdjanv.endreforked.common.registry.GameAdapter.toStack
 import io.github.srdjanv.endreforked.compat.jei.RecipeFeed
 import io.github.srdjanv.endreforked.impl.world.FluidEntityInteractions
 import io.github.srdjanv.endreforked.utils.LangUtil
@@ -19,6 +17,7 @@ import mezz.jei.api.recipe.IRecipeCategory
 import mezz.jei.api.recipe.IRecipeWrapper
 import net.minecraft.client.Minecraft
 import net.minecraft.entity.Entity
+import net.minecraft.entity.EntityList
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.boss.EntityDragon
 import net.minecraft.entity.boss.EntityWither
@@ -51,7 +50,7 @@ class FluidEntityInteractionWrapper private constructor(
 
     private fun entity(minecraft: Minecraft): Entity? {
         val world = minecraft.world ?: return null
-        if (entity?.world !== world) entity = GameAdapter.createEntity(interaction.entity, world)
+        if (entity?.world !== world) entity = EntityList.createEntityByIDFromName(interaction.entity, world)
         return entity
     }
 
@@ -114,24 +113,22 @@ class FluidEntityInteractionWrapper private constructor(
     }
 
     companion object {
-        /** Returns null when this client does not have the fluid, the entity, the items or the blocks. */
+        /** Returns null when this client does not have the entity, or a block has neither a fluid nor an item. */
         fun of(interaction: FluidEntityInteraction): FluidEntityInteractionWrapper? {
-            val fluid = GameAdapter.fluid(interaction.fluid) ?: return null
-            if (!GameAdapter.hasEntity(interaction.entity)) return null
-            val input = interaction.item?.let { i -> GameAdapter.item(i.id)?.let { ItemStack(it, i.count, i.meta) } ?: return null }
+            if (EntityList.getClass(interaction.entity) == null) return null
             var outItem: ItemStack? = null
             var outFluid: FluidStack? = null
             when (val r = interaction.result) {
-                is EntityResult.SpawnItem -> outItem = r.item.toStack().takeIf { !it.isEmpty } ?: return null
-                is EntityResult.SpawnEntity -> if (!GameAdapter.hasEntity(r.entity)) return null
+                is EntityResult.SpawnItem -> outItem = r.item
+                is EntityResult.SpawnEntity -> if (EntityList.getClass(r.entity) == null) return null
                 is EntityResult.SetFluidBlock -> {
-                    val block = BlockIngredient(GameAdapter.state(r.block) ?: return null)
+                    val block = BlockIngredient(r.block)
                     if (!block.valid) return null
                     outFluid = block.fluid
                     outItem = block.item.takeIf { !it.isEmpty }
                 }
             }
-            return FluidEntityInteractionWrapper(interaction, FluidStack(fluid, 1_000), input, outItem, outFluid)
+            return FluidEntityInteractionWrapper(interaction, FluidStack(interaction.fluid, 1_000), interaction.item, outItem, outFluid)
         }
     }
 }

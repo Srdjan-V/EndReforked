@@ -1,7 +1,6 @@
 package io.github.srdjanv.endreforked.common.registry
 
 import io.github.srdjanv.endreforked.Tags
-import io.github.srdjanv.endreforked.api.registry.Id
 import io.github.srdjanv.endreforked.api.worldgen.Condition
 import io.github.srdjanv.endreforked.api.worldgen.EndBiome
 import io.github.srdjanv.endreforked.api.worldgen.Feature
@@ -13,7 +12,6 @@ import io.github.srdjanv.endreforked.api.worldgen.Step
 import io.github.srdjanv.endreforked.api.worldgen.WorldFeature
 import io.github.srdjanv.endreforked.common.ModBioms
 import io.github.srdjanv.endreforked.common.ModBlocks
-import io.github.srdjanv.endreforked.common.registry.GameAdapter.toId
 import net.minecraft.block.Block
 import net.minecraft.block.BlockStone
 import net.minecraft.block.state.IBlockState
@@ -30,7 +28,7 @@ object WorldFeatureDefaults {
     private const val END = 1
     private const val OVERWORLD = 0
 
-    private fun id(name: String) = Id(Tags.MODID, name)
+    private fun id(name: String) = ResourceLocation(Tags.MODID, name)
 
     private fun mc(path: String) = ResourceLocation("minecraft", path)
 
@@ -126,5 +124,5 @@ object WorldFeatureDefaults {
     }
 
     fun endBiomes(): List<EndBiome> = listOf(ModBioms.ORGANA_BIOME.get(), ModBioms.ENTROPY_BIOME.get())
-        .map { EndBiome(it.registryName!!.toId(), 1000) }
+        .map { EndBiome(it.registryName!!, 1000) }
 }

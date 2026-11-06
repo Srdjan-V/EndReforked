@@ -1,7 +1,7 @@
 package io.github.srdjanv.endreforked.compat.jei
 
 import io.github.srdjanv.endreforked.api.machine.MachineRecipe
-import io.github.srdjanv.endreforked.api.registry.Id
+import net.minecraft.util.ResourceLocation
 import io.github.srdjanv.endreforked.api.registry.Registry
 import io.github.srdjanv.endreforked.api.registry.RegistryEntry
 import io.github.srdjanv.endreforked.impl.machine.MachineRecipes
@@ -37,7 +37,7 @@ class RecipeFeed<E : RegistryEntry, R : Registry<E>>(private val uid: String, pr
 
     companion object {
         /** The feed of the recipes of one machine. */
-        fun machine(uid: String, machine: Id) = RecipeFeed<MachineRecipe, MachineRecipes>(uid) { snapshot ->
+        fun machine(uid: String, machine: ResourceLocation) = RecipeFeed<MachineRecipe, MachineRecipes>(uid) { snapshot ->
             snapshot.forMachine(machine).mapNotNull(MachineRecipeWrapper::of)
         }
     }

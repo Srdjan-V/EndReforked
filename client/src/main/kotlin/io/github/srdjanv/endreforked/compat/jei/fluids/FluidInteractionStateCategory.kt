@@ -2,7 +2,6 @@ package io.github.srdjanv.endreforked.compat.jei.fluids
 
 import io.github.srdjanv.endreforked.Tags
 import io.github.srdjanv.endreforked.api.world.FluidBlockInteraction
-import io.github.srdjanv.endreforked.common.registry.GameAdapter
 import io.github.srdjanv.endreforked.compat.jei.RecipeFeed
 import io.github.srdjanv.endreforked.impl.world.FluidBlockInteractions
 import io.github.srdjanv.endreforked.utils.LangUtil
@@ -39,13 +38,12 @@ class FluidBlockInteractionWrapper private constructor(
     }
 
     companion object {
-        /** Returns null when this client does not have the fluid or the blocks. */
+        /** Returns null when a block has neither a fluid nor an item. */
         fun of(interaction: FluidBlockInteraction): FluidBlockInteractionWrapper? {
-            val fluid = GameAdapter.fluid(interaction.fluid) ?: return null
-            val input = BlockIngredient(GameAdapter.state(interaction.match) ?: return null)
-            val output = BlockIngredient(GameAdapter.state(interaction.result) ?: return null)
+            val input = BlockIngredient(interaction.match.toState())
+            val output = BlockIngredient(interaction.result)
             if (!input.valid || !output.valid) return null
-            return FluidBlockInteractionWrapper(FluidStack(fluid, 1_000), input, output)
+            return FluidBlockInteractionWrapper(FluidStack(interaction.fluid, 1_000), input, output)
         }
     }
 }

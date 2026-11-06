@@ -28,8 +28,6 @@ import io.github.srdjanv.endreforked.common.machine.OutputHandler
 import io.github.srdjanv.endreforked.common.machine.ProcessHooks
 import io.github.srdjanv.endreforked.common.machine.recipes
 import io.github.srdjanv.endreforked.common.materializer.WorldEvents
-import io.github.srdjanv.endreforked.common.registry.GameAdapter
-import io.github.srdjanv.endreforked.common.registry.GameAdapter.toKey
 import io.github.srdjanv.endreforked.common.registry.MachineRecipeDefaults
 import io.github.srdjanv.endreforked.common.tiles.base.BaseTileEntity
 import io.github.srdjanv.endreforked.common.widgets.BasicTextWidget
@@ -62,7 +60,7 @@ class MaterializerTile : BaseTileEntity(), ITickable, IGuiHolder<PosGuiData> {
         MachineIO(
             InputHandler(
                 2,
-                { recipes().acceptsItem(MachineRecipeDefaults.MATERIALIZER, it.toKey(), GameAdapter.ores) },
+                { recipes().acceptsItem(MachineRecipeDefaults.MATERIALIZER, it) },
                 { markDirty(); process.inputChanged() },
             ),
             OutputHandler(1) { markDirty() },

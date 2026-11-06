@@ -1,19 +1,18 @@
 package io.github.srdjanv.endreforked.impl.registry
 
-import io.github.srdjanv.endreforked.api.registry.Id
 import io.github.srdjanv.endreforked.api.registry.LoadReport
 import io.github.srdjanv.endreforked.api.registry.Registry
 import io.github.srdjanv.endreforked.api.registry.RegistryEntry
-import io.github.srdjanv.endreforked.api.registry.RegistryKey
 import io.github.srdjanv.endreforked.api.registry.RegistryScripts
+import net.minecraft.util.ResourceLocation
 import java.util.concurrent.CopyOnWriteArrayList
 
 /** An immutable registry. The entries are ordered by id, so iteration is deterministic. */
-open class FrozenRegistry<E : RegistryEntry>(override val key: RegistryKey<E>, entries: Collection<E>) : Registry<E> {
-    private val byId: Map<Id, E> = entries.sortedBy { it.id }.associateByTo(LinkedHashMap()) { it.id }
+open class FrozenRegistry<E : RegistryEntry>(override val key: ResourceLocation, entries: Collection<E>) : Registry<E> {
+    private val byId: Map<ResourceLocation, E> = entries.sortedBy { it.id }.associateByTo(LinkedHashMap()) { it.id }
     override val entries: Collection<E> = byId.values
 
-    override fun get(id: Id): E? = byId[id]
+    override fun get(id: ResourceLocation): E? = byId[id]
 }
 
 /**
@@ -26,7 +25,7 @@ open class FrozenRegistry<E : RegistryEntry>(override val key: RegistryKey<E>, e
  * An invalid entry is reported, skipped, and never stops a rebuild. Before the first rebuild [current] is empty.
  */
 class ManagedRegistry<E : RegistryEntry, R : Registry<E>>(
-    val key: RegistryKey<E>,
+    val key: ResourceLocation,
     private val defaults: () -> Collection<E>,
     private val validate: (E) -> String?,
     private val freeze: (Collection<E>) -> R,
@@ -36,7 +35,7 @@ class ManagedRegistry<E : RegistryEntry, R : Registry<E>>(
 
         class Put<E>(override val source: String, val entry: E) : Op
 
-        class Remove(override val source: String, val id: Id) : Op
+        class Remove(override val source: String, val id: ResourceLocation) : Op
 
         class RemoveIf<E>(override val source: String, val predicate: (E) -> Boolean) : Op
     }
@@ -68,7 +67,7 @@ class ManagedRegistry<E : RegistryEntry, R : Registry<E>>(
     }
 
     @Synchronized
-    override fun remove(id: Id) {
+    override fun remove(id: ResourceLocation) {
         scriptOps += Op.Remove(SCRIPTS, id)
     }
 
@@ -84,7 +83,7 @@ class ManagedRegistry<E : RegistryEntry, R : Registry<E>>(
 
     @Synchronized
     override fun rebuild(): LoadReport {
-        val entries = LinkedHashMap<Id, E>()
+        val entries = LinkedHashMap<ResourceLocation, E>()
         val errors = ArrayList<String>()
         val applied = LinkedHashMap<String, Int>()
         applied["defaults"] = applyOps(entries, defaults().map { Op.Put("code defaults", it) }, errors)
@@ -101,7 +100,7 @@ class ManagedRegistry<E : RegistryEntry, R : Registry<E>>(
         listeners.forEach { it(snapshot) }
     }
 
-    private fun applyOps(entries: MutableMap<Id, E>, ops: List<Op>, errors: MutableList<String>): Int {
+    private fun applyOps(entries: MutableMap<ResourceLocation, E>, ops: List<Op>, errors: MutableList<String>): Int {
         var changed = 0
         for (op in ops) {
             when (op) {

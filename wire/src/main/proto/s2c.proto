@@ -54,7 +54,7 @@ message MachineRecipe {
   string machine = 2;
   repeated Ingredient item_inputs = 3;
   repeated FluidAmount fluid_inputs = 4;
-  repeated ItemResult item_outputs = 5;
+  repeated Stack item_outputs = 5;
   repeated FluidAmount fluid_outputs = 6;
   int32 ticks = 7;
   int32 entropy = 8;
@@ -64,15 +64,9 @@ message MachineRecipe {
 
 message Ingredient {
   oneof kind {
-    ItemIngredient item = 1;
+    Stack item = 1;
     OreIngredient ore = 2;
   }
-}
-
-message ItemIngredient {
-  string id = 1;
-  int32 meta = 2; // 32767 matches every meta
-  int32 count = 3;
 }
 
 message OreIngredient {
@@ -80,15 +74,16 @@ message OreIngredient {
   int32 count = 2;
 }
 
-message ItemResult {
+// An item stack. As an ingredient, meta 32767 matches every meta.
+message Stack {
   string id = 1;
   int32 meta = 2;
   int32 count = 3;
 }
 
-// A fluid id with an amount in mB. Used for fluid inputs and outputs.
+// A fluid with an amount in mB. Used for fluid inputs and outputs.
 message FluidAmount {
-  string id = 1;
+  string id = 1; // Forge fluid name, for example lava
   int32 amount = 2;
 }
 
@@ -131,7 +126,7 @@ message SetBlockAction {
 }
 
 message DropItemAction {
-  ItemResult item = 1;
+  Stack item = 1;
 }
 
 // World interaction registries, see api WorldInteraction.kt.
@@ -174,9 +169,9 @@ message FluidEntityInteractions {
 
 message FluidEntityInteraction {
   string id = 1;
-  string fluid = 2;
+  string fluid = 2; // Forge fluid name
   string entity = 3;
-  ItemIngredient item = 4; // only for minecraft:item
+  Stack item = 4; // only for minecraft:item
   bool remove_entity = 5;
   EntityResult result = 6;
   int32 chance = 7;
@@ -187,7 +182,7 @@ message FluidEntityInteraction {
 
 message EntityResult {
   oneof kind {
-    ItemResult spawn_item = 1;
+    Stack spawn_item = 1;
     string spawn_entity = 2;
     BlockSpec set_fluid_block = 3;
   }

@@ -1,6 +1,5 @@
 package io.github.srdjanv.endreforked.api.worldgen
 
-import io.github.srdjanv.endreforked.api.registry.Id
 import io.github.srdjanv.endreforked.api.registry.RegistryEntry
 import net.minecraft.block.state.IBlockState
 import net.minecraft.util.ResourceLocation
@@ -115,7 +114,7 @@ sealed interface Feature {
  * The numbers are the first that fit: biome, then biome type, then dimension, then [params]. Without any, the feature does not run.
  */
 data class WorldFeature(
-    override val id: Id,
+    override val id: ResourceLocation,
     val kind: FeatureKind,
     val weight: Int,
     val feature: Feature,
@@ -126,4 +125,4 @@ data class WorldFeature(
 ) : RegistryEntry
 
 /** A biome that the mod adds to The End through Nether API. The [id] is the id of the biome. The weight is the Nether API weight. */
-data class EndBiome(override val id: Id, val weight: Int, val enabled: Boolean = true) : RegistryEntry
+data class EndBiome(override val id: ResourceLocation, val weight: Int, val enabled: Boolean = true) : RegistryEntry

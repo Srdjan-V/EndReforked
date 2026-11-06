@@ -3,11 +3,10 @@ package io.github.srdjanv.endreforked.common.machine
 import io.github.srdjanv.endreforked.api.base.crafting.TileStatus
 import io.github.srdjanv.endreforked.api.entropy.world.ChunkEntropyView
 import io.github.srdjanv.endreforked.api.machine.MachineRecipe
-import io.github.srdjanv.endreforked.api.registry.Id
-import io.github.srdjanv.endreforked.common.registry.GameAdapter
 import io.github.srdjanv.endreforked.impl.machine.MachineRecipes
 import io.github.srdjanv.endreforked.impl.machine.Match
 import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.util.ResourceLocation
 import net.minecraftforge.common.util.INBTSerializable
 
 /** Machine specific behaviour of a [MachineProcess]. Both calls are optional. */
@@ -32,7 +31,7 @@ interface ProcessHooks {
  * or when the registry has a new snapshot.
  */
 class MachineProcess(
-    val machine: Id,
+    val machine: ResourceLocation,
     val io: MachineIO,
     private val recipes: () -> MachineRecipes,
     private val hooks: ProcessHooks = object : ProcessHooks {},
@@ -46,7 +45,7 @@ class MachineProcess(
     private var cachedVersion = -1
     private var cachedSnapshot: MachineRecipes? = null
     private var cachedMatch: Match? = null
-    private var activeRecipe: Id? = null
+    private var activeRecipe: ResourceLocation? = null
 
     fun inputChanged() {
         inputVersion++
@@ -58,7 +57,7 @@ class MachineProcess(
             if (snapshot !== cachedSnapshot || inputVersion != cachedVersion) {
                 cachedSnapshot = snapshot
                 cachedVersion = inputVersion
-                cachedMatch = snapshot.find(machine, io.itemInput(), io.fluidInput(), GameAdapter.ores)
+                cachedMatch = snapshot.find(machine, io.itemInput(), io.fluidInput())
             }
             return cachedMatch
         }
@@ -122,7 +121,7 @@ class MachineProcess(
     override fun deserializeNBT(nbt: NBTTagCompound) {
         io.deserializeNBT(nbt)
         ticksRun = nbt.getInteger("ticks_run")
-        activeRecipe = if (nbt.hasKey("recipe")) Id.parseOrNull(nbt.getString("recipe")) else null
+        activeRecipe = if (nbt.hasKey("recipe")) ResourceLocation(nbt.getString("recipe")) else null
         inputChanged()
     }
 }

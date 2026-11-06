@@ -1,7 +1,5 @@
 package io.github.srdjanv.endreforked.impl.worldgen
 
-import io.github.srdjanv.endreforked.api.registry.Id
-import io.github.srdjanv.endreforked.api.registry.RegistryKey
 import io.github.srdjanv.endreforked.api.worldgen.EndBiome
 import io.github.srdjanv.endreforked.api.worldgen.Feature
 import io.github.srdjanv.endreforked.api.worldgen.FeatureKind
@@ -21,7 +19,7 @@ class WorldFeatures(entries: Collection<WorldFeature>) : FrozenRegistry<WorldFea
     fun of(kind: FeatureKind): List<WorldFeature> = byKind[kind] ?: emptyList()
 
     companion object {
-        val KEY = RegistryKey<WorldFeature>(Id("endreborn", "world_features"))
+        val KEY = ResourceLocation("endreborn", "world_features")
 
         private val ORDER = compareByDescending<WorldFeature> { it.weight }.thenBy { it.id }
 
@@ -94,7 +92,7 @@ fun WorldFeature.paramsAt(dimension: Int, biome: ResourceLocation, types: Collec
 /** The biomes that the mod adds to The End. */
 class EndBiomes(entries: Collection<EndBiome>) : FrozenRegistry<EndBiome>(KEY, entries) {
     companion object {
-        val KEY = RegistryKey<EndBiome>(Id("endreborn", "end_biomes"))
+        val KEY = ResourceLocation("endreborn", "end_biomes")
 
         fun managed(defaults: () -> Collection<EndBiome>, extraValidation: (EndBiome) -> String? = { null }) =
             ManagedRegistry(KEY, defaults, { validate(it) ?: extraValidation(it) }, ::EndBiomes)

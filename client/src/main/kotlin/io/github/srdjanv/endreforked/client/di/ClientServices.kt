@@ -10,7 +10,7 @@ import net.minecraftforge.fml.relauncher.Side
 /** Client part of the composition root. */
 class ClientServices(common: ModServices) {
     /** The registries of the client. Separate from the server ones, also in single player. The server snapshots replace their content. */
-    val registries: Registries = Registries.create()
+    val registries: Registries = Registries.create(false)
     val packetHandler = ClientPacketHandler(common.net, registries)
     val proxy: CommonProxy = ClientProxy(Side.CLIENT, common.registrySync, registries)
 

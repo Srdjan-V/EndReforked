@@ -13,7 +13,7 @@ class ModServices(val side: Side, val logger: Logger) {
     val net = Network(NetworkRegistry.INSTANCE.newEventDrivenChannel(Tags.MODID), Tags.MODID)
 
     /** The registries of the logical server. The client has its own set. */
-    val registries: Registries = Registries.create()
+    val registries: Registries = Registries.create(true)
     val registrySync = RegistrySync(registries, net, logger)
 
     /** The proxy of the dedicated server. Not used on the client, so it is created on first access. */

@@ -3,8 +3,6 @@ package io.github.srdjanv.endreforked.compat.jei
 import com.cleanroommc.modularui.utils.Color
 import io.github.srdjanv.endreforked.api.machine.ItemIngredient
 import io.github.srdjanv.endreforked.api.machine.MachineRecipe
-import io.github.srdjanv.endreforked.common.registry.GameAdapter
-import io.github.srdjanv.endreforked.common.registry.GameAdapter.toStack
 import io.github.srdjanv.endreforked.utils.LangUtil
 import mezz.jei.api.ingredients.IIngredients
 import mezz.jei.api.ingredients.VanillaTypes
@@ -46,23 +44,16 @@ class MachineRecipeWrapper private constructor(
     }
 
     companion object {
-        /** Returns null when the recipe uses an item or fluid that this client does not have. */
+        /** Returns null when an ore dictionary ingredient has no item on this client. */
         fun of(recipe: MachineRecipe): MachineRecipeWrapper? {
             val itemIn = recipe.itemInputs.map { ing ->
                 when (ing) {
-                    is ItemIngredient.Item -> listOfNotNull(GameAdapter.item(ing.id)?.let { ItemStack(it, ing.count, ing.meta) })
+                    is ItemIngredient.Item -> listOf(ing.stack)
                     is ItemIngredient.OreDict -> OreDictionary.getOres(ing.name).map { it.copy().also { s -> s.count = ing.count } }
                 }
             }
-            val itemOut = recipe.itemOutputs.map { it.toStack() }
-            val fluidIn = recipe.fluidInputs.mapNotNull { f -> GameAdapter.fluid(f.id)?.let { FluidStack(it, f.amount) } }
-            val fluidOut = recipe.fluidOutputs.mapNotNull { it.toStack() }
-            if (itemIn.any { it.isEmpty() } || itemOut.any { it.isEmpty } ||
-                fluidIn.size != recipe.fluidInputs.size || fluidOut.size != recipe.fluidOutputs.size
-            ) {
-                return null
-            }
-            return MachineRecipeWrapper(recipe, itemIn, itemOut, fluidIn, fluidOut)
+            if (itemIn.any { it.isEmpty() }) return null
+            return MachineRecipeWrapper(recipe, itemIn, recipe.itemOutputs, recipe.fluidInputs, recipe.fluidOutputs)
         }
     }
 }

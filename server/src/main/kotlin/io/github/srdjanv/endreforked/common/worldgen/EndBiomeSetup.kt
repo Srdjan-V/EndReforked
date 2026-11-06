@@ -3,7 +3,6 @@ package io.github.srdjanv.endreforked.common.worldgen
 import git.jbredwards.nether_api.api.event.NetherAPIRegistryEvent
 import git.jbredwards.nether_api.mod.common.registry.NetherAPIRegistry
 import io.github.srdjanv.endreforked.api.worldgen.EndBiome
-import io.github.srdjanv.endreforked.common.registry.GameAdapter.toLocation
 import io.github.srdjanv.endreforked.impl.registry.ManagedRegistry
 import io.github.srdjanv.endreforked.impl.worldgen.EndBiomes
 import net.minecraft.world.biome.Biome
@@ -20,7 +19,7 @@ class EndBiomeSetup(private val registry: ManagedRegistry<EndBiome, EndBiomes>, 
     fun apply() {
         for (entry in registry.current) {
             if (!entry.enabled) continue
-            val biome = Biome.REGISTRY.getObject(entry.id.toLocation()) ?: continue
+            val biome = Biome.REGISTRY.getObject(entry.id) ?: continue
             NetherAPIRegistry.THE_END.registerBiome(biome, entry.weight)
         }
     }

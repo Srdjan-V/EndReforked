@@ -1,16 +1,10 @@
 package io.github.srdjanv.endreforked.common.world
 
 import io.github.srdjanv.endreforked.EndReforked
-import io.github.srdjanv.endreforked.api.machine.ItemIngredient
-import io.github.srdjanv.endreforked.api.machine.WILDCARD_META
-import io.github.srdjanv.endreforked.api.registry.Id
 import io.github.srdjanv.endreforked.api.world.EntityResult
-import io.github.srdjanv.endreforked.common.registry.GameAdapter
-import io.github.srdjanv.endreforked.common.registry.GameAdapter.id
-import io.github.srdjanv.endreforked.common.registry.GameAdapter.matches
-import io.github.srdjanv.endreforked.common.registry.GameAdapter.toStack
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.Entity
+import net.minecraft.entity.EntityList
 import net.minecraft.entity.item.EntityItem
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumFacing
@@ -19,15 +13,11 @@ import net.minecraft.world.World
 import net.minecraft.world.WorldServer
 import net.minecraftforge.fluids.BlockFluidBase
 import net.minecraftforge.fluids.Fluid
+import net.minecraftforge.oredict.OreDictionary
 import java.util.Random
-import java.util.concurrent.ConcurrentHashMap
 
 /** Runs the fluid interaction registries for the fluid blocks. A fluid block calls it from its random tick and its entity collision. */
 object FluidInteractions {
-    private val fluidIds = ConcurrentHashMap<Fluid, Id>()
-
-    private fun id(fluid: Fluid) = fluidIds.getOrPut(fluid) { fluid.id() }
-
     /** One try of an interaction. [chance] is 1 in N, and with [consumeSource] only a source block (level 0) reacts. */
     private fun passes(chance: Int, consumeSource: Boolean, fluidState: IBlockState, random: Random) =
         (chance <= 1 || random.nextInt(chance) == 0) && (!consumeSource || fluidState.getValue(BlockFluidBase.LEVEL) == 0)
@@ -37,8 +27,7 @@ object FluidInteractions {
         if (consumeSource && consumeChance > 0 && random.nextInt(consumeChance) == 0) world.setBlockToAir(fluidPos)
     }
 
-    private fun fits(item: ItemIngredient.Item, stack: ItemStack) =
-        !stack.isEmpty && stack.item.id() == item.id && stack.count >= item.count && (item.meta == WILDCARD_META || item.meta == stack.metadata)
+    private fun fits(item: ItemStack, stack: ItemStack) = stack.count >= item.count && OreDictionary.itemMatches(item, stack, false)
 
     /** Reacts with the six neighbours of the fluid block at [fluidPos]. */
     @JvmStatic
@@ -46,15 +35,13 @@ object FluidInteractions {
         if (world.isRemote) return
         val server = world as WorldServer
         val interactions = EndReforked.getProxy().registries(world).fluidBlockInteractions.current
-        val fluidId = id(fluid)
         for (side in EnumFacing.VALUES) {
             val pos = fluidPos.offset(side)
             val state = server.getBlockState(pos)
             if (state.block.isAir(state, server, pos) || state.block === fluid.block) continue
-            for (i in interactions.find(fluidId, state.block.id())) {
-                if (!state.matches(i.match) || !passes(i.chance, i.consumeSource, fluidState, random)) continue
-                val result = GameAdapter.state(i.result) ?: continue
-                server.setBlockState(pos, result, 3)
+            for (i in interactions.find(fluid, state.block)) {
+                if (!i.match.matches(state) || !passes(i.chance, i.consumeSource, fluidState, random)) continue
+                server.setBlockState(pos, i.result, 3)
                 consume(server, fluidPos, i.consumeSource, i.consumeChance, random)
                 break
             }
@@ -66,9 +53,9 @@ object FluidInteractions {
     fun entityCollision(world: World, fluidPos: BlockPos, fluidState: IBlockState, entity: Entity, fluid: Fluid) {
         if (world.isRemote) return
         val server = world as WorldServer
-        val entityId = GameAdapter.entityId(entity) ?: return
+        val entityId = EntityList.getKey(entity) ?: return
         val random = world.rand
-        for (i in EndReforked.getProxy().registries(world).fluidEntityInteractions.current.find(id(fluid), entityId)) {
+        for (i in EndReforked.getProxy().registries(world).fluidEntityInteractions.current.find(fluid, entityId)) {
             val input = i.item
             val stack = (entity as? EntityItem)?.item
             if (input != null && (stack == null || !fits(input, stack))) continue
@@ -76,11 +63,11 @@ object FluidInteractions {
 
             // Build the result first, so a result that cannot be built changes nothing.
             val spawned: Entity? = when (val r = i.result) {
-                is EntityResult.SpawnItem -> EntityItem(world).also { it.item = r.item.toStack() }
-                is EntityResult.SpawnEntity -> GameAdapter.createEntity(r.entity, world) ?: continue
+                is EntityResult.SpawnItem -> EntityItem(world).also { it.item = r.item.copy() }
+                is EntityResult.SpawnEntity -> EntityList.createEntityByIDFromName(r.entity, world) ?: continue
                 is EntityResult.SetFluidBlock -> null
             }
-            val fluidResult = (i.result as? EntityResult.SetFluidBlock)?.let { GameAdapter.state(it.block) ?: continue }
+            val fluidResult = (i.result as? EntityResult.SetFluidBlock)?.block
 
             if (input != null) stack!!.shrink(input.count)
             if (i.removeEntity) server.removeEntity(entity)

@@ -3,9 +3,6 @@ package io.github.srdjanv.endreforked.common.world
 import io.github.srdjanv.endreforked.EndReforked
 import io.github.srdjanv.endreforked.api.world.WorldEffect
 import io.github.srdjanv.endreforked.common.configs.Configs
-import io.github.srdjanv.endreforked.common.registry.GameAdapter
-import io.github.srdjanv.endreforked.common.registry.GameAdapter.id
-import io.github.srdjanv.endreforked.common.registry.GameAdapter.matches
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.SoundEvents
 import net.minecraft.util.EnumHand
@@ -20,10 +17,9 @@ object WandInteractions {
     fun use(player: EntityPlayer, world: WorldServer, pos: BlockPos, hand: EnumHand): Boolean {
         val state = world.getBlockState(pos)
         val conversions = EndReforked.getProxy().registries(world).wandConversions.current
-        for (conversion in conversions.forBlock(state.block.id())) {
-            if (!state.matches(conversion.match)) continue
-            val result = GameAdapter.state(conversion.result) ?: continue
-            world.setBlockState(pos, result)
+        for (conversion in conversions.forBlock(state.block)) {
+            if (!conversion.match.matches(state)) continue
+            world.setBlockState(pos, conversion.result)
             player.getHeldItem(hand).damageItem(conversion.itemDamage ?: Configs.SERVER_SIDE_CONFIGS.entropyWandUseDamage, player)
             for (effect in conversion.effects) {
                 when (effect) {

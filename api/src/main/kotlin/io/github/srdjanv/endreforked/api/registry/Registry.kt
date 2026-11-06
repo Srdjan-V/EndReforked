@@ -1,30 +1,10 @@
 package io.github.srdjanv.endreforked.api.registry
 
-/** A namespaced id, written `namespace:path`. */
-data class Id(val namespace: String, val path: String) : Comparable<Id> {
-    override fun toString() = "$namespace:$path"
-
-    override fun compareTo(other: Id) = toString().compareTo(other.toString())
-
-    companion object {
-        private val VALID = Regex("[a-z0-9_.-]+:[a-z0-9_./-]+")
-
-        /** Returns null when [text] is not a lower-case `namespace:path`. */
-        fun parseOrNull(text: String): Id? =
-            if (VALID.matches(text)) Id(text.substringBefore(':'), text.substringAfter(':')) else null
-
-        fun parse(text: String): Id = parseOrNull(text) ?: throw IllegalArgumentException("Invalid id '$text', expected namespace:path")
-    }
-}
+import net.minecraft.util.ResourceLocation
 
 /** Anything that lives in a [Registry]. */
 interface RegistryEntry {
-    val id: Id
-}
-
-/** The id of a registry, for example `endreborn:machine_recipes`. [E] is the entry type. */
-data class RegistryKey<E : RegistryEntry>(val id: Id) {
-    override fun toString() = id.toString()
+    val id: ResourceLocation
 }
 
 /**
@@ -32,11 +12,12 @@ data class RegistryKey<E : RegistryEntry>(val id: Id) {
  * Each registry adds its own typed lookup on top of this interface.
  */
 interface Registry<E : RegistryEntry> : Iterable<E> {
-    val key: RegistryKey<E>
+    /** The id of the registry, for example `endreborn:machine_recipes`. */
+    val key: ResourceLocation
     val entries: Collection<E>
     val size: Int get() = entries.size
 
-    operator fun get(id: Id): E?
+    operator fun get(id: ResourceLocation): E?
 
     override fun iterator(): Iterator<E> = entries.iterator()
 }
@@ -45,7 +26,7 @@ interface Registry<E : RegistryEntry> : Iterable<E> {
 data class LoadReport(val total: Int, val applied: Map<String, Int>, val errors: List<String>)
 
 /**
- * The script layer of a registry. CraftTweaker and GroovyScript adapters use it, and they convert their stacks to ids first.
+ * The script layer of a registry. CraftTweaker and GroovyScript adapters use it and pass Minecraft objects.
  *
  * The layer is the last of two, applied in order on every rebuild: code defaults, scripts.
  * Operations are only recorded. Nothing becomes visible until [rebuild], which applies all layers and swaps the snapshot.
@@ -57,7 +38,7 @@ interface RegistryScripts<E : RegistryEntry> {
     /** Adds an entry, or replaces the one with the same id. */
     fun add(entry: E)
 
-    fun remove(id: Id)
+    fun remove(id: ResourceLocation)
 
     /** Removes every entry the predicate accepts, from the result of the earlier operations. */
     fun removeIf(predicate: (E) -> Boolean)

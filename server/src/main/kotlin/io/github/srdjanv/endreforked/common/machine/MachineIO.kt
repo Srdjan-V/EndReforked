@@ -1,11 +1,6 @@
 package io.github.srdjanv.endreforked.common.machine
 
 import io.github.srdjanv.endreforked.api.machine.MachineRecipe
-import io.github.srdjanv.endreforked.common.registry.GameAdapter
-import io.github.srdjanv.endreforked.common.registry.GameAdapter.toInput
-import io.github.srdjanv.endreforked.common.registry.GameAdapter.toStack
-import io.github.srdjanv.endreforked.impl.machine.FluidInput
-import io.github.srdjanv.endreforked.impl.machine.ItemInput
 import io.github.srdjanv.endreforked.impl.machine.Match
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
@@ -79,11 +74,11 @@ class MachineIO(
     val fluidInputs: List<InputTank>,
     val fluidOutputs: List<OutputTank>,
 ) : INBTSerializable<NBTTagCompound> {
-    fun itemInput(): List<ItemInput?> = List(itemInputs.slots) { itemInputs.getStackInSlot(it).toInput() }
+    fun itemInput(): List<ItemStack> = List(itemInputs.slots) { itemInputs.getStackInSlot(it) }
 
-    fun fluidInput(): List<FluidInput?> = fluidInputs.map { it.fluid.toInput() }
+    fun fluidInput(): List<FluidStack?> = fluidInputs.map { it.fluid }
 
-    fun isInputEmpty() = itemInput().all { it == null } && fluidInput().all { it == null }
+    fun isInputEmpty() = itemInput().all { it.isEmpty } && fluidInput().all { (it?.amount ?: 0) <= 0 }
 
     /**
      * Takes what the match says from the inputs. All or nothing: it first checks every slot and tank
@@ -108,21 +103,19 @@ class MachineIO(
     /** True if all outputs of [recipe] fit together. It tries them on copies of the output slots and tanks. */
     fun fits(recipe: MachineRecipe): Boolean {
         val items = ItemStackHandler(NonNullList.from(ItemStack.EMPTY, *Array(itemOutputs.slots) { itemOutputs.getStackInSlot(it).copy() }))
-        for (out in recipe.itemOutputs) if (!ItemHandlerHelper.insertItem(items, out.toStack(), false).isEmpty) return false
+        for (out in recipe.itemOutputs) if (!ItemHandlerHelper.insertItem(items, out.copy(), false).isEmpty) return false
         val tanks = fluidOutputs.map { FluidTank(it.fluid?.copy(), it.capacity) }
         for (out in recipe.fluidOutputs) {
-            val stack = out.toStack() ?: return false
-            if (tanks.none { it.fill(stack, true) == stack.amount }) return false
+            if (tanks.none { it.fill(out, true) == out.amount }) return false
         }
         return true
     }
 
     /** Puts the outputs of [recipe] into the output slots and tanks. Call [fits] first. */
     fun insertOutputs(recipe: MachineRecipe) {
-        for (out in recipe.itemOutputs) itemOutputs.insertInternal(out.toStack(), false)
+        for (out in recipe.itemOutputs) itemOutputs.insertInternal(out.copy(), false)
         for (out in recipe.fluidOutputs) {
-            val stack = out.toStack() ?: continue
-            fluidOutputs.firstOrNull { it.fillInternal(stack, false) == stack.amount }?.fillInternal(stack, true)
+            fluidOutputs.firstOrNull { it.fillInternal(out, false) == out.amount }?.fillInternal(out, true)
         }
     }
 

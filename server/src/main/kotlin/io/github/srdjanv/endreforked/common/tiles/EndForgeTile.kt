@@ -21,9 +21,6 @@ import io.github.srdjanv.endreforked.common.machine.MachineProcess
 import io.github.srdjanv.endreforked.common.machine.OutputHandler
 import io.github.srdjanv.endreforked.common.machine.ProcessHooks
 import io.github.srdjanv.endreforked.common.machine.recipes
-import io.github.srdjanv.endreforked.common.registry.GameAdapter
-import io.github.srdjanv.endreforked.common.registry.GameAdapter.id
-import io.github.srdjanv.endreforked.common.registry.GameAdapter.toKey
 import io.github.srdjanv.endreforked.common.registry.MachineRecipeDefaults
 import io.github.srdjanv.endreforked.common.tiles.base.BaseTileEntity
 import io.github.srdjanv.endreforked.common.widgets.BasicTextWidget
@@ -46,14 +43,14 @@ class EndForgeTile : BaseTileEntity(), ITickable, IGuiHolder<PosGuiData> {
         MachineIO(
             InputHandler(
                 1,
-                { recipes().acceptsItem(MachineRecipeDefaults.END_FORGE, it.toKey(), GameAdapter.ores) },
+                { recipes().acceptsItem(MachineRecipeDefaults.END_FORGE, it) },
                 { markDirty(); process.inputChanged() },
             ),
             OutputHandler(1) { markDirty() },
             listOf(
                 InputTank(
                     1_600,
-                    { recipes().acceptsFluid(MachineRecipeDefaults.END_FORGE, it.fluid.id()) },
+                    { recipes().acceptsFluid(MachineRecipeDefaults.END_FORGE, it.fluid) },
                     { markDirty(); process.inputChanged() },
                 ),
             ),

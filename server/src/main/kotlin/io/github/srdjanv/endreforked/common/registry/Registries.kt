@@ -17,11 +17,13 @@ import io.github.srdjanv.endreforked.impl.world.toSnapshot
 import io.github.srdjanv.endreforked.impl.worldgen.EndBiomes
 import io.github.srdjanv.endreforked.impl.worldgen.WorldFeatures
 import io.github.srdjanv.endreforked.wire.s2c.RegistrySnapshot
+import net.minecraft.world.biome.Biome
 
 /**
  * All registries of one side. The server and the client each have their own instance, also in single player.
  * A new registry is added here: a property and a [Slot] in [slots]. A synced one also needs one case in the client packet handler.
- * The world features and the End biomes are server only: nothing on the client reads them, so their slots have no snapshot.
+ * The world features and the End biomes are server only: nothing on the client reads them, so they have no snapshot,
+ * and a client instance ([withWorldGen] false) leaves them out of [slots] and never builds them.
  */
 class Registries(
     val machineRecipes: ManagedRegistry<MachineRecipe, MachineRecipes>,
@@ -30,6 +32,7 @@ class Registries(
     val fluidEntityInteractions: ManagedRegistry<FluidEntityInteraction, FluidEntityInteractions>,
     val worldFeatures: ManagedRegistry<WorldFeature, WorldFeatures>,
     val endBiomes: ManagedRegistry<EndBiome, EndBiomes>,
+    withWorldGen: Boolean,
 ) {
     /**
      * One registry without its types, for what all registries share. [name] is the path of the registry id.
@@ -43,21 +46,22 @@ class Registries(
     )
 
     val slots = listOf(
-        Slot(machineRecipes.key.id.path, machineRecipes::rebuild, { machineRecipes.current.toSnapshot() }) { l ->
+        Slot(machineRecipes.key.path, machineRecipes::rebuild, { machineRecipes.current.toSnapshot() }) { l ->
             machineRecipes.addListener { l(it.toSnapshot()) }
         },
-        Slot(wandConversions.key.id.path, wandConversions::rebuild, { wandConversions.current.toSnapshot() }) { l ->
+        Slot(wandConversions.key.path, wandConversions::rebuild, { wandConversions.current.toSnapshot() }) { l ->
             wandConversions.addListener { l(it.toSnapshot()) }
         },
-        Slot(fluidBlockInteractions.key.id.path, fluidBlockInteractions::rebuild, { fluidBlockInteractions.current.toSnapshot() }) { l ->
+        Slot(fluidBlockInteractions.key.path, fluidBlockInteractions::rebuild, { fluidBlockInteractions.current.toSnapshot() }) { l ->
             fluidBlockInteractions.addListener { l(it.toSnapshot()) }
         },
-        Slot(fluidEntityInteractions.key.id.path, fluidEntityInteractions::rebuild, { fluidEntityInteractions.current.toSnapshot() }) { l ->
+        Slot(fluidEntityInteractions.key.path, fluidEntityInteractions::rebuild, { fluidEntityInteractions.current.toSnapshot() }) { l ->
             fluidEntityInteractions.addListener { l(it.toSnapshot()) }
         },
-        Slot(worldFeatures.key.id.path, worldFeatures::rebuild),
-        Slot(endBiomes.key.id.path, endBiomes::rebuild),
-    )
+    ) + if (withWorldGen) listOf(
+        Slot(worldFeatures.key.path, worldFeatures::rebuild),
+        Slot(endBiomes.key.path, endBiomes::rebuild),
+    ) else emptyList()
 
     /** The current content of every synced registry, ready to send to a client. */
     fun snapshots(): List<RegistrySnapshot> = slots.mapNotNull { it.snapshot?.invoke() }
@@ -66,13 +70,20 @@ class Registries(
     fun rebuildAll(): List<Pair<Slot, LoadReport>> = slots.map { it to it.rebuild() }
 
     companion object {
-        fun create() = Registries(
-            MachineRecipes.managed(MachineRecipeDefaults::all, GameAdapter::validate),
-            WandConversions.managed(WorldInteractionDefaults::wandConversions, GameAdapter::validate),
-            FluidBlockInteractions.managed(WorldInteractionDefaults::fluidBlockInteractions, GameAdapter::validate),
-            FluidEntityInteractions.managed(WorldInteractionDefaults::fluidEntityInteractions, GameAdapter::validate),
-            WorldFeatures.managed(WorldFeatureDefaults::all, GameAdapter::validate),
-            EndBiomes.managed(WorldFeatureDefaults::endBiomes, GameAdapter::validate),
+        /** The registries of one side. The server passes true, the client false. */
+        fun create(withWorldGen: Boolean) = Registries(
+            MachineRecipes.managed(MachineRecipeDefaults::all),
+            WandConversions.managed(WorldInteractionDefaults::wandConversions),
+            FluidBlockInteractions.managed(WorldInteractionDefaults::fluidBlockInteractions),
+            FluidEntityInteractions.managed(WorldInteractionDefaults::fluidEntityInteractions),
+            WorldFeatures.managed(WorldFeatureDefaults::all, ::validate),
+            EndBiomes.managed(WorldFeatureDefaults::endBiomes, ::validate),
+            withWorldGen,
         )
+
+        private fun validate(f: WorldFeature): String? =
+            (f.biomes.allow.keys + f.biomes.deny).firstOrNull { !Biome.REGISTRY.containsKey(it) }?.let { "unknown biome $it" }
+
+        private fun validate(b: EndBiome): String? = if (Biome.REGISTRY.containsKey(b.id)) null else "unknown biome ${b.id}"
     }
 }

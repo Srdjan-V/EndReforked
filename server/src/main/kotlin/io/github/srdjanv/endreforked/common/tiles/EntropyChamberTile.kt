@@ -31,9 +31,6 @@ import io.github.srdjanv.endreforked.common.machine.MachineProcess
 import io.github.srdjanv.endreforked.common.machine.OutputHandler
 import io.github.srdjanv.endreforked.common.machine.OutputTank
 import io.github.srdjanv.endreforked.common.machine.recipes
-import io.github.srdjanv.endreforked.common.registry.GameAdapter
-import io.github.srdjanv.endreforked.common.registry.GameAdapter.id
-import io.github.srdjanv.endreforked.common.registry.GameAdapter.toKey
 import io.github.srdjanv.endreforked.common.registry.MachineRecipeDefaults
 import io.github.srdjanv.endreforked.common.tiles.base.BaseTileEntity
 import io.github.srdjanv.endreforked.common.widgets.BasicTextWidget
@@ -70,7 +67,7 @@ class EntropyChamberTile : BaseTileEntity(), ITickable, EntropyDataProvider, IGu
         MachineIO(
             InputHandler(
                 1,
-                { recipes().acceptsItem(MachineRecipeDefaults.ENTROPY_CHAMBER, it.toKey(), GameAdapter.ores) },
+                { recipes().acceptsItem(MachineRecipeDefaults.ENTROPY_CHAMBER, it) },
                 { markDirty(); itemProcess.inputChanged() },
             ),
             OutputHandler(1) { markDirty() },
@@ -88,7 +85,7 @@ class EntropyChamberTile : BaseTileEntity(), ITickable, EntropyDataProvider, IGu
             listOf(
                 InputTank(
                     20_000,
-                    { recipes().acceptsFluid(MachineRecipeDefaults.ENTROPY_CHAMBER, it.fluid.id()) },
+                    { recipes().acceptsFluid(MachineRecipeDefaults.ENTROPY_CHAMBER, it.fluid) },
                     { markDirty(); fluidProcess.inputChanged() },
                 ),
             ),

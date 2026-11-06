@@ -6,8 +6,6 @@ import io.github.srdjanv.endreforked.Tags
 import io.github.srdjanv.endreforked.api.world.WandConversion
 import io.github.srdjanv.endreforked.common.ModItems
 import io.github.srdjanv.endreforked.common.configs.Configs
-import io.github.srdjanv.endreforked.common.registry.GameAdapter
-import io.github.srdjanv.endreforked.common.registry.GameAdapter.matches
 import io.github.srdjanv.endreforked.compat.jei.RecipeFeed
 import io.github.srdjanv.endreforked.impl.world.WandConversions
 import io.github.srdjanv.endreforked.utils.LangUtil
@@ -42,11 +40,11 @@ class WandConversionWrapper private constructor(
     }
 
     companion object {
-        /** Returns null when this client does not have the blocks, or no input has an item. */
+        /** Returns null when no input or the output has no item. */
         fun of(conversion: WandConversion): WandConversionWrapper? {
-            val block = GameAdapter.block(conversion.match.block) ?: return null
-            val result = GameAdapter.state(conversion.result) ?: return null
-            var input = block.blockState.validStates.filter { it.matches(conversion.match) }
+            val block = conversion.match.block
+            val result = conversion.result
+            var input = block.blockState.validStates.filter { conversion.match.matches(it) }
                 .map { ItemStack(block, 1, block.getMetaFromState(it)) }
                 .filter { !it.isEmpty }
                 .distinctBy { it.metadata }

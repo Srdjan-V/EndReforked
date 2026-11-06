@@ -1,10 +1,7 @@
 package io.github.srdjanv.endreforked.common.registry
 
 import io.github.srdjanv.endreforked.Tags
-import io.github.srdjanv.endreforked.api.machine.BlockSpec
-import io.github.srdjanv.endreforked.api.machine.ItemIngredient
-import io.github.srdjanv.endreforked.api.machine.ItemOut
-import io.github.srdjanv.endreforked.api.registry.Id
+import io.github.srdjanv.endreforked.api.world.BlockMatch
 import io.github.srdjanv.endreforked.api.world.EntityResult
 import io.github.srdjanv.endreforked.api.world.FluidBlockInteraction
 import io.github.srdjanv.endreforked.api.world.FluidEntityInteraction
@@ -16,16 +13,19 @@ import io.github.srdjanv.endreforked.common.ModFluids
 import io.github.srdjanv.endreforked.common.ModItems
 import io.github.srdjanv.endreforked.common.blocks.BlockOrganaFlower
 import io.github.srdjanv.endreforked.common.configs.Configs
-import io.github.srdjanv.endreforked.common.registry.GameAdapter.id
 import net.minecraft.block.Block
+import net.minecraft.block.BlockSandStone
+import net.minecraft.block.BlockStone
+import net.minecraft.block.properties.IProperty
 import net.minecraft.init.Blocks
-import net.minecraft.item.Item
+import net.minecraft.item.ItemStack
+import net.minecraft.util.ResourceLocation
 
 /** The wand conversions and fluid interactions that ship with the mod. Called when the registries are built, after the blocks and items exist. */
 object WorldInteractionDefaults {
-    private fun block(b: Block, vararg properties: Pair<String, String>) = BlockSpec(b.id(), mapOf(*properties))
+    private fun match(b: Block, vararg properties: Pair<IProperty<*>, Comparable<*>>) = BlockMatch(b, mapOf(*properties))
 
-    private fun wandId(name: String) = Id(Tags.MODID, "wand/$name")
+    private fun wandId(name: String) = ResourceLocation(Tags.MODID, "wand/$name")
 
     /** The damage of the wand config plus [extra]. The config is read when the defaults are built, like before. */
     private fun damage(extra: Int) = Configs.SERVER_SIDE_CONFIGS.entropyWandUseDamage + extra
@@ -33,64 +33,66 @@ object WorldInteractionDefaults {
     /** The old default conversions matched the default state of the block only. */
     fun wandConversions(): List<WandConversion> {
         val sound = listOf(WorldEffect.FLINT_SOUND)
-        fun simple(name: String, from: BlockSpec, to: Block) = WandConversion(wandId(name), from, block(to), effects = sound)
+        fun simple(name: String, from: BlockMatch, to: Block) = WandConversion(wandId(name), from, to.defaultState, effects = sound)
         val flower = ModBlocks.ORGANA_FLOWER_BLOCK.get()
-        fun age(from: Int) = block(flower, BlockOrganaFlower.AGE.name to "$from")
+        fun age(from: Int) = match(flower, BlockOrganaFlower.AGE to from)
+        fun grown(age: Int) = flower.defaultState.withProperty(BlockOrganaFlower.AGE, age)
         return listOf(
-            simple("end_stone", block(Blocks.END_STONE), ModBlocks.ENTROPY_END_STONE.get()),
-            simple("stone", block(Blocks.STONE, "variant" to "stone"), Blocks.COBBLESTONE),
-            simple("cobblestone", block(Blocks.COBBLESTONE), Blocks.GRAVEL),
-            simple("gravel", block(Blocks.GRAVEL), Blocks.SAND),
-            simple("sandstone", block(Blocks.SANDSTONE, "type" to "sandstone"), Blocks.SAND),
-            simple("tallgrass", block(Blocks.TALLGRASS), Blocks.DEADBUSH),
-            simple("red_flower", block(Blocks.RED_FLOWER), Blocks.DEADBUSH),
-            simple("yellow_flower", block(Blocks.YELLOW_FLOWER), Blocks.DEADBUSH),
-            WandConversion(wandId("log"), block(Blocks.LOG), block(Blocks.COAL_BLOCK), damage(8), effects = sound),
-            WandConversion(wandId("log2"), block(Blocks.LOG2), block(Blocks.COAL_BLOCK), damage(8), effects = sound),
-            WandConversion(wandId("organa_flower_8"), age(8), age(9), damage(10)),
-            WandConversion(wandId("organa_flower_9"), age(9), age(10), damage(10)),
-            WandConversion(wandId("end_magma"), block(ModBlocks.END_MAGMA_BLOCK.get()), block(ModBlocks.FLUID_END_MAGMA_BLOCK.get()), damage(15)),
+            simple("end_stone", match(Blocks.END_STONE), ModBlocks.ENTROPY_END_STONE.get()),
+            simple("stone", match(Blocks.STONE, BlockStone.VARIANT to BlockStone.EnumType.STONE), Blocks.COBBLESTONE),
+            simple("cobblestone", match(Blocks.COBBLESTONE), Blocks.GRAVEL),
+            simple("gravel", match(Blocks.GRAVEL), Blocks.SAND),
+            simple("sandstone", match(Blocks.SANDSTONE, BlockSandStone.TYPE to BlockSandStone.EnumType.DEFAULT), Blocks.SAND),
+            simple("tallgrass", match(Blocks.TALLGRASS), Blocks.DEADBUSH),
+            simple("red_flower", match(Blocks.RED_FLOWER), Blocks.DEADBUSH),
+            simple("yellow_flower", match(Blocks.YELLOW_FLOWER), Blocks.DEADBUSH),
+            WandConversion(wandId("log"), match(Blocks.LOG), Blocks.COAL_BLOCK.defaultState, damage(8), effects = sound),
+            WandConversion(wandId("log2"), match(Blocks.LOG2), Blocks.COAL_BLOCK.defaultState, damage(8), effects = sound),
+            WandConversion(wandId("organa_flower_8"), age(8), grown(9), damage(10)),
+            WandConversion(wandId("organa_flower_9"), age(9), grown(10), damage(10)),
+            WandConversion(
+                wandId("end_magma"), match(ModBlocks.END_MAGMA_BLOCK.get()), ModBlocks.FLUID_END_MAGMA_BLOCK.get().defaultState, damage(15),
+            ),
         )
     }
 
     fun fluidBlockInteractions(): List<FluidBlockInteraction> = listOf(
         FluidBlockInteraction(
-            id = Id(Tags.MODID, "entropy/entropy_end_stone"),
-            fluid = ModFluids.ENTROPY.get().id(),
-            match = block(Blocks.END_STONE),
-            result = block(ModBlocks.ENTROPY_END_STONE.get()),
+            id = ResourceLocation(Tags.MODID, "entropy/entropy_end_stone"),
+            fluid = ModFluids.ENTROPY.get(),
+            match = match(Blocks.END_STONE),
+            result = ModBlocks.ENTROPY_END_STONE.get().defaultState,
             chance = 5,
         ),
     )
 
     fun fluidEntityInteractions(): List<FluidEntityInteraction> {
-        val entropy = ModFluids.ENTROPY.get().id()
-        val organaFlower = Item.getItemFromBlock(ModBlocks.ORGANA_FLOWER_BLOCK.get())
+        val entropy = ModFluids.ENTROPY.get()
         return listOf(
             FluidEntityInteraction(
-                id = Id(Tags.MODID, "entropy/organa_flower"),
+                id = ResourceLocation(Tags.MODID, "entropy/organa_flower"),
                 fluid = entropy,
                 entity = ITEM_ENTITY,
-                item = ItemIngredient.Item(Item.getItemFromBlock(Blocks.CHORUS_FLOWER).id(), 0, 4),
-                result = EntityResult.SpawnItem(ItemOut(organaFlower.id(), 0, 4)),
+                item = ItemStack(Blocks.CHORUS_FLOWER, 4),
+                result = EntityResult.SpawnItem(ItemStack(ModBlocks.ORGANA_FLOWER_BLOCK.get(), 4)),
                 chance = 10,
                 consumeSource = true,
             ),
             FluidEntityInteraction(
-                id = Id(Tags.MODID, "entropy/fluid_organa"),
+                id = ResourceLocation(Tags.MODID, "entropy/fluid_organa"),
                 fluid = entropy,
                 entity = ITEM_ENTITY,
-                item = ItemIngredient.Item(ModItems.ORGANA_FRUIT.get().id(), 0, 1),
-                result = EntityResult.SetFluidBlock(block(ModBlocks.FLUID_ORGANA_BLOCK.get())),
+                item = ItemStack(ModItems.ORGANA_FRUIT.get()),
+                result = EntityResult.SetFluidBlock(ModBlocks.FLUID_ORGANA_BLOCK.get().defaultState),
                 chance = 20,
                 consumeSource = true,
             ),
             FluidEntityInteraction(
-                id = Id(Tags.MODID, "entropy/entity_watcher"),
+                id = ResourceLocation(Tags.MODID, "entropy/entity_watcher"),
                 fluid = entropy,
-                entity = Id("minecraft", "enderman"),
+                entity = ResourceLocation("minecraft", "enderman"),
                 removeEntity = true,
-                result = EntityResult.SpawnEntity(Id(Tags.MODID, "watcher")),
+                result = EntityResult.SpawnEntity(ResourceLocation(Tags.MODID, "watcher")),
                 consumeSource = true,
             ),
         )

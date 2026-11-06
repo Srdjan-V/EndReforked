@@ -4,8 +4,6 @@ import com.google.common.base.Predicate
 import io.github.srdjanv.endreforked.api.machine.StructureSpec
 import io.github.srdjanv.endreforked.api.machine.WorldAction
 import io.github.srdjanv.endreforked.api.machine.WorldEvent
-import io.github.srdjanv.endreforked.common.registry.GameAdapter
-import io.github.srdjanv.endreforked.common.registry.GameAdapter.toStack
 import net.minecraft.block.Block
 import net.minecraft.block.state.BlockWorldState
 import net.minecraft.block.state.IBlockState
@@ -17,7 +15,7 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.WorldServer
 import java.util.concurrent.ConcurrentHashMap
 
-/** Turns the world event data into Minecraft objects and runs it. */
+/** Runs the world events of the Materializer. */
 object WorldEvents {
     /** The search box around the machine: 5 blocks to each side. */
     private const val RANGE = 5
@@ -30,8 +28,7 @@ object WorldEvents {
 
     fun compile(spec: StructureSpec): Compiled = cache.getOrPut(spec) {
         val air = Blocks.AIR.defaultState
-        // An unknown block cannot happen on the server (validation), but a client may get data from a server with other mods.
-        val states = spec.symbols.mapValues { (_, block) -> GameAdapter.state(block) ?: air }
+        val states = spec.symbols
         val factory = FactoryBlockPattern.start()
         spec.aisles.forEach { factory.aisle(*it.toTypedArray()) }
         states.forEach { (symbol, state) -> factory.where(symbol, Predicate<BlockWorldState> { it != null && it.blockState == state }) }
@@ -68,10 +65,10 @@ object WorldEvents {
         if (world.isAirBlock(pos)) return
         particles(world, pos)
         when (action) {
-            is WorldAction.SetBlock -> GameAdapter.state(action.block)?.let { world.setBlockState(pos, it) }
+            is WorldAction.SetBlock -> world.setBlockState(pos, action.block)
             is WorldAction.DropItem -> {
                 world.setBlockToAir(pos)
-                Block.spawnAsEntity(world, pos, action.item.toStack())
+                Block.spawnAsEntity(world, pos, action.item.copy())
             }
         }
     }
