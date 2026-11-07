@@ -4,8 +4,7 @@ import io.github.srdjanv.endreforked.common.ModBlocks
 import io.github.srdjanv.endreforked.common.ModItems
 import io.github.srdjanv.endreforked.common.blocks.base.BaseBlockBush
 import io.github.srdjanv.endreforked.common.entropy.EntropyTuning
-import io.github.srdjanv.endreforked.common.entropy.world.EntropyWorldHandler
-import io.github.srdjanv.endreforked.utils.renderParticle
+import io.github.srdjanv.endreforked.utils.randomTickPassiveInducer
 import net.minecraft.block.material.MapColor
 import net.minecraft.block.material.Material
 import net.minecraft.block.state.IBlockState
@@ -16,12 +15,11 @@ import net.minecraft.init.MobEffects
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.potion.PotionEffect
+import net.minecraft.util.EnumParticleTypes
 import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
-import net.minecraft.util.EnumParticleTypes
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
-import net.minecraft.world.WorldServer
 import net.minecraftforge.common.IShearable
 import java.util.*
 
@@ -37,13 +35,13 @@ class BlockOrganaWeed : BaseBlockBush("organa_weed", Material.VINE, { setOf(ModB
     }
 
     override fun randomTick(worldIn: World, pos: BlockPos, state: IBlockState, random: Random) {
-        if (worldIn.isRemote) return
-        EntropyWorldHandler.getEntropyChunkWorld(worldIn, pos).ifPresent {
-            if (it.induceEntropy(EntropyTuning.organaWeed.amount, false) > 0) {
-                val serverWorld = worldIn as WorldServer
-                renderParticle(pos, serverWorld, EnumParticleTypes.SPELL_MOB, 0x9B30FF)
-            }
-        }
+        randomTickPassiveInducer(
+            worldIn,
+            pos,
+            EntropyTuning.organaWeed,
+            0x9B30FF,
+            EnumParticleTypes.SPELL_MOB,
+        )
     }
 
     override fun onEntityCollision(worldIn: World, pos: BlockPos, state: IBlockState, entityIn: Entity) {

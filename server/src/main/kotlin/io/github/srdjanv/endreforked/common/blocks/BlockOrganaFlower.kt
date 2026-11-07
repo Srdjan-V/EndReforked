@@ -4,7 +4,8 @@ import io.github.srdjanv.endreforked.EndReforked
 import io.github.srdjanv.endreforked.common.ModBlocks
 import io.github.srdjanv.endreforked.common.ModItems
 import io.github.srdjanv.endreforked.common.blocks.base.BlockBase
-import io.github.srdjanv.endreforked.common.tiles.passiveinducers.OrganaFlowerTile
+import io.github.srdjanv.endreforked.common.entropy.EntropyTuning
+import io.github.srdjanv.endreforked.utils.randomTickPassiveInducer
 import net.minecraft.block.Block
 import net.minecraft.block.material.MapColor
 import net.minecraft.block.material.Material
@@ -19,6 +20,7 @@ import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.BlockRenderLayer
+import net.minecraft.util.EnumParticleTypes
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.NonNullList
 import net.minecraft.util.math.BlockPos
@@ -192,10 +194,15 @@ class BlockOrganaFlower : BlockBase("organa_flower", Material.PLANTS, MapColor.P
     override fun getBlockFaceShape(worldIn: IBlockAccess, state: IBlockState, pos: BlockPos, face: EnumFacing) =
         BlockFaceShape.UNDEFINED
 
-    override fun hasTileEntity(state: IBlockState) = state.getValue(AGE) == 10
+    override fun tickRate(world: World): Int {
+        return EntropyTuning.organaFlower.interval
+    }
 
-    override fun createTileEntity(world: World, state: IBlockState): TileEntity? =
-        if (state.getValue(AGE) == 10) OrganaFlowerTile() else null
+    override fun randomTick(world: World, pos: BlockPos, state: IBlockState, random: Random) {
+        if (state.getValue(AGE) == 10) {
+            randomTickPassiveInducer(world, pos, EntropyTuning.organaFlower, 0x5900B3, EnumParticleTypes.SPELL_MOB)
+        }
+    }
 
     companion object {
         @JvmField
