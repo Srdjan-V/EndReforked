@@ -40,6 +40,14 @@ import okio.ByteString;
 
 class S2CPacketTest {
 
+    private static Stack stack(int tag) {
+        return new Stack(ByteString.of((byte) tag), ByteString.EMPTY);
+    }
+
+    private static FluidAmount fluid(int tag) {
+        return new FluidAmount(ByteString.of((byte) tag), ByteString.EMPTY);
+    }
+
     private static S2CPacket roundTrip(S2CPacket packet) throws IOException {
         return S2CPacket.ADAPTER.decode(S2CPacket.ADAPTER.encode(packet));
     }
@@ -76,11 +84,11 @@ class S2CPacketTest {
     void registrySnapshotWithMachineRecipes() throws IOException {
         var recipe = new MachineRecipe(
                 "endreborn:entropy_chamber/example", "endreborn:entropy_chamber",
-                List.of(new Ingredient(new Stack("minecraft:end_stone", 0, 4, ByteString.EMPTY), null, ByteString.EMPTY),
+                List.of(new Ingredient(stack(4), null, ByteString.EMPTY),
                         new Ingredient(null, new OreIngredient("logWood", 2, ByteString.EMPTY), ByteString.EMPTY)),
-                List.of(new FluidAmount("minecraft:lava", 2000, ByteString.EMPTY)),
-                List.of(new Stack("minecraft:dirt", 0, 2, ByteString.EMPTY)),
-                List.of(new FluidAmount("minecraft:water", 1000, ByteString.EMPTY)),
+                List.of(fluid(2000)),
+                List.of(stack(2)),
+                List.of(fluid(1000)),
                 500, 150, 3, List.of(), ByteString.EMPTY);
         var snapshot = new RegistrySnapshot("endreborn:machine_recipes",
                 new MachineRecipes(List.of(recipe), ByteString.EMPTY), null, null, null, ByteString.EMPTY);
@@ -89,8 +97,8 @@ class S2CPacketTest {
         assertEquals(snapshot, out.getRegistry_snapshot());
         var decoded = out.getRegistry_snapshot().getMachine_recipes().getRecipes().get(0);
         assertEquals("logWood", decoded.getItem_inputs().get(1).getOre().getName());
-        assertEquals(4, decoded.getItem_inputs().get(0).getItem().getCount());
-        assertEquals(2000, decoded.getFluid_inputs().get(0).getAmount());
+        assertEquals(stack(4), decoded.getItem_inputs().get(0).getItem());
+        assertEquals(fluid(2000), decoded.getFluid_inputs().get(0));
         assertEquals(150, decoded.getEntropy());
     }
 
@@ -104,7 +112,7 @@ class S2CPacketTest {
                 new SetBlockAction(new BlockSpec("minecraft:iron_block", Map.of(), ByteString.EMPTY), ByteString.EMPTY),
                 null, ByteString.EMPTY), ByteString.EMPTY);
         var drop = new WorldEvent(90, 2, structure, new WorldAction(null, new DropItemAction(
-                new Stack("minecraft:diamond", 0, 2, ByteString.EMPTY), ByteString.EMPTY), ByteString.EMPTY),
+                stack(2), ByteString.EMPTY), ByteString.EMPTY),
                 ByteString.EMPTY);
         var recipe = new MachineRecipe("endreborn:materializer/example", "endreborn:materializer", List.of(), List.of(),
                 List.of(), List.of(), 600, 0, 0, List.of(setBlock, drop), ByteString.EMPTY);
@@ -117,7 +125,7 @@ class S2CPacketTest {
         assertEquals("granite", events.get(0).getStructure().getSymbols().get(0).getBlock().getProperties().get("variant"));
         assertEquals("minecraft:iron_block", events.get(0).getAction().getSet_block().getBlock().getBlock());
         assertNull(events.get(1).getAction().getSet_block());
-        assertEquals(2, events.get(1).getAction().getDrop_item().getItem().getCount());
+        assertEquals(stack(2), events.get(1).getAction().getDrop_item().getItem());
     }
 
     @Test
@@ -144,13 +152,13 @@ class S2CPacketTest {
         assertEquals(blocks, roundTrip(new S2CPacket(null, null, blocks, null, ByteString.EMPTY)).getRegistry_snapshot());
 
         var item = new FluidEntityInteraction("endreborn:e", "endreborn:entropy", "minecraft:item",
-                new Stack("minecraft:chorus_flower", 0, 4, ByteString.EMPTY), false,
-                new EntityResult(new Stack("minecraft:dirt", 0, 4, ByteString.EMPTY), null, null, ByteString.EMPTY),
+                stack(4), false,
+                new EntityResult(stack(4), null, null, ByteString.EMPTY),
                 10, true, 0, 0, ByteString.EMPTY);
         var watcher = new FluidEntityInteraction("endreborn:w", "endreborn:entropy", "minecraft:enderman", null, true,
                 new EntityResult(null, "endreborn:watcher", null, ByteString.EMPTY), 1, true, 0, 0, ByteString.EMPTY);
         var fluid = new FluidEntityInteraction("endreborn:f", "endreborn:entropy", "minecraft:item",
-                new Stack("minecraft:apple", 32767, 1, ByteString.EMPTY), false,
+                stack(1), false,
                 new EntityResult(null, null, endStone, ByteString.EMPTY), 20, true, 0, 0, ByteString.EMPTY);
         var entities = new RegistrySnapshot("endreborn:fluid_entity_interactions", null, null, null,
                 new FluidEntityInteractions(List.of(item, watcher, fluid), ByteString.EMPTY), ByteString.EMPTY);

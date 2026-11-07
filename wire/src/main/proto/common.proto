@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package io.github.srdjanv.endreforked.wire.s2c;
+
+option java_package = "io.github.srdjanv.endreforked.wire.s2c";
+
+// Types shared by several packets.
+// Stack and FluidAmount carry Minecraft-serialised bytes, so the wire module stays Minecraft-free.
+
+// An item stack: PacketBuffer.writeItemStack bytes (item id, meta, count, NBT). Meta 32767 in an ingredient matches every meta.
+message Stack {
+  bytes data = 1;
+}
+
+// A fluid stack: PacketBuffer.writeCompoundTag of FluidStack.writeToNBT (fluid name, amount in mB, NBT).
+message FluidAmount {
+  bytes data = 1;
+}
+
+message Ingredient {
+  oneof kind {
+    Stack item = 1;
+    OreIngredient ore = 2;
+  }
+}
+
+message OreIngredient {
+  string name = 1;
+  int32 count = 2;
+}
+
+message StructureSpec {
+  repeated Aisle aisles = 1;
+  repeated SymbolSpec symbols = 2;
+}
+
+message Aisle {
+  repeated string rows = 1;
+}
+
+message SymbolSpec {
+  string symbol = 1; // exactly one character
+  BlockSpec block = 2;
+}
+
+message BlockSpec {
+  string block = 1;
+  map<string, string> properties = 2;
+}

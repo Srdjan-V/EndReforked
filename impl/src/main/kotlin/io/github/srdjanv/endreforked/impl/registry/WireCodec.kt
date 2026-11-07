@@ -1,19 +1,24 @@
 package io.github.srdjanv.endreforked.impl.registry
 
 import io.github.srdjanv.endreforked.api.world.BlockMatch
+import io.netty.buffer.Unpooled
+import okio.ByteString
+import okio.ByteString.Companion.toByteString
 import io.github.srdjanv.endreforked.wire.s2c.FluidAmount
 import io.github.srdjanv.endreforked.wire.s2c.BlockSpec as WireBlock
 import io.github.srdjanv.endreforked.wire.s2c.Stack as WireStack
 import net.minecraft.block.Block
 import net.minecraft.block.properties.IProperty
 import net.minecraft.block.state.IBlockState
-import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
+import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.network.PacketBuffer
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.fluids.Fluid
 import net.minecraftforge.fluids.FluidRegistry
 import net.minecraftforge.fluids.FluidStack
 import org.apache.logging.log4j.LogManager
+import java.io.IOException
 
 /*
  * The only place where registry data turns into ids and back. A registry entry holds Minecraft objects, a snapshot holds ids.
@@ -32,18 +37,35 @@ internal fun <W, T> List<W>.decodeEntries(id: (W) -> String, decode: (W) -> T): 
     }
 }
 
-internal fun ItemStack.toWire() = WireStack(item.registryName.toString(), metadata, count)
+private fun encode(write: PacketBuffer.() -> Unit): ByteString {
+    val buf = PacketBuffer(Unpooled.buffer())
+    buf.write()
+    return ByteArray(buf.readableBytes()).also { buf.readBytes(it) }.toByteString()
+}
 
-internal fun WireStack.toItemStack() =
-    ItemStack(Item.REGISTRY.getObject(ResourceLocation(id)) ?: throw IllegalArgumentException("unknown item $id"), count, meta)
+private fun <T> decode(data: ByteString, read: PacketBuffer.() -> T): T {
+    try {
+        return PacketBuffer(Unpooled.wrappedBuffer(data.toByteArray())).read()
+    } catch (e: IOException) {
+        throw IllegalArgumentException("bad data: ${e.message}", e)
+    }
+}
 
-internal fun FluidStack.toWire() = FluidAmount(fluid.name, amount)
+/** The bytes of PacketBuffer.writeItemStack: item id (synced by FML per connection), meta, count and NBT. */
+internal fun ItemStack.toWire() = WireStack(encode { writeItemStack(this@toWire) })
+
+internal fun WireStack.toItemStack(): ItemStack =
+    decode(data_) { readItemStack() }.also { require(!it.isEmpty) { "unknown item" } }
+
+internal fun FluidStack.toWire() = FluidAmount(encode { writeCompoundTag(writeToNBT(NBTTagCompound())) })
 
 internal fun Fluid.toWire() = name
 
 internal fun fluidOf(name: String): Fluid = FluidRegistry.getFluid(name) ?: throw IllegalArgumentException("unknown fluid $name")
 
-internal fun FluidAmount.toFluidStack() = FluidStack(fluidOf(id), amount)
+internal fun FluidAmount.toFluidStack(): FluidStack =
+    FluidStack.loadFluidStackFromNBT(decode(data_) { readCompoundTag() } ?: throw IllegalArgumentException("empty fluid"))
+        ?: throw IllegalArgumentException("unknown fluid")
 
 @Suppress("UNCHECKED_CAST")
 private fun IProperty<*>.nameOf(value: Comparable<*>) = (this as IProperty<Comparable<Any>>).getName(value as Comparable<Any>)

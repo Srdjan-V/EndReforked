@@ -30,6 +30,12 @@ class MachineRecipeRegistryTest {
         Bootstrap.register()
     }
 
+    private fun unknownFluid(): okio.ByteString {
+        val buf = net.minecraft.network.PacketBuffer(io.netty.buffer.Unpooled.buffer())
+        buf.writeCompoundTag(net.minecraft.nbt.NBTTagCompound().apply { setString("FluidName", "nomod_fluid"); setInteger("Amount", 1) })
+        return okio.ByteString.of(*ByteArray(buf.readableBytes()).also { buf.readBytes(it) })
+    }
+
     private fun id(path: String) = ResourceLocation("test", path)
     private val chamber = ResourceLocation("endreborn", "entropy_chamber")
     private val a = id("a")
@@ -103,8 +109,8 @@ class MachineRecipeRegistryTest {
     @Test
     fun aRecipeWithSomethingThisClientDoesNotHaveIsSkipped() {
         val good = MachineRecipes(listOf(default)).toSnapshot().machine_recipes!!.recipes[0]
-        val unknownItem = good.copy(id = "test:item", item_inputs = listOf(Ingredient(item = Stack("nomod:thing", 0, 1))))
-        val unknownFluid = good.copy(id = "test:fluid", fluid_inputs = listOf(FluidAmount("nomod_fluid", 1)))
+        val unknownItem = good.copy(id = "test:item", item_inputs = listOf(Ingredient(item = Stack(okio.ByteString.of(0x7f, 0x7f, 1, 0, 0, 0)))))
+        val unknownFluid = good.copy(id = "test:fluid", fluid_inputs = listOf(FluidAmount(unknownFluid())))
         val snapshot = RegistrySnapshot(registry = "endreborn:machine_recipes", machine_recipes = WireRecipes(listOf(unknownItem, good, unknownFluid)))
         assertEquals(listOf(a), snapshot.toMachineRecipes()!!.map { it.id })
     }

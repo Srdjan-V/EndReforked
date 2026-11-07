@@ -4,6 +4,8 @@ package io.github.srdjanv.endreforked.wire.s2c;
 
 option java_package = "io.github.srdjanv.endreforked.wire.s2c";
 
+import "common.proto";
+
 // Server to client envelope. The oneof case is the message type.
 message S2CPacket {
   oneof payload {
@@ -70,56 +72,12 @@ message MachineRecipe {
   repeated WorldEvent world_events = 10;
 }
 
-message Ingredient {
-  oneof kind {
-    Stack item = 1;
-    OreIngredient ore = 2;
-  }
-}
-
-message OreIngredient {
-  string name = 1;
-  int32 count = 2;
-}
-
-// An item stack. As an ingredient, meta 32767 matches every meta.
-message Stack {
-  string id = 1;
-  int32 meta = 2;
-  int32 count = 3;
-}
-
-// A fluid with an amount in mB. Used for fluid inputs and outputs.
-message FluidAmount {
-  string id = 1; // Forge fluid name, for example lava
-  int32 amount = 2;
-}
-
 // A world event of a machine recipe, see api WorldEvent.
 message WorldEvent {
   int32 at_percent = 1;
   int32 chance = 2;
   StructureSpec structure = 3;
   WorldAction action = 4;
-}
-
-message StructureSpec {
-  repeated Aisle aisles = 1;
-  repeated SymbolSpec symbols = 2;
-}
-
-message Aisle {
-  repeated string rows = 1;
-}
-
-message SymbolSpec {
-  string symbol = 1; // exactly one character
-  BlockSpec block = 2;
-}
-
-message BlockSpec {
-  string block = 1;
-  map<string, string> properties = 2;
 }
 
 message WorldAction {
