@@ -1,8 +1,6 @@
 package io.github.srdjanv.endreforked.common
 
-import io.github.srdjanv.endreforked.EndReforked
 import io.github.srdjanv.endreforked.api.entropy.EntropyRadius
-import io.github.srdjanv.endreforked.common.configs.Configs
 import io.github.srdjanv.endreforked.common.items.*
 import io.github.srdjanv.endreforked.common.items.base.*
 import io.github.srdjanv.endreforked.common.items.tools.*
@@ -64,7 +62,7 @@ object ModItems {
 
     // TODO: 22/10/2023 rename itemBlocks
     @get:JvmStatic val BLOCK_ENDORIUM by itemBlock(ModBlocks::ENDORIUM_BLOCK)
-    @get:JvmStatic val PURPUR_LAMP by itemBlock(ModBlocks::PURPUR_LAMP)
+    @get:JvmStatic val ENTROPY_LANTERN by itemBlock(ModBlocks::ENTROPY_LANTERN)
     @get:JvmStatic val ENDER_FLOWER_CROP by itemBlock(ModBlocks::ENDER_FLOWER_CROP)
     @get:JvmStatic val DRAGON_BUSH by itemBlock(ModBlocks::DRAGONITE_CROP)
     @get:JvmStatic val OBSIDIAN_ESSENCE_ORE by itemBlock(ModBlocks::OBSIDIAN_ESSENCE_ORE)

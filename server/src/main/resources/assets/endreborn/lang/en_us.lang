@@ -47,6 +47,7 @@ tile.tungsten_ore.name=Tungsten Ore
 tile.end_stone_pillar.name=End Stone Pillar
 tile.end_stone_smooth_block.name=Smooth End Stone
 tile.purpur_lamp_block.name=Purpur Lamp
+tile.entropy_lantern_block.name=Entropy Lantern
 tile.dragonite_crop.name=Dragonite
 tile.ender_flower_crop.name=Enderemus
 tile.essence_ore.name=Essence Ore

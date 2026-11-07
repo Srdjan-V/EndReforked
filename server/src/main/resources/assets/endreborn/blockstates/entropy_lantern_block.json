@@ -1,0 +1,10 @@
+{
+    "variants": {
+        "hanging=false,light_level=0": { "model": "endreborn:entropy_lantern_block" },
+        "hanging=false,light_level=1": { "model": "endreborn:entropy_lantern_block" },
+        "hanging=false,light_level=2": { "model": "endreborn:entropy_lantern_block" },
+        "hanging=true,light_level=0": { "model": "endreborn:entropy_lantern_hanging" },
+        "hanging=true,light_level=1": { "model": "endreborn:entropy_lantern_hanging" },
+        "hanging=true,light_level=2": { "model": "endreborn:entropy_lantern_hanging" }
+    }
+}

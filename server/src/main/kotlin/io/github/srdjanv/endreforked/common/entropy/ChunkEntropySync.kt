@@ -23,7 +23,9 @@ object ChunkEntropySync {
             val chunk = EntropyWorldHandler.getEntropyChunkWorld(player.dimension, player.position).orElse(null) ?: continue
             val level = EntropyTuning.level(chunk.currentEntropy, chunk.maxEntropy)
             val message = ChunkEntropy(chunk.currentEntropy, chunk.maxEntropy, level.ordinal)
-            if (last.put(player.uniqueID, message) != message) EndReforked.NET.sendTo(S2CPacket(chunk_entropy = message), player)
+            if (last.put(player.uniqueID, message) != message) {
+                EndReforked.NET.sendTo(S2CPacket(chunk_entropy = message), player)
+            }
         }
     }
 
@@ -32,4 +34,5 @@ object ChunkEntropySync {
     fun onLogout(event: PlayerEvent.PlayerLoggedOutEvent) {
         last.remove(event.player.uniqueID)
     }
+
 }

@@ -23,6 +23,7 @@ tile.tungsten_ore.name=钨矿
 tile.end_stone_pillar.name=末地石柱
 tile.end_stone_smooth_block.name=平滑末地石
 tile.purpur_lamp_block.name=紫珀灯
+tile.entropy_lantern_block.name=熵灯笼
 tile.dragonite_crop.name=龙梅
 tile.ender_flower_crop.name=末影花
 tile.essence_ore.name=精华矿

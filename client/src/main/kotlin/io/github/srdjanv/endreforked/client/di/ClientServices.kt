@@ -16,7 +16,9 @@ class ClientServices(common: ModServices) {
     var chunkEntropy: ChunkEntropy? = null
         private set
 
-    val packetHandler = ClientPacketHandler(common.net, registries) { chunkEntropy = it }
+    val packetHandler = ClientPacketHandler(common.net, registries) {
+        chunkEntropy = it
+    }
     val proxy: CommonProxy = ClientProxy(Side.CLIENT, common.registrySync, registries) { chunkEntropy }
 
     companion object {

@@ -1,17 +1,13 @@
 package io.github.srdjanv.endreforked.common
 
 import io.github.srdjanv.endreforked.common.blocks.*
-import io.github.srdjanv.endreforked.common.blocks.base.BaseBlockBush
 import io.github.srdjanv.endreforked.common.blocks.base.BlockEndBase
-import io.github.srdjanv.endreforked.common.blocks.base.BlockStairsBase
-import io.github.srdjanv.endreforked.common.blocks.base.BlockWallBase
 import io.github.srdjanv.endreforked.common.fluids.blocks.BlockFluidEndMagma
 import io.github.srdjanv.endreforked.common.fluids.blocks.BlockFluidEntropy
 import io.github.srdjanv.endreforked.common.fluids.blocks.BlockFluidOrgana
 import io.github.srdjanv.endreforked.utils.models.IAsset
 import net.minecraft.block.Block
 import net.minecraft.block.material.Material
-import net.minecraft.init.Blocks
 import net.minecraftforge.client.event.ModelRegistryEvent
 import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
@@ -19,7 +15,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 object ModBlocks {
     private val BLOCKS = DeferredRegistry(this, Block::class.java)
 
-    @get:JvmStatic val PURPUR_LAMP by BLOCKS.register { BlockPurpurLamp("purpur_lamp_block") }
+    @get:JvmStatic val ENTROPY_LANTERN by BLOCKS.register { EntropyLantern("entropy_lantern_block") }
 
     @get:JvmStatic val OBSIDIAN_ESSENCE_ORE by BLOCKS.register(::BlockObsidianEssence)
 
