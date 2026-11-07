@@ -8,20 +8,15 @@ import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 
 object ModBioms {
-    @JvmField val END_BIOMES = Registry<Biome>()
+    private val BIOMES = DeferredRegistry(this, Biome::class.java)
 
-    @JvmField val ORGANA_BIOME: OrganaBiome = regEnd(::OrganaBiome)
-    @JvmField val ENTROPY_BIOME: EntropyBiome = regEnd(::EntropyBiome)
-
-    private fun <B : Biome> regEnd(factory: () -> B): B =
-        factory().also { END_BIOMES.register(it) }
+    @get:JvmStatic val ORGANA_BIOME by BIOMES.register(::OrganaBiome)
+    @get:JvmStatic val ENTROPY_BIOME by BIOMES.register(::EntropyBiome)
 
     @SubscribeEvent
     @JvmStatic
     fun onBiomeRegister(event: RegistryEvent.Register<Biome>) {
-        for (biome in END_BIOMES.all()) {
-            event.registry.register(biome)
-            if (biome is BiomeDictionaryHandler) biome.registerToBiomeDictionary()
-        }
+        BIOMES.registerAll(event.registry)
+        BIOMES.all().filterIsInstance<BiomeDictionaryHandler>().forEach { it.registerToBiomeDictionary() }
     }
 }

@@ -8,13 +8,13 @@ import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 
 object ModEnchants {
-    @JvmField val ender_core: Enchantment = EnchantEnderCore()
-    @JvmField val ender_killer: Enchantment = EnchantEnderKiller()
-    @JvmField val shulker_core: Enchantment = EnchantShulkerCore()
+    private val ENCHANTS = DeferredRegistry(this, Enchantment::class.java)
+
+    @get:JvmStatic val ender_core by ENCHANTS.register(::EnchantEnderCore)
+    @get:JvmStatic val ender_killer by ENCHANTS.register(::EnchantEnderKiller)
+    @get:JvmStatic val shulker_core by ENCHANTS.register(::EnchantShulkerCore)
 
     @SubscribeEvent
     @JvmStatic
-    fun onEvent(event: RegistryEvent.Register<Enchantment>) {
-        event.registry.registerAll(ender_core, ender_killer, shulker_core)
-    }
+    fun onEvent(event: RegistryEvent.Register<Enchantment>) = ENCHANTS.registerAll(event.registry)
 }

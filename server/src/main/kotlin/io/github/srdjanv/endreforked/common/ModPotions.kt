@@ -2,23 +2,17 @@ package io.github.srdjanv.endreforked.common
 
 import io.github.srdjanv.endreforked.common.potions.EnderEyes
 import io.github.srdjanv.endreforked.common.potions.TimedFlight
-import io.github.srdjanv.endreforked.common.potions.base.BasePotion
 import net.minecraft.potion.Potion
 import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 
 object ModPotions {
-    private val POTIONS = Registry<BasePotion>()
+    private val POTIONS = DeferredRegistry(this, Potion::class.java)
 
-    @JvmField val ENDER_EYES: BasePotion = register(::EnderEyes)
-    @JvmField val TIMED_FLIGHT: BasePotion = register(::TimedFlight)
-
-    private fun <I : BasePotion> register(factory: () -> I): I =
-        factory().also { POTIONS.register(it) }
+    @get:JvmStatic val ENDER_EYES by POTIONS.register(::EnderEyes)
+    @get:JvmStatic val TIMED_FLIGHT by POTIONS.register(::TimedFlight)
 
     @SubscribeEvent
     @JvmStatic
-    fun onPotionRegister(event: RegistryEvent.Register<Potion>) {
-        POTIONS.all().forEach(event.registry::register)
-    }
+    fun onPotionRegister(event: RegistryEvent.Register<Potion>) = POTIONS.registerAll(event.registry)
 }

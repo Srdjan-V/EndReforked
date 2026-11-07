@@ -1,5 +1,6 @@
 package io.github.srdjanv.endreforked.common.blocks
 
+import io.github.srdjanv.endreforked.common.blocks.base.endSoils
 import io.github.srdjanv.endreforked.common.ModBlocks
 import io.github.srdjanv.endreforked.common.ModItems
 import io.github.srdjanv.endreforked.common.blocks.base.BaseBlockCrops
@@ -22,14 +23,7 @@ import net.minecraft.world.World
 import net.minecraftforge.common.ForgeHooks
 import java.util.Random
 
-class BlockEnderCrop : BaseBlockCrops("ender_flower_crop") {
-    init {
-        sustainableBlocks.add(Blocks.END_BRICKS)
-        sustainableBlocks.add(Blocks.END_STONE)
-        sustainableBlocks.add(ModBlocks.ENTROPY_END_STONE)
-        sustainableBlocks.add(ModBlocks.ENTROPY_CROP_BLOCK)
-    }
-
+class BlockEnderCrop : BaseBlockCrops("ender_flower_crop", ::endSoils) {
     override fun createBlockState() = BlockStateContainer(this, AGE)
 
     override fun getAgeProperty() = AGE

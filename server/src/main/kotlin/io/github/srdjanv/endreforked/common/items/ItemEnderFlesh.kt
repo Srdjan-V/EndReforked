@@ -4,6 +4,7 @@ import io.github.srdjanv.endreforked.common.ModPotions
 import io.github.srdjanv.endreforked.common.items.base.ItemFoodBase
 import net.minecraft.client.resources.I18n
 import net.minecraft.client.util.ITooltipFlag
+import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.potion.PotionEffect
 import net.minecraft.world.World
@@ -13,7 +14,11 @@ import net.minecraftforge.fml.relauncher.SideOnly
 class ItemEnderFlesh : ItemFoodBase("ender_flesh", 2, 0.4f, false) {
     init {
         setAlwaysEdible()
-        setPotionEffect(PotionEffect(ModPotions.ENDER_EYES, 90 * 20, 0), 1f)
+    }
+
+    /** Applied here, not through setPotionEffect: potions are registered after items, so the potion does not exist at construction. */
+    override fun onFoodEaten(stack: ItemStack, world: World, player: EntityPlayer) {
+        if (!world.isRemote) player.addPotionEffect(PotionEffect(ModPotions.ENDER_EYES, 90 * 20, 0))
     }
 
     @SideOnly(Side.CLIENT)

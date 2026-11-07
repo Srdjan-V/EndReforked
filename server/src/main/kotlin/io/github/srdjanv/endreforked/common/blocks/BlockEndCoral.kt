@@ -1,5 +1,6 @@
 package io.github.srdjanv.endreforked.common.blocks
 
+import io.github.srdjanv.endreforked.common.blocks.base.endSoils
 import io.github.srdjanv.endreforked.common.ModBlocks
 import io.github.srdjanv.endreforked.common.blocks.base.BaseBlockBush
 import net.minecraft.block.IGrowable
@@ -17,14 +18,7 @@ import net.minecraft.world.World
 import net.minecraftforge.common.IShearable
 import java.util.Random
 
-class BlockEndCoral : BaseBlockBush("end_coral", Material.VINE), IShearable, IGrowable {
-    init {
-        addSustainableBlock(Blocks.END_BRICKS)
-        addSustainableBlock(Blocks.END_STONE)
-        addSustainableBlock(ModBlocks.ENTROPY_END_STONE)
-        addSustainableBlock(ModBlocks.ENTROPY_CROP_BLOCK)
-    }
-
+class BlockEndCoral : BaseBlockBush("end_coral", Material.VINE, ::endSoils), IShearable, IGrowable {
     override fun getBoundingBox(state: IBlockState, source: IBlockAccess, pos: BlockPos) = END_BUSH_AABB
 
     override fun getMapColor(state: IBlockState, worldIn: IBlockAccess, pos: BlockPos): MapColor = MapColor.YELLOW

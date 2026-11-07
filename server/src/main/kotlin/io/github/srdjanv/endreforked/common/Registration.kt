@@ -34,6 +34,7 @@ class Registration : Initializer {
     }
 
     override fun preInit(event: FMLPreInitializationEvent) {
+        ModFluids.register()
         CapabilityTimedFlightHandler.register()
         CapabilityEntropyHandler.register()
 

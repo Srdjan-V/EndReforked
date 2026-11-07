@@ -11,25 +11,32 @@ import net.minecraftforge.fluids.Fluid
 import net.minecraftforge.fluids.FluidRegistry
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 
+/**
+ * Forge fluids are not a Forge registry, so there is no [DeferredRegistry]. [register] runs in pre init, which is before
+ * every `RegistryEvent`: the fluid blocks read these fluids when the block registry event creates them.
+ */
 object ModFluids {
-    private val FLUIDS = Registry<Fluid>()
+    lateinit var END_MAGMA: FluidEndMagma private set
+    lateinit var ENTROPY: FluidEntropy private set
+    lateinit var ORGANA: FluidOrgana private set
 
-    @JvmField val END_MAGMA: FluidEndMagma = register(::FluidEndMagma)
-    @JvmField val ENTROPY: FluidEntropy = register(::FluidEntropy)
-    @JvmField val ORGANA: FluidOrgana = register(::FluidOrgana)
+    private val fluids get() = listOf<Fluid>(END_MAGMA, ENTROPY, ORGANA)
 
-    private fun <F : Fluid> register(factory: () -> F): F =
-        factory().also { FluidRegistry.registerFluid(it); FLUIDS.register(it) }
+    fun register() {
+        END_MAGMA = FluidEndMagma().also(FluidRegistry::registerFluid)
+        ENTROPY = FluidEntropy().also(FluidRegistry::registerFluid)
+        ORGANA = FluidOrgana().also(FluidRegistry::registerFluid)
+    }
 
     @SubscribeEvent
     @JvmStatic
     fun registerModels(event: ModelRegistryEvent) {
-        FLUIDS.all().filterIsInstance<IAsset>().forEach { it.handleAssets() }
+        fluids.filterIsInstance<IAsset>().forEach { it.handleAssets() }
     }
 
     @SubscribeEvent
     @JvmStatic
     fun registerItems(event: RegistryEvent.Register<Item>) {
-        FLUIDS.all().forEach { FluidRegistry.addBucketForFluid(it) }
+        fluids.forEach { FluidRegistry.addBucketForFluid(it) }
     }
 }

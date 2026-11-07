@@ -22,11 +22,7 @@ import net.minecraft.world.World
 import net.minecraftforge.common.IShearable
 import java.util.Random
 
-class BlockOrganaWeed : BaseBlockBush("organa_weed", Material.VINE), IShearable {
-
-    init {
-        addSustainableBlock(ModBlocks.END_MOSS_GRASS_BLOCK)
-    }
+class BlockOrganaWeed : BaseBlockBush("organa_weed", Material.VINE, { setOf(ModBlocks.END_MOSS_GRASS_BLOCK) }), IShearable {
 
     override fun hasTileEntity(state: IBlockState) = true
 

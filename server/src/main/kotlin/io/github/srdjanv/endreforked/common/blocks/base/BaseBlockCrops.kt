@@ -6,9 +6,11 @@ import net.minecraft.block.Block
 import net.minecraft.block.BlockCrops
 import net.minecraft.block.state.IBlockState
 
-open class BaseBlockCrops(name: String) : BlockCrops(), InventoryBlockModel {
-    @JvmField
-    protected val sustainableBlocks: MutableList<Block> = ArrayList()
+/** [sustainedBy] is resolved on the first [canSustainBush] call, so it may read other mod blocks. */
+open class BaseBlockCrops(
+    name: String, sustainedBy: () -> Set<Block> = ::emptySet,
+) : BlockCrops(), InventoryBlockModel {
+    private val sustainable by lazy(sustainedBy)
 
     init {
         setTranslationKey(name)
@@ -16,5 +18,5 @@ open class BaseBlockCrops(name: String) : BlockCrops(), InventoryBlockModel {
         setCreativeTab(EndReforked.ENDERTAB)
     }
 
-    override fun canSustainBush(state: IBlockState) = state.block in sustainableBlocks
+    override fun canSustainBush(state: IBlockState) = state.block in sustainable
 }

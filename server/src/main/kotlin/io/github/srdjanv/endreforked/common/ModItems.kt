@@ -17,7 +17,7 @@ import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 
 object ModItems {
-    private val ITEMS = Registry<Item>()
+    private val ITEMS = DeferredRegistry(this, Item::class.java)
 
     // Materials
     @JvmField val WAND_MATERIAL: ToolMaterial =
@@ -25,88 +25,84 @@ object ModItems {
 
 
     // Items
-    @JvmField val INGOT_ENDORIUM: Item = register { ItemBase("item_ingot_endorium") }
-    @JvmField val SHARD_OBSIDIAN: Item = register { ItemBase("item_shard_obsidian") }
-    @JvmField val RAW_ENDORIUM: Item = register { ItemBase("item_raw_endorium") }
-    @JvmField val END_ESSENCE: Item = register { ItemBase("item_end_essence") }
-    @JvmField val END_SHARD: Item = register { ItemBase("item_end_shard") }
-    @JvmField val END_RUNE: Item = register { ItemLegendary("item_end_rune") }
-    @JvmField val ITEM_LORMYTE_CRYSTAL: Item = register { ItemBase("item_lormyte_crystal") }
-    @JvmField val TUNGSTEN_INGOT: Item = register { ItemBase("tungsten_ingot") }
-    @JvmField val ENDER_STRING: Item = register { ItemLegendary("item_ender_string") }
+    @get:JvmStatic val INGOT_ENDORIUM by ITEMS.register { ItemBase("item_ingot_endorium") }
+    @get:JvmStatic val SHARD_OBSIDIAN by ITEMS.register { ItemBase("item_shard_obsidian") }
+    @get:JvmStatic val RAW_ENDORIUM by ITEMS.register { ItemBase("item_raw_endorium") }
+    @get:JvmStatic val END_ESSENCE by ITEMS.register { ItemBase("item_end_essence") }
+    @get:JvmStatic val END_SHARD by ITEMS.register { ItemBase("item_end_shard") }
+    @get:JvmStatic val END_RUNE by ITEMS.register { ItemLegendary("item_end_rune") }
+    @get:JvmStatic val ITEM_LORMYTE_CRYSTAL by ITEMS.register { ItemBase("item_lormyte_crystal") }
+    @get:JvmStatic val TUNGSTEN_INGOT by ITEMS.register { ItemBase("tungsten_ingot") }
+    @get:JvmStatic val ENDER_STRING by ITEMS.register { ItemLegendary("item_ender_string") }
 
-    @JvmField val ANGEL_FEATHER: Item = register { ItemBase("item_angel_feather") }
-    @JvmField val DRAGON_SCALES: Item = register { ItemBase("dragon_scales") }
+    @get:JvmStatic val ANGEL_FEATHER by ITEMS.register { ItemBase("item_angel_feather") }
+    @get:JvmStatic val DRAGON_SCALES by ITEMS.register { ItemBase("dragon_scales") }
     // todo data fix old:xorcite_shard
-    @JvmField val ENTROPY_SHARD: Item = register { ItemBase("entropy_shard") }
-    @JvmField val INFUSED_METALL: Item = register { ItemBase("ingot_infused") }
-    @JvmField val SWORD_SHARD: Item = register { ItemBase("sword_shard") }
-    @JvmField val CATALYST: Item = register { ItemCatalyst("catalyst") }
-    @JvmField val TUNGSTEN_NUGGET: Item = register { ItemBase("tungsten_nugget") }
+    @get:JvmStatic val ENTROPY_SHARD by ITEMS.register { ItemBase("entropy_shard") }
+    @get:JvmStatic val INFUSED_METALL by ITEMS.register { ItemBase("ingot_infused") }
+    @get:JvmStatic val SWORD_SHARD by ITEMS.register { ItemBase("sword_shard") }
+    @get:JvmStatic val CATALYST by ITEMS.register { ItemCatalyst("catalyst") }
+    @get:JvmStatic val TUNGSTEN_NUGGET by ITEMS.register { ItemBase("tungsten_nugget") }
 
-    @JvmField val ENTROPY_RANGE_UPGRADE_TWO: ItemEntropyRadiusUpgrade =
-        register { ItemEntropyRadiusUpgrade(EntropyRadius.TWO) }
-    @JvmField val ENTROPY_RANGE_UPGRADE_THREE: ItemEntropyRadiusUpgrade =
-        register { ItemEntropyRadiusUpgrade(EntropyRadius.THREE) }
+    @get:JvmStatic val ENTROPY_RANGE_UPGRADE_TWO by ITEMS.register { ItemEntropyRadiusUpgrade(EntropyRadius.TWO) }
+    @get:JvmStatic val ENTROPY_RANGE_UPGRADE_THREE by ITEMS.register { ItemEntropyRadiusUpgrade(EntropyRadius.THREE) }
 
     // Tools
-    @JvmField val ENTROPY_WAND: Item = register { ToolEntropyWand("entropy_wand", WAND_MATERIAL) }
+    @get:JvmStatic val ENTROPY_WAND by ITEMS.register { ToolEntropyWand("entropy_wand", WAND_MATERIAL) }
 
-    @JvmField val ENTROPY_READER: ItemEntropyReader = register(::ItemEntropyReader)
-    @JvmField val LORMYTE_CHARM: ItemLormyteCharm = register(::ItemLormyteCharm)
-    @JvmField val ENTROPY_CELL: ItemEntropyCell = register(::ItemEntropyCell)
-    @JvmField val ENTROPY_WINGS: ItemEntropyWings = register(::ItemEntropyWings)
+    @get:JvmStatic val ENTROPY_READER by ITEMS.register(::ItemEntropyReader)
+    @get:JvmStatic val LORMYTE_CHARM by ITEMS.register(::ItemLormyteCharm)
+    @get:JvmStatic val ENTROPY_CELL by ITEMS.register(::ItemEntropyCell)
+    @get:JvmStatic val ENTROPY_WINGS by ITEMS.register(::ItemEntropyWings)
 
     // Food
-    @JvmField val ENDER_FLESH: ItemEnderFlesh = register(::ItemEnderFlesh)
-    @JvmField val DRAGONITE_BERRIES: ItemDragoniteBerries = register(::ItemDragoniteBerries)
-    @JvmField val DRAGONITE_TEA: ItemDragoniteTea = register(::ItemDragoniteTea)
-    @JvmField val ORGANA_FRUIT: ItemOrganaFruit = register(::ItemOrganaFruit)
-    @JvmField val CHORUS_SOUP: ItemChorusSoup = register(::ItemChorusSoup)
+    @get:JvmStatic val ENDER_FLESH by ITEMS.register(::ItemEnderFlesh)
+    @get:JvmStatic val DRAGONITE_BERRIES by ITEMS.register(::ItemDragoniteBerries)
+    @get:JvmStatic val DRAGONITE_TEA by ITEMS.register(::ItemDragoniteTea)
+    @get:JvmStatic val ORGANA_FRUIT by ITEMS.register(::ItemOrganaFruit)
+    @get:JvmStatic val CHORUS_SOUP by ITEMS.register(::ItemChorusSoup)
 
     // TODO: 22/10/2023 rename itemBlocks
-    @JvmField val BLOCK_ENDORIUM: ItemBlock = registerItemBlock(ModBlocks.ENDORIUM_BLOCK)
-    @JvmField val END_STONE_SMOOTH: ItemBlock = registerItemBlock(ModBlocks.END_STONE_SMOOTH_BLOCK)
-    @JvmField val END_STONE_PILLAR: ItemBlock = registerItemBlock(ModBlocks.END_STONE_PILLAR)
-    @JvmField val PURPUR_LAMP: ItemBlock = registerItemBlock(ModBlocks.PURPUR_LAMP)
-    @JvmField val ENDER_FLOWER_CROP: ItemBlock = registerItemBlock(ModBlocks.ENDER_FLOWER_CROP)
-    @JvmField val DRAGON_BUSH: ItemBlock = registerItemBlock(ModBlocks.DRAGONITE_CROP)
-    @JvmField val OBSIDIAN_ESSENCE_ORE: ItemBlock = registerItemBlock(ModBlocks.OBSIDIAN_ESSENCE_ORE)
-    @JvmField val PHANTOM_BLOCK: ItemBlock = registerItemBlock(ModBlocks.PHANTOM_BLOCK)
-    @JvmField val ENTROPY_END_STONE: ItemBlock = registerItemBlock(ModBlocks.ENTROPY_END_STONE)
-    @JvmField val LORMYTE_CRYSTAL: ItemBlock = registerItemBlock(ModBlocks.LORMYTE_CRYSTAL_BLOCK)
-    @JvmField val DECORATIVE_LORMYTE: ItemBlock = registerItemBlock(ModBlocks.DECORATIVE_LORMYTE_BLOCK)
-    @JvmField val TUNGSTEN_BLOCK: ItemBlock = registerItemBlock(ModBlocks.TUNGSTEN_BLOCK)
-    @JvmField val TUNGSTEN_ORE: ItemBlock = registerItemBlock(ModBlocks.TUNGSTEN_ORE)
-    @JvmField val TUNGSTEN_END_ORE: ItemBlock = registerItemBlock(ModBlocks.TUNGSTEN_END_ORE)
-    @JvmField val BLOCK_RUNE: ItemBlock = registerItemBlock(ModBlocks.RUNE_BLOCK)
-    @JvmField val BLOCK_END_MAGMA: ItemBlock = registerItemBlock(ModBlocks.END_MAGMA_BLOCK)
-    @JvmField val BLOCK_END_FORGE: ItemBlock = registerItemBlock(ModBlocks.BLOCK_END_FORGE)
-    @JvmField val ENTROPY_CHAMBER: ItemBlock = registerItemBlock(ModBlocks.ENTROPY_CHAMBER)
-    @JvmField val ENTROPY_CROP_BLOCK: BaseMetaItemBlock =
-        registerItemBlock(ModBlocks.ENTROPY_CROP_BLOCK) { block ->
+    @get:JvmStatic val BLOCK_ENDORIUM by itemBlock(ModBlocks::ENDORIUM_BLOCK)
+    @get:JvmStatic val END_STONE_SMOOTH by itemBlock(ModBlocks::END_STONE_SMOOTH_BLOCK)
+    @get:JvmStatic val END_STONE_PILLAR by itemBlock(ModBlocks::END_STONE_PILLAR)
+    @get:JvmStatic val PURPUR_LAMP by itemBlock(ModBlocks::PURPUR_LAMP)
+    @get:JvmStatic val ENDER_FLOWER_CROP by itemBlock(ModBlocks::ENDER_FLOWER_CROP)
+    @get:JvmStatic val DRAGON_BUSH by itemBlock(ModBlocks::DRAGONITE_CROP)
+    @get:JvmStatic val OBSIDIAN_ESSENCE_ORE by itemBlock(ModBlocks::OBSIDIAN_ESSENCE_ORE)
+    @get:JvmStatic val PHANTOM_BLOCK by itemBlock(ModBlocks::PHANTOM_BLOCK)
+    @get:JvmStatic val ENTROPY_END_STONE by itemBlock(ModBlocks::ENTROPY_END_STONE)
+    @get:JvmStatic val LORMYTE_CRYSTAL by itemBlock(ModBlocks::LORMYTE_CRYSTAL_BLOCK)
+    @get:JvmStatic val DECORATIVE_LORMYTE by itemBlock(ModBlocks::DECORATIVE_LORMYTE_BLOCK)
+    @get:JvmStatic val TUNGSTEN_BLOCK by itemBlock(ModBlocks::TUNGSTEN_BLOCK)
+    @get:JvmStatic val TUNGSTEN_ORE by itemBlock(ModBlocks::TUNGSTEN_ORE)
+    @get:JvmStatic val TUNGSTEN_END_ORE by itemBlock(ModBlocks::TUNGSTEN_END_ORE)
+    @get:JvmStatic val BLOCK_RUNE by itemBlock(ModBlocks::RUNE_BLOCK)
+    @get:JvmStatic val BLOCK_END_MAGMA by itemBlock(ModBlocks::END_MAGMA_BLOCK)
+    @get:JvmStatic val BLOCK_END_FORGE by itemBlock(ModBlocks::BLOCK_END_FORGE)
+    @get:JvmStatic val ENTROPY_CHAMBER by itemBlock(ModBlocks::ENTROPY_CHAMBER)
+    @get:JvmStatic val ENTROPY_CROP_BLOCK by itemBlock(ModBlocks::ENTROPY_CROP_BLOCK) { block ->
             BaseMetaItemBlock(block) { meta -> if (meta == 3) "mature" else null }
         }
-    @JvmField val BLOCK_E_USER: ItemBlock = registerItemBlock(ModBlocks.MATERIALIZER_BLOCK)
-    @JvmField val SMALL_ENTROPY_BATTERY_BLOCK: ItemBlock = registerItemBlock(ModBlocks.SMALL_ENTROPY_BATTERY_BLOCK)
+    @get:JvmStatic val BLOCK_E_USER by itemBlock(ModBlocks::MATERIALIZER_BLOCK)
+    @get:JvmStatic val SMALL_ENTROPY_BATTERY_BLOCK by itemBlock(ModBlocks::SMALL_ENTROPY_BATTERY_BLOCK)
 
-    @JvmField val END_STONE_CHISELED: ItemBlock = registerItemBlock(ModBlocks.END_BRICKS_CHISELED)
-    @JvmField val COLD_FIRE: ItemBlock = registerItemBlock(ModBlocks.ENTROPY_FIRE)
-    @JvmField val STAIRS_END_BRICKS: ItemBlock = registerItemBlock(ModBlocks.END_BRICKS_STAIRS)
-    @JvmField val STAIRS_SMOOTH_END_STONE: ItemBlock = registerItemBlock(ModBlocks.END_STONE_SMOOTH_STAIRS)
-    @JvmField val WALL_END_BRICKS: ItemBlock = registerItemBlock(ModBlocks.END_BRICKS_WALL)
-    @JvmField val WALL_PURPUR: ItemBlock = registerItemBlock(ModBlocks.PURPUR_WALL)
-    @JvmField val WALL_SMOOTH_END_STONE: ItemBlock = registerItemBlock(ModBlocks.END_STONE_SMOOTH_WALL)
-    @JvmField val END_CORAL: ItemBlock = registerItemBlock(ModBlocks.END_CORAL)
+    @get:JvmStatic val END_STONE_CHISELED by itemBlock(ModBlocks::END_BRICKS_CHISELED)
+    @get:JvmStatic val COLD_FIRE by itemBlock(ModBlocks::ENTROPY_FIRE)
+    @get:JvmStatic val STAIRS_END_BRICKS by itemBlock(ModBlocks::END_BRICKS_STAIRS)
+    @get:JvmStatic val STAIRS_SMOOTH_END_STONE by itemBlock(ModBlocks::END_STONE_SMOOTH_STAIRS)
+    @get:JvmStatic val WALL_END_BRICKS by itemBlock(ModBlocks::END_BRICKS_WALL)
+    @get:JvmStatic val WALL_PURPUR by itemBlock(ModBlocks::PURPUR_WALL)
+    @get:JvmStatic val WALL_SMOOTH_END_STONE by itemBlock(ModBlocks::END_STONE_SMOOTH_WALL)
+    @get:JvmStatic val END_CORAL by itemBlock(ModBlocks::END_CORAL)
 
-    @JvmField val ORGANA_WEED_BLOCK: ItemBlock = registerItemBlock(ModBlocks.ORGANA_WEED_BLOCK)
-    @JvmField val END_MOSS_GRASS_BLOCK: ItemBlock = registerItemBlock(ModBlocks.END_MOSS_GRASS_BLOCK)
-    @JvmField val END_MOSS_BLOCK: ItemBlock = registerItemBlock(ModBlocks.END_MOSS_BLOCK)
+    @get:JvmStatic val ORGANA_WEED_BLOCK by itemBlock(ModBlocks::ORGANA_WEED_BLOCK)
+    @get:JvmStatic val END_MOSS_GRASS_BLOCK by itemBlock(ModBlocks::END_MOSS_GRASS_BLOCK)
+    @get:JvmStatic val END_MOSS_BLOCK by itemBlock(ModBlocks::END_MOSS_BLOCK)
 
-    @JvmField val ORGANA_FLOWER_SEED: Item = register(::ItemOrganaFlowerSeed)
-    @JvmField val ORGANA_PLANT_BLOCK: ItemBlock = registerItemBlock(ModBlocks.ORGANA_PLANT_BLOCK)
-    @JvmField val ORGANA_FLOWER: BaseMetaItemBlock =
-        registerItemBlock(ModBlocks.ORGANA_FLOWER_BLOCK) { block ->
+    @get:JvmStatic val ORGANA_FLOWER_SEED by ITEMS.register(::ItemOrganaFlowerSeed)
+    @get:JvmStatic val ORGANA_PLANT_BLOCK by itemBlock(ModBlocks::ORGANA_PLANT_BLOCK)
+    @get:JvmStatic val ORGANA_FLOWER by itemBlock(ModBlocks::ORGANA_FLOWER_BLOCK) { block ->
             BaseMetaItemBlock(block) { meta ->
                 when (meta) {
                     10 -> $$"mature$big"
@@ -116,18 +112,15 @@ object ModItems {
             }
         }
 
-    private fun <I : Item> register(factory: () -> I): I = factory().also { ITEMS.register(it) }
+    private fun <B : Block> itemBlock(block: () -> B) = itemBlock(block, ::ItemBlock)
 
-    private fun <B : Block> registerItemBlock(block: B): ItemBlock =
-        registerItemBlock(block) { ItemBlock(it) }
-
-    private fun <I : ItemBlock, B : Block> registerItemBlock(block: B, factory: (B) -> I): I =
-        factory(block).apply { registryName = block.registryName; ITEMS.register(this) }
+    private fun <B : Block, I : ItemBlock> itemBlock(block: () -> B, factory: (B) -> I) =
+        ITEMS.register { block().let { b -> factory(b).apply { registryName = b.registryName } } }
 
     @SubscribeEvent
     @JvmStatic
     fun onItemRegister(event: RegistryEvent.Register<Item>) {
-        ITEMS.all().forEach(event.registry::register)
+        ITEMS.registerAll(event.registry)
     }
 
     @SubscribeEvent

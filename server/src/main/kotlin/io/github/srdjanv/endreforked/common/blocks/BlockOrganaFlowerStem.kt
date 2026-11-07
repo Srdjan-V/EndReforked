@@ -24,11 +24,10 @@ import net.minecraft.world.World
 import net.minecraftforge.common.ForgeHooks
 import java.util.Random
 
-class BlockOrganaFlowerStem : BaseBlockCrops("organa_flower_stem") {
+class BlockOrganaFlowerStem : BaseBlockCrops("organa_flower_stem", { setOf(ModBlocks.END_MOSS_GRASS_BLOCK) }) {
 
     init {
         setTickRandomly(true)
-        sustainableBlocks.add(ModBlocks.END_MOSS_GRASS_BLOCK)
         defaultState = blockState.baseState.withProperty(AGE, 0).withProperty(FACING, EnumFacing.UP)
     }
 
