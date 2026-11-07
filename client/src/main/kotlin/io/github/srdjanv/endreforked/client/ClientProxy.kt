@@ -54,7 +54,7 @@ class ClientProxy(side: Side, registrySync: RegistrySync, val clientRegistries: 
         super.postInit(event)
         Minecraft.getMinecraft().blockColors.registerBlockColorHandler(
             { _, _, _, _ -> 0xffe580ff.toInt() },
-            ModBlocks.ORGANA_FLOWER_STEM_BLOCK.get(), ModBlocks.ORGANA_FLOWER_STEM_DEAD_BLOCK.get(),
+            ModBlocks.ORGANA_FLOWER_STEM_BLOCK, ModBlocks.ORGANA_FLOWER_STEM_DEAD_BLOCK,
         )
     }
 

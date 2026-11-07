@@ -38,7 +38,7 @@ class BlockMaterializer(name: String) : BlockBase(name, Material.IRON) {
 
     override fun createBlockState() = BlockStateContainer(this, WORKING, FACING)
 
-    override fun getItemDropped(state: IBlockState, rand: Random, fortune: Int): Item = ModItems.BLOCK_E_USER.get()
+    override fun getItemDropped(state: IBlockState, rand: Random, fortune: Int): Item = ModItems.BLOCK_E_USER
 
     @SideOnly(Side.CLIENT)
     override fun getRenderLayer() = BlockRenderLayer.CUTOUT
@@ -47,7 +47,7 @@ class BlockMaterializer(name: String) : BlockBase(name, Material.IRON) {
 
     override fun isFullCube(state: IBlockState) = false
 
-    override fun getItem(worldIn: World, pos: BlockPos, state: IBlockState) = ItemStack(ModBlocks.MATERIALIZER_BLOCK.get())
+    override fun getItem(worldIn: World, pos: BlockPos, state: IBlockState) = ItemStack(ModBlocks.MATERIALIZER_BLOCK)
 
     override fun onBlockActivated(
         worldIn: World, pos: BlockPos, state: IBlockState, playerIn: EntityPlayer,

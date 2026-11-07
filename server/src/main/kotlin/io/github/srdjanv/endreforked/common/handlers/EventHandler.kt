@@ -43,7 +43,7 @@ object EventHandler {
             val z = world.rand.nextInt(256) - 128
             val pos = BlockPos(x, world.getHeight(x, z) - 1, z)
             if (world.isBlockLoaded(pos) && world.getBlockState(pos.down()).block == Blocks.END_STONE) {
-                world.setBlockState(pos, ModBlocks.ENTROPY_CROP_BLOCK.get().defaultState)
+                world.setBlockState(pos, ModBlocks.ENTROPY_CROP_BLOCK.defaultState)
             }
         }
     }

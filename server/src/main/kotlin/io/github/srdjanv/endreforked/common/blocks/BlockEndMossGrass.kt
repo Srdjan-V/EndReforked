@@ -60,7 +60,7 @@ class BlockEndMossGrass : BlockBase("end_moss_grass", Material.GRASS, MapColor.P
             while (true) {
                 if (j >= i / 16) {
                     if (worldIn.isAirBlock(pos)) {
-                        val weed = ModBlocks.ORGANA_WEED_BLOCK.get()
+                        val weed = ModBlocks.ORGANA_WEED_BLOCK
                         if (weed.canPlaceBlockAt(worldIn, pos)) {
                             worldIn.setBlockState(pos, weed.defaultState)
                         } else {
@@ -87,13 +87,13 @@ class BlockEndMossGrass : BlockBase("end_moss_grass", Material.GRASS, MapColor.P
         if (worldIn.getLightFromNeighbors(pos.up()) < 4 &&
             worldIn.getBlockState(pos.up()).getLightOpacity(worldIn, pos.up()) > 2
         ) {
-            worldIn.setBlockState(pos, ModBlocks.END_MOSS_BLOCK.get().defaultState)
+            worldIn.setBlockState(pos, ModBlocks.END_MOSS_BLOCK.defaultState)
         }
         for (i in 0 until 4) {
             val randPos = pos.add(rand.nextInt(3) - 1, rand.nextInt(5) - 3, rand.nextInt(3) - 1)
             if (randPos.y in 0..255 && !worldIn.isBlockLoaded(randPos)) return
             val up = worldIn.getBlockState(randPos.up())
-            if (worldIn.getBlockState(randPos).block == ModBlocks.END_MOSS_BLOCK.get() &&
+            if (worldIn.getBlockState(randPos).block == ModBlocks.END_MOSS_BLOCK &&
                 worldIn.getLightFromNeighbors(randPos.up()) >= 4 &&
                 up.getLightOpacity(worldIn, randPos.up()) <= 2
             ) {

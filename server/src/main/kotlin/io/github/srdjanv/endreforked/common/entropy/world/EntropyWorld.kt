@@ -29,7 +29,7 @@ class EntropyWorld(private val world: World) {
         for (chunk in chunks.values) {
             if (!chunk.isLoaded) continue
             val biome = world.getBiome(chunk.dimPos.asBlockPos().add(8, 0, 8))
-            val base = if (biome === ModBioms.ENTROPY_BIOME.get()) chunk.maxEntropy.toLong() * EntropyTuning.entropyBiomePercent / 100 else 0
+            val base = if (biome === ModBioms.ENTROPY_BIOME) chunk.maxEntropy.toLong() * EntropyTuning.entropyBiomePercent / 100 else 0
             val delta = EntropyTuning.decayStep(chunk.currentEntropy, base.toInt(), chunk.decay) - chunk.currentEntropy
             if (delta == 0) continue
             if (delta > 0) chunk.induceEntropy(delta, false) else chunk.drainEntropy(-delta, false)

@@ -54,20 +54,20 @@ class TConstruct : CompatManger.ModCompat {
             if (partType == null) addTrait(trait) else addTrait(trait, partType)
             setRepresentativeItem(item)
         }
-        endorium.ingots(ModItems.INGOT_ENDORIUM.get(), TraitRift)
-        endorium.addItem(ModItems.BLOCK_ENDORIUM.get(), 1, Material.VALUE_Block)
-        tungsten.ingots(ModItems.TUNGSTEN_INGOT.get(), TraitGrounding)
-        tungsten.addItem(ModItems.TUNGSTEN_NUGGET.get(), 1, Material.VALUE_Nugget)
-        tungsten.addItem(ModItems.TUNGSTEN_BLOCK.get(), 1, Material.VALUE_Block)
-        infused.ingots(ModItems.INFUSED_METALL.get(), TraitSiphon)
-        dragonScale.ingots(ModItems.DRAGON_SCALES.get(), TraitBreath, MaterialTypes.BOWSTRING)
+        endorium.ingots(ModItems.INGOT_ENDORIUM, TraitRift)
+        endorium.addItem(ModItems.BLOCK_ENDORIUM, 1, Material.VALUE_Block)
+        tungsten.ingots(ModItems.TUNGSTEN_INGOT, TraitGrounding)
+        tungsten.addItem(ModItems.TUNGSTEN_NUGGET, 1, Material.VALUE_Nugget)
+        tungsten.addItem(ModItems.TUNGSTEN_BLOCK, 1, Material.VALUE_Block)
+        infused.ingots(ModItems.INFUSED_METALL, TraitSiphon)
+        dragonScale.ingots(ModItems.DRAGON_SCALES, TraitBreath, MaterialTypes.BOWSTRING)
     }
 
     override fun postInit(event: FMLPostInitializationEvent) {
         val ids = listOf(endorium, tungsten, infused, dragonScale).map { it.identifier }
         val ok = ids.filter { TinkerRegistry.getMaterial(it) !== Material.UNKNOWN }
         val melts = listOf(ModItems.INGOT_ENDORIUM, ModItems.TUNGSTEN_INGOT, ModItems.INFUSED_METALL)
-            .count { TinkerRegistry.getMelting(ItemStack(it.get())) != null }
+            .count { TinkerRegistry.getMelting(ItemStack(it)) != null }
         EndReforked.LOGGER.info("Tinkers' Construct: registered materials {} of {}, {} of 3 ingots melt in the smeltery", ok, ids, melts)
     }
 }

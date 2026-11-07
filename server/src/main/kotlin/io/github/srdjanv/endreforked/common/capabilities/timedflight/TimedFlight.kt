@@ -36,7 +36,7 @@ class TimedFlight : ITimedFlight {
 
     private fun sendUpdate(playerMP: EntityPlayerMP, flight: Boolean) {
         if (playerMP.capabilities.isCreativeMode) return
-        val potion = ModPotions.TIMED_FLIGHT.get()
+        val potion = ModPotions.TIMED_FLIGHT
         if (flight) playerMP.addPotionEffect(PotionEffect(potion, duration)) else playerMP.removePotionEffect(potion)
         playerMP.capabilities.allowFlying = flight
         if (!flight) playerMP.capabilities.isFlying = false

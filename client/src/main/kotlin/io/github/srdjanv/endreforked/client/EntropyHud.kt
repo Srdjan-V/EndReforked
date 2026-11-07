@@ -18,7 +18,7 @@ class EntropyHud(private val entropy: () -> ChunkEntropy?) {
         val data = entropy() ?: return
         val mc = Minecraft.getMinecraft()
         val player = mc.player ?: return
-        val charm = ModItems.LORMYTE_CHARM.get()
+        val charm = ModItems.LORMYTE_CHARM
         // PlayerUtils covers the main inventory, offhand, armor and Baubles slots
         if (PlayerUtils.getAllPlayerItems(player).none { it.item === charm }) return
 

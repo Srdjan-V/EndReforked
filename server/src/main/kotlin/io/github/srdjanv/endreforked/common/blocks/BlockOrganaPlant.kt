@@ -37,10 +37,10 @@ class BlockOrganaPlant : BlockBase("organa_plant", Material.PLANTS, MapColor.PUR
 
     override fun getActualState(state: IBlockState, worldIn: IBlockAccess, pos: BlockPos): IBlockState {
         fun at(p: BlockPos) = worldIn.getBlockState(p).block
-        val flower = ModBlocks.ORGANA_FLOWER_BLOCK.get()
+        val flower = ModBlocks.ORGANA_FLOWER_BLOCK
         fun connects(p: BlockPos) = at(p).let { it === this || it === flower }
         return state
-            .withProperty(DOWN, at(pos.down()).let { it === this || it === flower || it === ModBlocks.END_MOSS_GRASS_BLOCK.get() })
+            .withProperty(DOWN, at(pos.down()).let { it === this || it === flower || it === ModBlocks.END_MOSS_GRASS_BLOCK })
             .withProperty(UP, connects(pos.up()))
             .withProperty(NORTH, connects(pos.north()))
             .withProperty(EAST, connects(pos.east()))
@@ -84,7 +84,7 @@ class BlockOrganaPlant : BlockBase("organa_plant", Material.PLANTS, MapColor.PUR
         if (!canSurviveAt(worldIn, pos)) worldIn.destroyBlock(pos, true)
     }
 
-    override fun getItemDropped(state: IBlockState, rand: Random, fortune: Int): Item = ModItems.ORGANA_FRUIT.get()
+    override fun getItemDropped(state: IBlockState, rand: Random, fortune: Int): Item = ModItems.ORGANA_FRUIT
 
     override fun quantityDropped(random: Random) = random.nextInt(2)
 
@@ -109,12 +109,12 @@ class BlockOrganaPlant : BlockBase("organa_plant", Material.PLANTS, MapColor.PUR
             if (wordIn.getBlockState(blockPosFacing).block === this) {
                 if (!upAir && !downAir) return false
                 val blockUnder = wordIn.getBlockState(blockPosFacing.down()).block
-                if (blockUnder === this || blockUnder === ModBlocks.END_MOSS_GRASS_BLOCK.get()) return true
+                if (blockUnder === this || blockUnder === ModBlocks.END_MOSS_GRASS_BLOCK) return true
             }
         }
 
         val blockDown = wordIn.getBlockState(pos.down()).block
-        return blockDown === this || blockDown === ModBlocks.END_MOSS_GRASS_BLOCK.get()
+        return blockDown === this || blockDown === ModBlocks.END_MOSS_GRASS_BLOCK
     }
 
     override fun createBlockState() = BlockStateContainer(this, NORTH, EAST, SOUTH, WEST, UP, DOWN)

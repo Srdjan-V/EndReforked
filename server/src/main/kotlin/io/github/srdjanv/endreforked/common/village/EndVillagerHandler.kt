@@ -41,7 +41,7 @@ object EndVillagerHandler {
 
         VillagerCareer(profExplorer, Tags.MODID + ".overworld_explorer").addTrade(
             1,
-            sells(ItemStack(ModItems.TUNGSTEN_INGOT.get(), 1, 0), PriceInfo(-4, -1)),
+            sells(ItemStack(ModItems.TUNGSTEN_INGOT, 1, 0), PriceInfo(-4, -1)),
             buys(ItemStack(Blocks.IRON_ORE, 1, 0), PriceInfo(1, 3)),
         )
         VillagerCareer(profExplorer, Tags.MODID + ".nether_explorer").addTrade(
@@ -53,9 +53,9 @@ object EndVillagerHandler {
         VillagerCareer(profExplorer, Tags.MODID + ".end_explorer").addTrade(
             1,
             buys(ItemStack(Items.ENDER_PEARL, 3, 0), PriceInfo(6, 8)),
-            sells(ItemStack(ModItems.END_ESSENCE.get(), 3, 0), PriceInfo(-2, -1)),
+            sells(ItemStack(ModItems.END_ESSENCE, 3, 0), PriceInfo(-2, -1)),
             sells(ItemStack(Blocks.END_STONE, 3, 0), PriceInfo(-4, -2)),
-            sells(ItemStack(ModItems.CHORUS_SOUP.get(), 3, 0), PriceInfo(-2, -1)),
+            sells(ItemStack(ModItems.CHORUS_SOUP, 3, 0), PriceInfo(-2, -1)),
         )
     }
 

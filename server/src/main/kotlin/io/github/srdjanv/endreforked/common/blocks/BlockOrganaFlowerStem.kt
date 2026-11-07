@@ -28,7 +28,7 @@ class BlockOrganaFlowerStem : BaseBlockCrops("organa_flower_stem") {
 
     init {
         setTickRandomly(true)
-        sustainableBlocks.add(ModBlocks.END_MOSS_GRASS_BLOCK.get())
+        sustainableBlocks.add(ModBlocks.END_MOSS_GRASS_BLOCK)
         setDefaultState(
             blockState.baseState.withProperty(BlockOrganaFlowerStem.AGE, 0).withProperty(FACING, EnumFacing.UP),
         )
@@ -36,9 +36,9 @@ class BlockOrganaFlowerStem : BaseBlockCrops("organa_flower_stem") {
 
     override fun createBlockState() = BlockStateContainer(this, BlockOrganaFlowerStem.AGE, FACING)
 
-    override fun getSeed(): Item = ModItems.ORGANA_FLOWER_SEED.get()
+    override fun getSeed(): Item = ModItems.ORGANA_FLOWER_SEED
 
-    override fun getCrop(): Item = ModItems.ORGANA_FLOWER.get()
+    override fun getCrop(): Item = ModItems.ORGANA_FLOWER
 
     override fun isMaxAge(state: IBlockState) = state.getValue(BlockOrganaFlowerStem.AGE) >= 7
 
@@ -110,7 +110,7 @@ class BlockOrganaFlowerStem : BaseBlockCrops("organa_flower_stem") {
                 ) {
                     val newState = state.withProperty(BlockOrganaFlowerStem.AGE, state.getValue(BlockOrganaFlowerStem.AGE) + 1)
                     if (isDead(newState)) {
-                        worldIn.setBlockState(plantPos, ModBlocks.ORGANA_FLOWER_STEM_DEAD_BLOCK.get().defaultState, 2)
+                        worldIn.setBlockState(plantPos, ModBlocks.ORGANA_FLOWER_STEM_DEAD_BLOCK.defaultState, 2)
                     } else worldIn.setBlockState(plantPos, newState, 2)
                     worldIn.setBlockState(fruitPos, FLOWER.defaultState)
                     worldIn.playEvent(1034, fruitPos, 0)
@@ -139,6 +139,6 @@ class BlockOrganaFlowerStem : BaseBlockCrops("organa_flower_stem") {
         @JvmField
         val STEM_AABB = Array(8) { AxisAlignedBB(0.375, 0.0, 0.375, 0.625, (it + 1) * 0.125, 0.625) }
 
-        private val FLOWER: BlockOrganaFlower = ModBlocks.ORGANA_FLOWER_BLOCK.get()
+        private val FLOWER: BlockOrganaFlower = ModBlocks.ORGANA_FLOWER_BLOCK
     }
 }

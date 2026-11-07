@@ -38,7 +38,7 @@ class BlockEntropyChamber : BlockBase("entropy_chamber", Material.IRON) {
 
     override fun createBlockState() = BlockStateContainer(this, FACING, WORKING_ITEM, WORKING_FLUID)
 
-    override fun getItemDropped(state: IBlockState, rand: Random, fortune: Int): Item = ModItems.ENTROPY_CHAMBER.get()
+    override fun getItemDropped(state: IBlockState, rand: Random, fortune: Int): Item = ModItems.ENTROPY_CHAMBER
 
     override fun hasTileEntity(state: IBlockState) = true
 
@@ -49,7 +49,7 @@ class BlockEntropyChamber : BlockBase("entropy_chamber", Material.IRON) {
         super.breakBlock(world, pos, state)
     }
 
-    override fun getItem(worldIn: World, pos: BlockPos, state: IBlockState) = ItemStack(ModBlocks.ENTROPY_CHAMBER.get())
+    override fun getItem(worldIn: World, pos: BlockPos, state: IBlockState) = ItemStack(ModBlocks.ENTROPY_CHAMBER)
 
     override fun onBlockActivated(
         worldIn: World, pos: BlockPos, state: IBlockState, playerIn: EntityPlayer,

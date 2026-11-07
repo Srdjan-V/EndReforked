@@ -160,7 +160,7 @@ class MaterializerTile : BaseTileEntity(), ITickable, IGuiHolder<PosGuiData> {
         }
         world.setBlockState(
             pos,
-            ModBlocks.MATERIALIZER_BLOCK.get().defaultState
+            ModBlocks.MATERIALIZER_BLOCK.defaultState
                 .withProperty(BlockMaterializer.FACING, state.getValue(BlockMaterializer.FACING))
                 .withProperty(BlockMaterializer.WORKING, running),
             3,

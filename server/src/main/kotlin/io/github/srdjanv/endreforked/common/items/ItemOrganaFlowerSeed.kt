@@ -12,9 +12,9 @@ import net.minecraft.world.World
 import net.minecraftforge.common.EnumPlantType
 
 class ItemOrganaFlowerSeed : BaseSeeds(
-    "organa_flower_seed", ModBlocks.ORGANA_FLOWER_STEM_BLOCK.get(), ModBlocks.ORGANA_WEED_BLOCK.get(),
+    "organa_flower_seed", ModBlocks.ORGANA_FLOWER_STEM_BLOCK, ModBlocks.ORGANA_WEED_BLOCK,
 ) {
-    private val crop = ModBlocks.ORGANA_FLOWER_STEM_BLOCK.get()
+    private val crop = ModBlocks.ORGANA_FLOWER_STEM_BLOCK
 
     override fun onItemUse(player: EntityPlayer, worldIn: World, pos: BlockPos, hand: EnumHand, facing: EnumFacing,
                            hitX: Float, hitY: Float, hitZ: Float): EnumActionResult {

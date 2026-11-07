@@ -13,7 +13,7 @@ import net.minecraftforge.fml.relauncher.SideOnly
 class ItemEnderFlesh : ItemFoodBase("ender_flesh", 2, 0.4f, false) {
     init {
         setAlwaysEdible()
-        setPotionEffect(PotionEffect(ModPotions.ENDER_EYES.get(), 90 * 20, 0), 1f)
+        setPotionEffect(PotionEffect(ModPotions.ENDER_EYES, 90 * 20, 0), 1f)
     }
 
     @SideOnly(Side.CLIENT)

@@ -19,6 +19,6 @@ public class EntityEndermanMixin {
 
     @Inject(method = "shouldAttackPlayer", at = @At("HEAD"), cancellable = true)
     private void shouldAttackPlayer(EntityPlayer player, CallbackInfoReturnable<Boolean> cir) {
-        if (player.isPotionActive(ModPotions.ENDER_EYES.get())) cir.setReturnValue(false);
+        if (player.isPotionActive(ModPotions.ENDER_EYES)) cir.setReturnValue(false);
     }
 }

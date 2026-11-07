@@ -26,8 +26,8 @@ class BlockEnderCrop : BaseBlockCrops("ender_flower_crop") {
     init {
         sustainableBlocks.add(Blocks.END_BRICKS)
         sustainableBlocks.add(Blocks.END_STONE)
-        sustainableBlocks.add(ModBlocks.ENTROPY_END_STONE.get())
-        sustainableBlocks.add(ModBlocks.ENTROPY_CROP_BLOCK.get())
+        sustainableBlocks.add(ModBlocks.ENTROPY_END_STONE)
+        sustainableBlocks.add(ModBlocks.ENTROPY_CROP_BLOCK)
     }
 
     override fun createBlockState() = BlockStateContainer(this, AGE)
@@ -48,11 +48,11 @@ class BlockEnderCrop : BaseBlockCrops("ender_flower_crop") {
     ): Boolean {
         if (worldIn.isRemote || !isMaxAge(state)) return false
         dropPearls(worldIn, pos)
-        worldIn.setBlockState(pos, ModBlocks.ENDER_FLOWER_CROP_DEAD.get().defaultState)
+        worldIn.setBlockState(pos, ModBlocks.ENDER_FLOWER_CROP_DEAD.defaultState)
         return true
     }
 
-    override fun getSeed(): Item = ModItems.ENDER_FLOWER_CROP.get()
+    override fun getSeed(): Item = ModItems.ENDER_FLOWER_CROP
 
     override fun getCrop(): Item = Items.ENDER_PEARL
 

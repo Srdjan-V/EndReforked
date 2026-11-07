@@ -17,7 +17,7 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import java.util.Random
 
-class BlockFluidOrgana : BaseBlockFluid("organa", ModFluids.ORGANA.get(), Material.WATER, MapColor.PURPLE) {
+class BlockFluidOrgana : BaseBlockFluid("organa", ModFluids.ORGANA, Material.WATER, MapColor.PURPLE) {
 
     init {
         setTickRandomly(true)

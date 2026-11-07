@@ -28,5 +28,5 @@ class BlockObsidianEssence : BlockBase("essence_ore", Material.ROCK) {
         tooltip.add(I18n.format("tile.essence.tooltip"))
     }
 
-    override fun getItemDropped(state: IBlockState, rand: Random, fortune: Int): Item = ModItems.END_ESSENCE.get()
+    override fun getItemDropped(state: IBlockState, rand: Random, fortune: Int): Item = ModItems.END_ESSENCE
 }

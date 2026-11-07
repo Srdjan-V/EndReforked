@@ -34,11 +34,11 @@ object WorldInteractionDefaults {
     fun wandConversions(): List<WandConversion> {
         val sound = listOf(WorldEffect.FLINT_SOUND)
         fun simple(name: String, from: BlockMatch, to: Block) = WandConversion(wandId(name), from, to.defaultState, effects = sound)
-        val flower = ModBlocks.ORGANA_FLOWER_BLOCK.get()
+        val flower = ModBlocks.ORGANA_FLOWER_BLOCK
         fun age(from: Int) = match(flower, BlockOrganaFlower.AGE to from)
         fun grown(age: Int) = flower.defaultState.withProperty(BlockOrganaFlower.AGE, age)
         return listOf(
-            simple("end_stone", match(Blocks.END_STONE), ModBlocks.ENTROPY_END_STONE.get()),
+            simple("end_stone", match(Blocks.END_STONE), ModBlocks.ENTROPY_END_STONE),
             simple("stone", match(Blocks.STONE, BlockStone.VARIANT to BlockStone.EnumType.STONE), Blocks.COBBLESTONE),
             simple("cobblestone", match(Blocks.COBBLESTONE), Blocks.GRAVEL),
             simple("gravel", match(Blocks.GRAVEL), Blocks.SAND),
@@ -51,7 +51,7 @@ object WorldInteractionDefaults {
             WandConversion(wandId("organa_flower_8"), age(8), grown(9), damage(10)),
             WandConversion(wandId("organa_flower_9"), age(9), grown(10), damage(10)),
             WandConversion(
-                wandId("end_magma"), match(ModBlocks.END_MAGMA_BLOCK.get()), ModBlocks.FLUID_END_MAGMA_BLOCK.get().defaultState, damage(15),
+                wandId("end_magma"), match(ModBlocks.END_MAGMA_BLOCK), ModBlocks.FLUID_END_MAGMA_BLOCK.defaultState, damage(15),
             ),
         )
     }
@@ -59,22 +59,22 @@ object WorldInteractionDefaults {
     fun fluidBlockInteractions(): List<FluidBlockInteraction> = listOf(
         FluidBlockInteraction(
             id = ResourceLocation(Tags.MODID, "entropy/entropy_end_stone"),
-            fluid = ModFluids.ENTROPY.get(),
+            fluid = ModFluids.ENTROPY,
             match = match(Blocks.END_STONE),
-            result = ModBlocks.ENTROPY_END_STONE.get().defaultState,
+            result = ModBlocks.ENTROPY_END_STONE.defaultState,
             chance = 5,
         ),
     )
 
     fun fluidEntityInteractions(): List<FluidEntityInteraction> {
-        val entropy = ModFluids.ENTROPY.get()
+        val entropy = ModFluids.ENTROPY
         return listOf(
             FluidEntityInteraction(
                 id = ResourceLocation(Tags.MODID, "entropy/organa_flower"),
                 fluid = entropy,
                 entity = ITEM_ENTITY,
                 item = ItemStack(Blocks.CHORUS_FLOWER, 4),
-                result = EntityResult.SpawnItem(ItemStack(ModBlocks.ORGANA_FLOWER_BLOCK.get(), 4)),
+                result = EntityResult.SpawnItem(ItemStack(ModBlocks.ORGANA_FLOWER_BLOCK, 4)),
                 chance = 10,
                 consumeSource = true,
             ),
@@ -82,8 +82,8 @@ object WorldInteractionDefaults {
                 id = ResourceLocation(Tags.MODID, "entropy/fluid_organa"),
                 fluid = entropy,
                 entity = ITEM_ENTITY,
-                item = ItemStack(ModItems.ORGANA_FRUIT.get()),
-                result = EntityResult.SetFluidBlock(ModBlocks.FLUID_ORGANA_BLOCK.get().defaultState),
+                item = ItemStack(ModItems.ORGANA_FRUIT),
+                result = EntityResult.SetFluidBlock(ModBlocks.FLUID_ORGANA_BLOCK.defaultState),
                 chance = 20,
                 consumeSource = true,
             ),

@@ -58,16 +58,16 @@ class BlockEntropyCrop : BaseBlockCrops("entropy_crop") {
 
     override fun canSilkHarvest(world: World, pos: BlockPos, state: IBlockState, player: EntityPlayer) = true
 
-    override fun getSilkTouchDrop(state: IBlockState) = ItemStack(ModItems.ENTROPY_CROP_BLOCK.get(), 1, 0)
+    override fun getSilkTouchDrop(state: IBlockState) = ItemStack(ModItems.ENTROPY_CROP_BLOCK, 1, 0)
 
     override fun getSubBlocks(itemIn: CreativeTabs, items: NonNullList<ItemStack>) {
-        items.add(ItemStack(ModItems.ENTROPY_CROP_BLOCK.get(), 1, 0))
-        items.add(ItemStack(ModItems.ENTROPY_CROP_BLOCK.get(), 1, 3))
+        items.add(ItemStack(ModItems.ENTROPY_CROP_BLOCK, 1, 0))
+        items.add(ItemStack(ModItems.ENTROPY_CROP_BLOCK, 1, 3))
     }
 
-    override fun getSeed(): Item = ModItems.ENTROPY_CROP_BLOCK.get()
+    override fun getSeed(): Item = ModItems.ENTROPY_CROP_BLOCK
 
-    override fun getCrop(): Item = ModItems.ENTROPY_SHARD.get()
+    override fun getCrop(): Item = ModItems.ENTROPY_SHARD
 
     override fun getMaxAge() = 3
 
@@ -91,7 +91,7 @@ class BlockEntropyCrop : BaseBlockCrops("entropy_crop") {
 
         // TODO: 17/11/2023 add config options
         val existing = BlockPos.getAllInBox(pos.add(2, 2, 2), pos.add(-2, -2, -2)).asSequence()
-            .filter { worldIn.getBlockState(it).block == ModBlocks.ENTROPY_CROP_BLOCK.get() }
+            .filter { worldIn.getBlockState(it).block == ModBlocks.ENTROPY_CROP_BLOCK }
             .take(6).count()
         if (existing < 6) {
             BlockPos.getAllInBox(pos.add(1, 1, 1), pos.add(-1, -1, -1))
@@ -136,14 +136,14 @@ class BlockEntropyCrop : BaseBlockCrops("entropy_crop") {
     }
 
     private fun <T : MutableList<ItemStack>> addAdditionalDrops(fortune: Int, drops: T, random: Random): T {
-        drops.add(ItemStack(ModItems.ENTROPY_SHARD.get(), 1))
-        if (random.nextInt(20) <= 1 + fortune) drops.add(ItemStack(ModItems.ENTROPY_SHARD.get(), 1))
+        drops.add(ItemStack(ModItems.ENTROPY_SHARD, 1))
+        if (random.nextInt(20) <= 1 + fortune) drops.add(ItemStack(ModItems.ENTROPY_SHARD, 1))
         return drops
     }
 
     override fun canSustainPlant(
         state: IBlockState, world: IBlockAccess, pos: BlockPos, direction: EnumFacing, plantable: IPlantable,
-    ) = state.block == ModBlocks.ENTROPY_CROP_BLOCK.get() || super.canSustainPlant(state, world, pos, direction, plantable)
+    ) = state.block == ModBlocks.ENTROPY_CROP_BLOCK || super.canSustainPlant(state, world, pos, direction, plantable)
 
     override fun canSustainBush(state: IBlockState) = true
 

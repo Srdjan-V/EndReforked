@@ -40,8 +40,8 @@ class BlockOrganaFlower : BlockBase("organa_flower", Material.PLANTS, MapColor.P
     }
 
     override fun handleAssets() {
-        EndReforked.getProxy().registerItemRenderer(ModItems.ORGANA_FLOWER.get(), 0, "inventory")
-        EndReforked.getProxy().registerItemRenderer(ModItems.ORGANA_FLOWER.get(), 10, "inventory")
+        EndReforked.getProxy().registerItemRenderer(ModItems.ORGANA_FLOWER, 0, "inventory")
+        EndReforked.getProxy().registerItemRenderer(ModItems.ORGANA_FLOWER, 10, "inventory")
     }
 
     override fun getSubBlocks(itemIn: CreativeTabs, items: NonNullList<ItemStack>) {
@@ -77,14 +77,14 @@ class BlockOrganaFlower : BlockBase("organa_flower", Material.PLANTS, MapColor.P
         val downBlockState = worldIn.getBlockState(pos.down())
         val downBlock = downBlockState.block
 
-        if (downBlock === ModBlocks.END_MOSS_GRASS_BLOCK.get()) {
+        if (downBlock === ModBlocks.END_MOSS_GRASS_BLOCK) {
             growOnlyUp = true
-        } else if (downBlock === ModBlocks.ORGANA_PLANT_BLOCK.get()) {
+        } else if (downBlock === ModBlocks.ORGANA_PLANT_BLOCK) {
             var j = 1
             for (k in 0 until 4) {
                 val block1 = worldIn.getBlockState(pos.down(j + 1)).block
-                if (block1 !== ModBlocks.ORGANA_PLANT_BLOCK.get()) {
-                    if (block1 === ModBlocks.END_MOSS_GRASS_BLOCK.get()) flag1 = true
+                if (block1 !== ModBlocks.ORGANA_PLANT_BLOCK) {
+                    if (block1 === ModBlocks.END_MOSS_GRASS_BLOCK) flag1 = true
                     break
                 }
                 ++j
@@ -121,7 +121,7 @@ class BlockOrganaFlower : BlockBase("organa_flower", Material.PLANTS, MapColor.P
     }
 
     private fun placePlant(worldIn: World, pos: BlockPos) {
-        worldIn.setBlockState(pos, ModBlocks.ORGANA_PLANT_BLOCK.get().defaultState, 2)
+        worldIn.setBlockState(pos, ModBlocks.ORGANA_PLANT_BLOCK.defaultState, 2)
     }
 
     private fun placeGrownFlower(worldIn: World, pos: BlockPos, age: Int) {
@@ -154,14 +154,14 @@ class BlockOrganaFlower : BlockBase("organa_flower", Material.PLANTS, MapColor.P
         val belowState = worldIn.getBlockState(pos.down())
         val belowBlock = belowState.block
 
-        if (belowBlock === ModBlocks.ORGANA_PLANT_BLOCK.get() || belowBlock === ModBlocks.END_MOSS_GRASS_BLOCK.get())
+        if (belowBlock === ModBlocks.ORGANA_PLANT_BLOCK || belowBlock === ModBlocks.END_MOSS_GRASS_BLOCK)
             return true
         if (belowState.material !== Material.AIR) return false
         var i = 0
 
         for (enumfacing in EnumFacing.Plane.HORIZONTAL) {
             val facingState = worldIn.getBlockState(pos.offset(enumfacing))
-            if (facingState.block === ModBlocks.ORGANA_PLANT_BLOCK.get()) {
+            if (facingState.block === ModBlocks.ORGANA_PLANT_BLOCK) {
                 ++i
             } else if (facingState.material !== Material.AIR) {
                 return false
@@ -206,7 +206,7 @@ class BlockOrganaFlower : BlockBase("organa_flower", Material.PLANTS, MapColor.P
 
         @JvmStatic
         fun generatePlant(worldIn: World, pos: BlockPos, rand: Random, plantSpace: Int) {
-            worldIn.setBlockState(pos, ModBlocks.ORGANA_PLANT_BLOCK.get().defaultState, 2)
+            worldIn.setBlockState(pos, ModBlocks.ORGANA_PLANT_BLOCK.defaultState, 2)
             growPlantRecursive(worldIn, pos, rand, pos, plantSpace, 0)
         }
 
@@ -222,7 +222,7 @@ class BlockOrganaFlower : BlockBase("organa_flower", Material.PLANTS, MapColor.P
                     height = j
                     break
                 }
-                worldIn.setBlockState(upPos, ModBlocks.ORGANA_PLANT_BLOCK.get().defaultState, 2)
+                worldIn.setBlockState(upPos, ModBlocks.ORGANA_PLANT_BLOCK.defaultState, 2)
             }
 
             var grown = false
@@ -239,7 +239,7 @@ class BlockOrganaFlower : BlockBase("organa_flower", Material.PLANTS, MapColor.P
                         areAllNeighborsEmpty(worldIn, genPos, enumfacing.opposite)
                     ) {
                         grown = true
-                        worldIn.setBlockState(genPos, ModBlocks.ORGANA_PLANT_BLOCK.get().defaultState, 2)
+                        worldIn.setBlockState(genPos, ModBlocks.ORGANA_PLANT_BLOCK.defaultState, 2)
                         growPlantRecursive(worldIn, genPos, rand, pos2, plantSpace, iteration + 1)
                     }
                 }
@@ -248,7 +248,7 @@ class BlockOrganaFlower : BlockBase("organa_flower", Material.PLANTS, MapColor.P
             if (!grown) {
                 worldIn.setBlockState(
                     pos.up(height),
-                    ModBlocks.ORGANA_FLOWER_BLOCK.get().defaultState.withProperty(AGE, 10), 2,
+                    ModBlocks.ORGANA_FLOWER_BLOCK.defaultState.withProperty(AGE, 10), 2,
                 )
             }
         }

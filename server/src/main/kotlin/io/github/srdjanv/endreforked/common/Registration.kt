@@ -60,7 +60,7 @@ class Registration : Initializer {
             EndVillagerHandler.initVillagerHouse()
         }
 
-        GameRegistry.addSmelting(ModBlocks.TUNGSTEN_ORE.get(), ItemStack(ModItems.TUNGSTEN_INGOT.get(), 1), 1.5f)
+        GameRegistry.addSmelting(ModBlocks.TUNGSTEN_ORE, ItemStack(ModItems.TUNGSTEN_INGOT, 1), 1.5f)
         handleOreDictionary()
     }
 
@@ -68,13 +68,13 @@ class Registration : Initializer {
 
     @SubscribeEvent
     fun registerRecipes(event: RegistryEvent.Register<IRecipe>) {
-        val tea = ModItems.DRAGONITE_TEA.get()
+        val tea = ModItems.DRAGONITE_TEA
         val path = tea.registryName!!.path
         val ingredients = NonNullList.from(
             Ingredient.EMPTY,
             Ingredient.fromStacks(ItemStack(Items.GLASS_BOTTLE, 2)),
-            Ingredient.fromStacks(ItemStack(ModItems.DRAGONITE_BERRIES.get())),
-            Ingredient.fromStacks(ItemStack(ModItems.ORGANA_FRUIT.get())),
+            Ingredient.fromStacks(ItemStack(ModItems.DRAGONITE_BERRIES)),
+            Ingredient.fromStacks(ItemStack(ModItems.ORGANA_FRUIT)),
         )
         event.registry.register(
             ShapelessRecipes(path, ItemStack(tea, 2), ingredients).setRegistryName(ResourceLocation(Tags.MODID, path)),
@@ -82,7 +82,7 @@ class Registration : Initializer {
     }
 
     private fun registerBannerPatterns() {
-        addPattern("rune", "run", ItemStack(ModItems.END_RUNE.get()))
+        addPattern("rune", "run", ItemStack(ModItems.END_RUNE))
         addPattern("end", "end", ItemStack(Items.CHORUS_FRUIT_POPPED))
         addPattern("pearl", "prl", ItemStack(Items.ENDER_PEARL))
     }
@@ -91,26 +91,25 @@ class Registration : Initializer {
         val enumName = "endreborn_$name"
         EnumHelper.addEnum(
             BannerPattern::class.java, enumName.uppercase(),
-            arrayOf<Class<*>>(String::class.java, String::class.java, ItemStack::class.java),
+            arrayOf(String::class.java, String::class.java, ItemStack::class.java),
             enumName, "er_$id", craftingItem,
         )
     }
 
     private fun handleOreDictionary() {
-        OreDictionary.registerOre("ingotEndorium", ModItems.INGOT_ENDORIUM.get())
-        OreDictionary.registerOre("blockEndorium", ModItems.BLOCK_ENDORIUM.get())
-        OreDictionary.registerOre("ingotInfused", ModItems.INFUSED_METALL.get())
+        OreDictionary.registerOre("ingotEndorium", ModItems.INGOT_ENDORIUM)
+        OreDictionary.registerOre("blockEndorium", ModItems.BLOCK_ENDORIUM)
+        OreDictionary.registerOre("ingotInfused", ModItems.INFUSED_METALL)
 
-        // todo dont register a null block
-        OreDictionary.registerOre("ingotTungsten", ModItems.TUNGSTEN_INGOT.get())
-        OreDictionary.registerOre("nuggetTungsten", ModItems.TUNGSTEN_NUGGET.get())
-        OreDictionary.registerOre("blockTungsten", ModBlocks.TUNGSTEN_BLOCK.get())
-        OreDictionary.registerOre("oreTungsten", ModBlocks.TUNGSTEN_ORE.get())
-        OreDictionary.registerOre("oreTungsten", ModBlocks.TUNGSTEN_END_ORE.get())
+        OreDictionary.registerOre("ingotTungsten", ModItems.TUNGSTEN_INGOT)
+        OreDictionary.registerOre("nuggetTungsten", ModItems.TUNGSTEN_NUGGET)
+        OreDictionary.registerOre("blockTungsten", ModBlocks.TUNGSTEN_BLOCK)
+        OreDictionary.registerOre("oreTungsten", ModBlocks.TUNGSTEN_ORE)
+        OreDictionary.registerOre("oreTungsten", ModBlocks.TUNGSTEN_END_ORE)
 
-        OreDictionary.registerOre("dustObsidian", ModItems.CATALYST.get())
-        OreDictionary.registerOre("shardObsidian", ModItems.SHARD_OBSIDIAN.get())
-        OreDictionary.registerOre("shardLormyte", ModItems.LORMYTE_CRYSTAL.get())
-        OreDictionary.registerOre("essence", ModItems.END_ESSENCE.get())
+        OreDictionary.registerOre("dustObsidian", ModItems.CATALYST)
+        OreDictionary.registerOre("shardObsidian", ModItems.SHARD_OBSIDIAN)
+        OreDictionary.registerOre("shardLormyte", ModItems.LORMYTE_CRYSTAL)
+        OreDictionary.registerOre("essence", ModItems.END_ESSENCE)
     }
 }

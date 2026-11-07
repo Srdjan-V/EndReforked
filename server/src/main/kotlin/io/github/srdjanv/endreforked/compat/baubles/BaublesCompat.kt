@@ -28,8 +28,8 @@ class BaublesCompat : CompatManger.ModCompat {
 
     @SubscribeEvent
     fun onRecipeRegister(event: RegistryEvent.Register<IRecipe>) {
-        event.registry.register(recipe(ring, ModItems.ENTROPY_WINGS.get()))
-        event.registry.register(recipe(ModItems.ENTROPY_WINGS.get(), ring))
+        event.registry.register(recipe(ring, ModItems.ENTROPY_WINGS))
+        event.registry.register(recipe(ModItems.ENTROPY_WINGS, ring))
     }
 
     private fun recipe(result: Item, ingredient: Item): IRecipe {

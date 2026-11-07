@@ -22,8 +22,8 @@ object ModEntities : Initializer {
     )
 
     private fun end(weight: Int, min: Int, max: Int) = listOf(
-        Spawn({ ModBioms.ORGANA_BIOME.get() }, weight, min, max),
-        Spawn({ ModBioms.ENTROPY_BIOME.get() }, weight, min, max),
+        Spawn({ ModBioms.ORGANA_BIOME }, weight, min, max),
+        Spawn({ ModBioms.ENTROPY_BIOME }, weight, min, max),
     )
 
     private val defs = listOf(

@@ -21,7 +21,7 @@ class EntropyBiome : BiomeEnd(BiomeProperties("Entropy").setRainDisabled()), IEn
     init {
         setRegistryName("entropy")
         topBlock = Blocks.END_STONE.defaultState
-        fillerBlock = ModBlocks.ENTROPY_END_STONE.get().defaultState
+        fillerBlock = ModBlocks.ENTROPY_END_STONE.defaultState
         flowers.clear()
         decorator = createBiomeDecorator()
     }

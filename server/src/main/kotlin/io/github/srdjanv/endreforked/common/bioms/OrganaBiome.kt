@@ -23,8 +23,8 @@ class OrganaBiome : BiomeEnd(BiomeProperties("Organa").setRainDisabled()), IEndB
 
     init {
         setRegistryName("organa")
-        topBlock = ModBlocks.END_MOSS_GRASS_BLOCK.get().defaultState
-        fillerBlock = ModBlocks.END_MOSS_BLOCK.get().defaultState
+        topBlock = ModBlocks.END_MOSS_GRASS_BLOCK.defaultState
+        fillerBlock = ModBlocks.END_MOSS_BLOCK.defaultState
         flowers.clear()
         decorator = createBiomeDecorator()
     }
@@ -75,7 +75,7 @@ class OrganaBiome : BiomeEnd(BiomeProperties("Organa").setRainDisabled()), IEndB
 
                     if (y > 0 && world.isAirBlock(pos.add(xOffset, y, zOffset))) {
                         val ground = world.getBlockState(pos.add(xOffset, y - 1, zOffset))
-                        if (ground == ModBlocks.END_MOSS_GRASS_BLOCK.get().defaultState)
+                        if (ground == ModBlocks.END_MOSS_GRASS_BLOCK.defaultState)
                             BlockOrganaFlower.generatePlant(world, pos.add(xOffset, y, zOffset), rand, 8)
                     }
                 }

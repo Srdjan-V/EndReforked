@@ -33,13 +33,13 @@ class JEIPlugin : IModPlugin {
         val machineRecipes = registries.machineRecipes.current
 
         registry.addRecipes(EndForgeCategory.FEED.load(machineRecipes), EndForgeCategory.UID)
-        registry.addRecipeCatalyst(ItemStack(ModBlocks.BLOCK_END_FORGE.get()), EndForgeCategory.UID)
+        registry.addRecipeCatalyst(ItemStack(ModBlocks.BLOCK_END_FORGE), EndForgeCategory.UID)
         registry.addRecipes(MaterializerCategory.FEED.load(machineRecipes), MaterializerCategory.UID)
-        registry.addRecipeCatalyst(ItemStack(ModBlocks.MATERIALIZER_BLOCK.get()), MaterializerCategory.UID)
+        registry.addRecipeCatalyst(ItemStack(ModBlocks.MATERIALIZER_BLOCK), MaterializerCategory.UID)
         registry.addRecipes(EntropyWandCategory.FEED.load(registries.wandConversions.current), EntropyWandCategory.UID)
-        registry.addRecipeCatalyst(ItemStack(ModItems.ENTROPY_WAND.get()), EntropyWandCategory.UID)
+        registry.addRecipeCatalyst(ItemStack(ModItems.ENTROPY_WAND), EntropyWandCategory.UID)
         registry.addRecipes(EntropyChamberCategory.FEED.load(machineRecipes), EntropyChamberCategory.UID)
-        registry.addRecipeCatalyst(ItemStack(ModBlocks.ENTROPY_CHAMBER.get()), EntropyChamberCategory.UID)
+        registry.addRecipeCatalyst(ItemStack(ModBlocks.ENTROPY_CHAMBER), EntropyChamberCategory.UID)
         registry.addRecipes(FluidInteractionEntityCategory.FEED.load(registries.fluidEntityInteractions.current), FluidInteractionEntityCategory.UID)
         registry.addRecipes(FluidInteractionStateCategory.FEED.load(registries.fluidBlockInteractions.current), FluidInteractionStateCategory.UID)
     }

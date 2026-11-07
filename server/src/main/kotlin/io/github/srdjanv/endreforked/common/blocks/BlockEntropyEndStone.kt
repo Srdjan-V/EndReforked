@@ -29,7 +29,7 @@ class BlockEntropyEndStone : BlockBase("entropy_end_stone", Material.ROCK), Entr
         setTickRandomly(true)
     }
 
-    override fun getItemDropped(state: IBlockState, rand: Random, fortune: Int): Item = ModItems.END_MOSS_BLOCK.get()
+    override fun getItemDropped(state: IBlockState, rand: Random, fortune: Int): Item = ModItems.END_MOSS_BLOCK
 
     override val entropyRadius: Optional<EntropyRadius> = Optional.of(EntropyRadius.ONE)
 

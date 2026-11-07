@@ -21,8 +21,8 @@ class BlockEndCoral : BaseBlockBush("end_coral", Material.VINE), IShearable, IGr
     init {
         sustainableBlocks.add(Blocks.END_BRICKS)
         sustainableBlocks.add(Blocks.END_STONE)
-        sustainableBlocks.add(ModBlocks.ENTROPY_END_STONE.get())
-        sustainableBlocks.add(ModBlocks.ENTROPY_CROP_BLOCK.get())
+        sustainableBlocks.add(ModBlocks.ENTROPY_END_STONE)
+        sustainableBlocks.add(ModBlocks.ENTROPY_CROP_BLOCK)
     }
 
     override fun getBoundingBox(state: IBlockState, source: IBlockAccess, pos: BlockPos) = END_BUSH_AABB
@@ -41,7 +41,7 @@ class BlockEndCoral : BaseBlockBush("end_coral", Material.VINE), IShearable, IGr
     override fun isShearable(item: ItemStack, world: IBlockAccess, pos: BlockPos) = true
 
     override fun onSheared(item: ItemStack, world: IBlockAccess, pos: BlockPos, fortune: Int): MutableList<ItemStack> =
-        mutableListOf(ItemStack(ModBlocks.END_CORAL.get()))
+        mutableListOf(ItemStack(ModBlocks.END_CORAL))
 
     override fun canGrow(worldIn: World, pos: BlockPos, state: IBlockState, isClient: Boolean) = true
 

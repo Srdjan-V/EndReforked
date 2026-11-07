@@ -87,7 +87,7 @@ class EntropyWandCategory(helper: IGuiHelper) : IRecipeCategory<WandConversionWr
     companion object {
         const val UID = Tags.MODID + ".entropywand"
 
-        private val wandItem by lazy { ItemDrawable(ItemStack(ModItems.ENTROPY_WAND.get())) }
+        private val wandItem by lazy { ItemDrawable(ItemStack(ModItems.ENTROPY_WAND)) }
 
         @JvmField
         val FEED = RecipeFeed<WandConversion, WandConversions>(UID) { snapshot -> snapshot.entries.mapNotNull(WandConversionWrapper::of) }

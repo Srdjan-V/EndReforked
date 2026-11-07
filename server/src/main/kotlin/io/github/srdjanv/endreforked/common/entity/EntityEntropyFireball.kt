@@ -35,7 +35,7 @@ class EntityEntropyFireball : EntityFireball {
             }
         } else if (shootingEntity !is EntityLiving || ForgeEventFactory.getMobGriefingEvent(world, shootingEntity)) {
             val pos = result.blockPos.offset(result.sideHit)
-            if (world.isAirBlock(pos)) world.setBlockState(pos, ModBlocks.ENTROPY_FIRE.get().defaultState)
+            if (world.isAirBlock(pos)) world.setBlockState(pos, ModBlocks.ENTROPY_FIRE.defaultState)
         }
         setDead()
     }

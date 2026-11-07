@@ -13,7 +13,7 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import java.util.Random
 
-class BlockFluidEntropy : BaseBlockFluid("entropy", ModFluids.ENTROPY.get(), Material.WATER, MapColor.PURPLE) {
+class BlockFluidEntropy : BaseBlockFluid("entropy", ModFluids.ENTROPY, Material.WATER, MapColor.PURPLE) {
 
     init {
         setTickRandomly(true)

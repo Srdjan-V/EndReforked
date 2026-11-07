@@ -13,9 +13,9 @@ import net.minecraft.world.World
 import net.minecraftforge.common.EnumPlantType
 
 class ItemDragoniteBerries : ItemSeedFoodBase(
-    "dragonite_berries", 1, 0.8f, ModBlocks.DRAGONITE_CROP.get(), ModBlocks.ENTROPY_END_STONE.get(),
+    "dragonite_berries", 1, 0.8f, ModBlocks.DRAGONITE_CROP, ModBlocks.ENTROPY_END_STONE,
 ) {
-    private val crop = ModBlocks.DRAGONITE_CROP.get()
+    private val crop = ModBlocks.DRAGONITE_CROP
 
     init {
         setAlwaysEdible()

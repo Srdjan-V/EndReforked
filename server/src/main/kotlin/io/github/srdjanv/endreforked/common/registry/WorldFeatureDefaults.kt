@@ -54,47 +54,47 @@ object WorldFeatureDefaults {
             state(block)?.let { WorldFeature(id(name), FeatureKind.ORE, 0, Feature.Ore(it, replace), params, dims, biomes) }
         val diorite = Blocks.STONE.defaultState.withProperty(BlockStone.VARIANT, BlockStone.EnumType.DIORITE)
         return ordered(FeatureKind.ORE, listOf(
-            ore("obsidian_essence_ore", ModBlocks.OBSIDIAN_ESSENCE_ORE.get(), Blocks.OBSIDIAN.defaultState,
+            ore("obsidian_essence_ore", ModBlocks.OBSIDIAN_ESSENCE_ORE, Blocks.OBSIDIAN.defaultState,
                 dims = dims(OVERWORLD to params(0, 256, rarity = 80, amount = 20), END to params(0, 256, rarity = 60, amount = 40))),
-            ore("entropy_ore_crop", ModBlocks.ENTROPY_CROP_BLOCK.get(), Blocks.END_STONE.defaultState,
+            ore("entropy_ore_crop", ModBlocks.ENTROPY_CROP_BLOCK, Blocks.END_STONE.defaultState,
                 dims = dims(END to params(0, 60, rarity = 25, amount = 20))),
-            ore("tungsten_ore", ModBlocks.TUNGSTEN_ORE.get(), diorite,
+            ore("tungsten_ore", ModBlocks.TUNGSTEN_ORE, diorite,
                 dims = dims(OVERWORLD to params(0, 48, rarity = 15, amount = 10))),
-            ore("tungsten_end", ModBlocks.TUNGSTEN_END_ORE.get(), Blocks.END_STONE.defaultState,
+            ore("tungsten_end", ModBlocks.TUNGSTEN_END_ORE, Blocks.END_STONE.defaultState,
                 params = params(0, 48, rarity = 5, amount = 25), dims = Condition.of(END), biomes = Condition.of(mc("sky"))),
         ))
     }
 
     private fun generic(): List<WorldFeature> {
-        val organa = ModBioms.ORGANA_BIOME.get().registryName!!
+        val organa = ModBioms.ORGANA_BIOME.registryName!!
         val endStone = Blocks.END_STONE.defaultState
-        val moss = ModBlocks.END_MOSS_BLOCK.get().defaultState
-        val magma = ModBlocks.END_MAGMA_BLOCK.get().defaultState
-        val fluidMagma = ModBlocks.FLUID_END_MAGMA_BLOCK.get().defaultState
+        val moss = ModBlocks.END_MOSS_BLOCK.defaultState
+        val magma = ModBlocks.END_MAGMA_BLOCK.defaultState
+        val fluidMagma = ModBlocks.FLUID_END_MAGMA_BLOCK.defaultState
         fun generic(name: String, feature: Feature?, dims: Condition<Int> = Condition(), biomes: Condition<ResourceLocation> = Condition()) =
             feature?.let { WorldFeature(id(name), FeatureKind.GENERIC, 0, it, null, dims, biomes) }
         fun cropBush(block: Block?) = block?.let { Feature.Bush(it.defaultState, randomAge = true) }
         return ordered(FeatureKind.GENERIC, listOf(
-            generic("lormyte", state(ModBlocks.LORMYTE_CRYSTAL_BLOCK.get())?.let { Feature.Sphere(listOf(endStone, moss), it) },
+            generic("lormyte", state(ModBlocks.LORMYTE_CRYSTAL_BLOCK)?.let { Feature.Sphere(listOf(endStone, moss), it) },
                 dims(END to params(20, 45, rarity = 80, radius = 12))),
             generic("fuzzy_end_magma", Feature.Sphere(listOf(endStone, moss), magma, alt = fluidMagma, altChance = 51),
                 dims(END to params(10, 25, rarity = 95, radius = 12))),
             generic("filled_end_magma", Feature.FilledSphere(listOf(endStone, moss), inner = fluidMagma, outer = magma),
                 biomes = biomes(organa to params(10, 25, rarity = 95, radius = 12, fill = 6))),
-            generic("entropy_end_stone", Feature.Ore(ModBlocks.ENTROPY_END_STONE.get().defaultState, endStone),
+            generic("entropy_end_stone", Feature.Ore(ModBlocks.ENTROPY_END_STONE.defaultState, endStone),
                 dims(END to params(10, 30, rarity = 25, amount = 30))),
             generic("end_moss_patch",
-                Feature.RadiusSurface(endStone, ModBlocks.END_MOSS_GRASS_BLOCK.get().defaultState, ModBlocks.ORGANA_WEED_BLOCK.get().defaultState),
+                Feature.RadiusSurface(endStone, ModBlocks.END_MOSS_GRASS_BLOCK.defaultState, ModBlocks.ORGANA_WEED_BLOCK.defaultState),
                 dims(END to params(50, 90, rarity = 25, radius = 4))),
-            generic("end_coral", Feature.Bush(ModBlocks.END_CORAL.get().defaultState),
+            generic("end_coral", Feature.Bush(ModBlocks.END_CORAL.defaultState),
                 dims(END to params(50, 90, rarity = 0, amount = 20))),
-            generic("dragonite_crop", cropBush(ModBlocks.DRAGONITE_CROP.get()), dims(END to params(50, 90, rarity = 5, amount = 6))),
-            generic("end_flower", cropBush(ModBlocks.ENDER_FLOWER_CROP.get()), dims(END to params(50, 90, rarity = 5, amount = 6))),
+            generic("dragonite_crop", cropBush(ModBlocks.DRAGONITE_CROP), dims(END to params(50, 90, rarity = 5, amount = 6))),
+            generic("end_flower", cropBush(ModBlocks.ENDER_FLOWER_CROP), dims(END to params(50, 90, rarity = 5, amount = 6))),
         ))
     }
 
     private fun structures(): List<WorldFeature> {
-        val grass = ModBlocks.END_MOSS_GRASS_BLOCK.get().defaultState
+        val grass = ModBlocks.END_MOSS_GRASS_BLOCK.defaultState
         val islandBiomes = Condition.of(mc("sky"), mc("plains"), mc("desert"), mc("ocean"), mc("deep_ocean"), mc("savanna"))
         fun grid(name: String, spacing: Int, separation: Int) = Spacing(name.hashCode(), spacing, separation)
         fun template(name: String, structure: String, params: GenParams?, biomes: Condition<ResourceLocation>,
@@ -120,6 +120,6 @@ object WorldFeatureDefaults {
         ))
     }
 
-    fun endBiomes(): List<EndBiome> = listOf(ModBioms.ORGANA_BIOME.get(), ModBioms.ENTROPY_BIOME.get())
+    fun endBiomes(): List<EndBiome> = listOf(ModBioms.ORGANA_BIOME, ModBioms.ENTROPY_BIOME)
         .map { EndBiome(it.registryName!!, 1000) }
 }

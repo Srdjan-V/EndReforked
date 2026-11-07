@@ -32,7 +32,7 @@ object MachineRecipeDefaults {
             id = ResourceLocation(Tags.MODID, "entropy_chamber/end_magma"),
             machine = ENTROPY_CHAMBER,
             fluidInputs = listOf(FluidStack(FluidRegistry.LAVA, 2_000)),
-            fluidOutputs = listOf(FluidStack(ModFluids.END_MAGMA.get(), 1_000)),
+            fluidOutputs = listOf(FluidStack(ModFluids.END_MAGMA, 1_000)),
             ticks = 25 * 20,
             entropy = 150,
         ),
@@ -40,7 +40,7 @@ object MachineRecipeDefaults {
             id = ResourceLocation(Tags.MODID, "entropy_chamber/organa_weed"),
             machine = ENTROPY_CHAMBER,
             itemInputs = listOf(ItemIngredient.Item(ItemStack(Blocks.END_STONE, 4))),
-            itemOutputs = listOf(ItemStack(ModItems.ORGANA_WEED_BLOCK.get(), 2)),
+            itemOutputs = listOf(ItemStack(ModItems.ORGANA_WEED_BLOCK, 2)),
             ticks = 5 * 20,
             entropy = 2,
         ),
@@ -48,7 +48,7 @@ object MachineRecipeDefaults {
             id = ResourceLocation(Tags.MODID, "entropy_chamber/end_moss_grass"),
             machine = ENTROPY_CHAMBER,
             itemInputs = listOf(ItemIngredient.Item(ItemStack(Blocks.GRASS, 20))),
-            itemOutputs = listOf(ItemStack(ModItems.END_MOSS_GRASS_BLOCK.get(), 2)),
+            itemOutputs = listOf(ItemStack(ModItems.END_MOSS_GRASS_BLOCK, 2)),
             ticks = 5 * 20,
             entropy = 2,
         ),
@@ -57,7 +57,7 @@ object MachineRecipeDefaults {
     /** Lava and End Magma, 1,000 mB each, plus one item. End Magma gives 4 times the output and is faster, and costs 40 chunk entropy. */
     private fun endForge(): List<MachineRecipe> {
         val lava = FluidRegistry.LAVA
-        val endMagma = ModFluids.END_MAGMA.get()
+        val endMagma = ModFluids.END_MAGMA
         fun recipe(name: String, fluid: Fluid, input: Item, ticks: Int, output: Item, count: Int, entropy: Int = 0) = MachineRecipe(
             id = ResourceLocation(Tags.MODID, "end_forge/$name"),
             machine = END_FORGE,
@@ -67,11 +67,11 @@ object MachineRecipeDefaults {
             ticks = ticks,
             entropy = entropy,
         )
-        val endorium = ModItems.INGOT_ENDORIUM.get()
-        val essence = ModItems.END_ESSENCE.get()
-        val entropyStone = ModItems.ENTROPY_END_STONE.get()
-        val infused = ModItems.INFUSED_METALL.get()
-        val magmaBlock = Item.getItemFromBlock(ModBlocks.END_MAGMA_BLOCK.get())
+        val endorium = ModItems.INGOT_ENDORIUM
+        val essence = ModItems.END_ESSENCE
+        val entropyStone = ModItems.ENTROPY_END_STONE
+        val infused = ModItems.INFUSED_METALL
+        val magmaBlock = Item.getItemFromBlock(ModBlocks.END_MAGMA_BLOCK)
         return listOf(
             recipe("lava_infused_metall", lava, endorium, 120, infused, 1),
             recipe("lava_magma_cream", lava, Items.SLIME_BALL, 200, Items.MAGMA_CREAM, 1),
@@ -86,7 +86,7 @@ object MachineRecipeDefaults {
 
     /** Item plus catalyst. The world events replace blocks near the machine, and a failed event ruins the run. */
     private fun materializer(): List<MachineRecipe> {
-        val catalyst = ItemIngredient.Item(ItemStack(ModItems.CATALYST.get()))
+        val catalyst = ItemIngredient.Item(ItemStack(ModItems.CATALYST))
         val stone = Blocks.STONE.defaultState
         val iron = Blocks.IRON_BLOCK.defaultState
         val gold = Blocks.GOLD_BLOCK.defaultState

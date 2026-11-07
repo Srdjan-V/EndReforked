@@ -47,7 +47,7 @@ class EntityChronologist(world: World) : EndEntity(world) {
     override fun getDeathSound(): SoundEvent = SoundEvents.ENTITY_ENDERMEN_DEATH
 
     override fun shouldAttackPlayer(player: EntityPlayer) =
-        !player.isPotionActive(ModPotions.ENDER_EYES.get()) && super.shouldAttackPlayer(player)
+        !player.isPotionActive(ModPotions.ENDER_EYES) && super.shouldAttackPlayer(player)
 
     @SideOnly(Side.CLIENT)
     override fun getBrightnessForRender(): Int {

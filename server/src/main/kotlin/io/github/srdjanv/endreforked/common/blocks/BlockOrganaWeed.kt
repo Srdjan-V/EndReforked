@@ -25,7 +25,7 @@ import java.util.Random
 class BlockOrganaWeed : BaseBlockBush("organa_weed", Material.VINE), IShearable {
 
     init {
-        sustainableBlocks.add(ModBlocks.END_MOSS_GRASS_BLOCK.get())
+        sustainableBlocks.add(ModBlocks.END_MOSS_GRASS_BLOCK)
     }
 
     override fun hasTileEntity(state: IBlockState) = true
@@ -54,10 +54,10 @@ class BlockOrganaWeed : BaseBlockBush("organa_weed", Material.VINE), IShearable 
 
     override fun quantityDropped(random: Random) = if (random.nextInt(100) < 20) 1 else 0
 
-    override fun getItemDropped(state: IBlockState, rand: Random, fortune: Int): Item = ModItems.ORGANA_FLOWER_SEED.get()
+    override fun getItemDropped(state: IBlockState, rand: Random, fortune: Int): Item = ModItems.ORGANA_FLOWER_SEED
 
     override fun isShearable(item: ItemStack, world: IBlockAccess, pos: BlockPos) = true
 
     override fun onSheared(item: ItemStack, world: IBlockAccess, pos: BlockPos, fortune: Int): List<ItemStack> =
-        listOf(ItemStack(ModBlocks.ORGANA_WEED_BLOCK.get()))
+        listOf(ItemStack(ModBlocks.ORGANA_WEED_BLOCK))
 }

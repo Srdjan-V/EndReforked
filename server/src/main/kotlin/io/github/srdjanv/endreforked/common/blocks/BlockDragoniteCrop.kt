@@ -23,8 +23,8 @@ class BlockDragoniteCrop : BaseBlockCrops("dragonite_crop") {
     init {
         sustainableBlocks.add(Blocks.END_BRICKS)
         sustainableBlocks.add(Blocks.END_STONE)
-        sustainableBlocks.add(ModBlocks.ENTROPY_END_STONE.get())
-        sustainableBlocks.add(ModBlocks.ENTROPY_CROP_BLOCK.get())
+        sustainableBlocks.add(ModBlocks.ENTROPY_END_STONE)
+        sustainableBlocks.add(ModBlocks.ENTROPY_CROP_BLOCK)
     }
 
     override fun updateTick(worldIn: World, pos: BlockPos, state: IBlockState, rand: Random) {
@@ -52,14 +52,14 @@ class BlockDragoniteCrop : BaseBlockCrops("dragonite_crop") {
         hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float,
     ): Boolean {
         if (worldIn.isRemote || !isMaxAge(state)) return false
-        spawnAsEntity(worldIn, pos, ItemStack(ModItems.DRAGONITE_BERRIES.get(), 2))
+        spawnAsEntity(worldIn, pos, ItemStack(ModItems.DRAGONITE_BERRIES, 2))
         worldIn.setBlockState(pos, withAge(0))
         return true
     }
 
-    override fun getSeed(): Item = ModItems.DRAGONITE_BERRIES.get()
+    override fun getSeed(): Item = ModItems.DRAGONITE_BERRIES
 
-    override fun getCrop(): Item = ModItems.DRAGONITE_BERRIES.get()
+    override fun getCrop(): Item = ModItems.DRAGONITE_BERRIES
 
     companion object {
         @JvmField
