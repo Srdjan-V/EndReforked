@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "age=0": { "model": "endreborn:voidbloom_crop_0" },
+        "age=1": { "model": "endreborn:voidbloom_crop_1" },
+        "age=2": { "model": "endreborn:voidbloom_crop_2" },
+        "age=3": { "model": "endreborn:voidbloom_crop_3" }
+    }
+}

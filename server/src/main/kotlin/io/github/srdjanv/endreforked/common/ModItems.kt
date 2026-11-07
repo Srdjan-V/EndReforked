@@ -63,7 +63,7 @@ object ModItems {
     // TODO: 22/10/2023 rename itemBlocks
     @get:JvmStatic val BLOCK_ENDORIUM by itemBlock(ModBlocks::ENDORIUM_BLOCK)
     @get:JvmStatic val ENTROPY_LANTERN by itemBlock(ModBlocks::ENTROPY_LANTERN)
-    @get:JvmStatic val ENDER_FLOWER_CROP by itemBlock(ModBlocks::ENDER_FLOWER_CROP)
+    @get:JvmStatic val VOIDBLOOM_CROP by itemBlock(ModBlocks::VOIDBLOOM_CROP)
     @get:JvmStatic val DRAGON_BUSH by itemBlock(ModBlocks::DRAGONITE_CROP)
     @get:JvmStatic val OBSIDIAN_ESSENCE_ORE by itemBlock(ModBlocks::OBSIDIAN_ESSENCE_ORE)
     @get:JvmStatic val ENTROPY_END_STONE by itemBlock(ModBlocks::ENTROPY_END_STONE)

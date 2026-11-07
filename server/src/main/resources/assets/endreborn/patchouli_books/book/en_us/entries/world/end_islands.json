@@ -15,7 +15,7 @@
         },
 		{
             "type": "spotlight",
-            "item": "endreborn:crop_ender_flower",
+            "item": "endreborn:voidbloom_crop",
             "link_recipe": true
         }
     ]

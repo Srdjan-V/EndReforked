@@ -27,7 +27,7 @@ tile.end_stone_pillar.name=Эндерняковый пилон
 tile.end_stone_smooth_block.name=Полированный эндерняк
 tile.purpur_lamp_block.name=Пурпурная лампа
 tile.entropy_lantern_block.name=Энтропийный фонарь
-tile.ender_flower_crop.name=Цветок эндера
+tile.voidbloom_crop.name=Цветок Пустоты
 tile.dragonite_crop.name=Драгонит
 tile.essence_ore.name=Руда эссенции
 tile.phantom_block.name=Фантомный блок
@@ -44,7 +44,7 @@ tile.end_magma_block.name=Эндер-магма
 tile.end_forge_block.name=Кузня пустоты
 tile.entropy_crop.name=Кластер ксорцита
 tile.materializer_block.name=Материализер
-tile.ender_flower_crop_dead.name=Сломанный цветок эндера
+tile.voidbloom_crop_withered.name=Увядший цветок Пустоты
 
 # Tools -
 item.entropy_wand.name=Посох энтропии

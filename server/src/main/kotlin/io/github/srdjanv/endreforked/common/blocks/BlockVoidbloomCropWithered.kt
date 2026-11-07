@@ -16,7 +16,7 @@ import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import java.util.Random
 
-class BlockEnderCropDead : BlockBase("ender_flower_crop_dead", Material.PLANTS) {
+class BlockVoidbloomCropWithered : BlockBase("voidbloom_crop_withered", Material.PLANTS) {
     init {
         setSoundType(SoundType.PLANT)
         setHardness(0.0F)

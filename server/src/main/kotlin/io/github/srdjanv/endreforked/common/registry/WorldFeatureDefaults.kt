@@ -89,7 +89,7 @@ object WorldFeatureDefaults {
             generic("end_coral", Feature.Bush(ModBlocks.END_CORAL.defaultState),
                 dims(END to params(50, 90, rarity = 0, amount = 20))),
             generic("dragonite_crop", cropBush(ModBlocks.DRAGONITE_CROP), dims(END to params(50, 90, rarity = 5, amount = 6))),
-            generic("end_flower", cropBush(ModBlocks.ENDER_FLOWER_CROP), dims(END to params(50, 90, rarity = 5, amount = 6))),
+            generic("end_flower", cropBush(ModBlocks.VOIDBLOOM_CROP), dims(END to params(50, 90, rarity = 5, amount = 6))),
         ))
     }
 

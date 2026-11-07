@@ -47,8 +47,8 @@ object ModBlocks {
     // todo data fix old:xorcite_block
     @get:JvmStatic val ENTROPY_CROP_BLOCK by BLOCKS.register(::BlockEntropyCrop)
 
-    @get:JvmStatic val ENDER_FLOWER_CROP by BLOCKS.register(::BlockEnderCrop)
-    @get:JvmStatic val ENDER_FLOWER_CROP_DEAD by BLOCKS.register(::BlockEnderCropDead)
+    @get:JvmStatic val VOIDBLOOM_CROP by BLOCKS.register(::BlockVoidbloomCrop)
+    @get:JvmStatic val VOIDBLOOM_CROP_WITHERED by BLOCKS.register(::BlockVoidbloomCropWithered)
 
     // todo fixup
     @get:JvmStatic val ORGANA_WEED_BLOCK by BLOCKS.register(::BlockOrganaWeed)

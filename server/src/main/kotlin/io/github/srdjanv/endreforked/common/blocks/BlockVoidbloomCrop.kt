@@ -23,7 +23,7 @@ import net.minecraft.world.World
 import net.minecraftforge.common.ForgeHooks
 import java.util.Random
 
-class BlockEnderCrop : BaseBlockCrops("ender_flower_crop", ::endSoils) {
+class BlockVoidbloomCrop : BaseBlockCrops("voidbloom_crop", ::endSoils) {
     override fun createBlockState() = BlockStateContainer(this, AGE)
 
     override fun getAgeProperty() = AGE
@@ -42,11 +42,11 @@ class BlockEnderCrop : BaseBlockCrops("ender_flower_crop", ::endSoils) {
     ): Boolean {
         if (worldIn.isRemote || !isMaxAge(state)) return false
         dropPearls(worldIn, pos)
-        worldIn.setBlockState(pos, ModBlocks.ENDER_FLOWER_CROP_DEAD.defaultState)
+        worldIn.setBlockState(pos, ModBlocks.VOIDBLOOM_CROP_WITHERED.defaultState)
         return true
     }
 
-    override fun getSeed(): Item = ModItems.ENDER_FLOWER_CROP
+    override fun getSeed(): Item = ModItems.VOIDBLOOM_CROP
 
     override fun getCrop(): Item = Items.ENDER_PEARL
 
