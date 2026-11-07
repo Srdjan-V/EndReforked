@@ -64,13 +64,10 @@ object ModItems {
 
     // TODO: 22/10/2023 rename itemBlocks
     @get:JvmStatic val BLOCK_ENDORIUM by itemBlock(ModBlocks::ENDORIUM_BLOCK)
-    @get:JvmStatic val END_STONE_SMOOTH by itemBlock(ModBlocks::END_STONE_SMOOTH_BLOCK)
-    @get:JvmStatic val END_STONE_PILLAR by itemBlock(ModBlocks::END_STONE_PILLAR)
     @get:JvmStatic val PURPUR_LAMP by itemBlock(ModBlocks::PURPUR_LAMP)
     @get:JvmStatic val ENDER_FLOWER_CROP by itemBlock(ModBlocks::ENDER_FLOWER_CROP)
     @get:JvmStatic val DRAGON_BUSH by itemBlock(ModBlocks::DRAGONITE_CROP)
     @get:JvmStatic val OBSIDIAN_ESSENCE_ORE by itemBlock(ModBlocks::OBSIDIAN_ESSENCE_ORE)
-    @get:JvmStatic val PHANTOM_BLOCK by itemBlock(ModBlocks::PHANTOM_BLOCK)
     @get:JvmStatic val ENTROPY_END_STONE by itemBlock(ModBlocks::ENTROPY_END_STONE)
     @get:JvmStatic val LORMYTE_CRYSTAL by itemBlock(ModBlocks::LORMYTE_CRYSTAL_BLOCK)
     @get:JvmStatic val DECORATIVE_LORMYTE by itemBlock(ModBlocks::DECORATIVE_LORMYTE_BLOCK)
@@ -86,14 +83,6 @@ object ModItems {
         }
     @get:JvmStatic val BLOCK_E_USER by itemBlock(ModBlocks::MATERIALIZER_BLOCK)
     @get:JvmStatic val SMALL_ENTROPY_BATTERY_BLOCK by itemBlock(ModBlocks::SMALL_ENTROPY_BATTERY_BLOCK)
-
-    @get:JvmStatic val END_STONE_CHISELED by itemBlock(ModBlocks::END_BRICKS_CHISELED)
-    @get:JvmStatic val COLD_FIRE by itemBlock(ModBlocks::ENTROPY_FIRE)
-    @get:JvmStatic val STAIRS_END_BRICKS by itemBlock(ModBlocks::END_BRICKS_STAIRS)
-    @get:JvmStatic val STAIRS_SMOOTH_END_STONE by itemBlock(ModBlocks::END_STONE_SMOOTH_STAIRS)
-    @get:JvmStatic val WALL_END_BRICKS by itemBlock(ModBlocks::END_BRICKS_WALL)
-    @get:JvmStatic val WALL_PURPUR by itemBlock(ModBlocks::PURPUR_WALL)
-    @get:JvmStatic val WALL_SMOOTH_END_STONE by itemBlock(ModBlocks::END_STONE_SMOOTH_WALL)
     @get:JvmStatic val END_CORAL by itemBlock(ModBlocks::END_CORAL)
 
     @get:JvmStatic val ORGANA_WEED_BLOCK by itemBlock(ModBlocks::ORGANA_WEED_BLOCK)

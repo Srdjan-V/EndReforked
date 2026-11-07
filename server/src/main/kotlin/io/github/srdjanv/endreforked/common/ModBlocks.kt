@@ -19,25 +19,14 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 object ModBlocks {
     private val BLOCKS = DeferredRegistry(this, Block::class.java)
 
-    @get:JvmStatic val END_STONE_SMOOTH_BLOCK by BLOCKS.register { BlockEndBase("end_stone_smooth_block", Material.ROCK) }
-    @get:JvmStatic val END_STONE_SMOOTH_STAIRS by BLOCKS.register { BlockStairsBase("end_stone_smooth_stairs", END_STONE_SMOOTH_BLOCK) }
-    @get:JvmStatic val END_STONE_SMOOTH_WALL by BLOCKS.register { BlockWallBase("end_stone_smooth_wall", END_STONE_SMOOTH_BLOCK) }
-
-    @get:JvmStatic val END_STONE_PILLAR by BLOCKS.register { BlockPillar("end_stone_pillar", Material.ROCK) }
-    @get:JvmStatic val END_BRICKS_CHISELED by BLOCKS.register { BlockEndBase("end_bricks_chiseled", Material.ROCK) }
-
-    @get:JvmStatic val END_BRICKS_STAIRS by BLOCKS.register { BlockStairsBase("end_bricks_stairs", Blocks.END_BRICKS) }
-    @get:JvmStatic val END_BRICKS_WALL by BLOCKS.register { BlockWallBase("end_bricks_wall", Blocks.END_BRICKS) }
-
-    @get:JvmStatic val PURPUR_WALL by BLOCKS.register { BlockWallBase("purpur_wall", Blocks.PURPUR_BLOCK) }
     @get:JvmStatic val PURPUR_LAMP by BLOCKS.register { BlockPurpurLamp("purpur_lamp_block") }
 
     @get:JvmStatic val OBSIDIAN_ESSENCE_ORE by BLOCKS.register(::BlockObsidianEssence)
-    @get:JvmStatic val PHANTOM_BLOCK by BLOCKS.register { BlockPhantom("phantom_block", Material.BARRIER, false) }
 
     @get:JvmStatic val ENTROPY_END_STONE by BLOCKS.register(::BlockEntropyEndStone)
     @get:JvmStatic val ENTROPY_FIRE by BLOCKS.register(::BlockEntropyFire)
     @get:JvmStatic val END_CORAL by BLOCKS.register(::BlockEndCoral)
+
     @get:JvmStatic val END_MAGMA_BLOCK by BLOCKS.register(::BlockEndMagma)
 
     @get:JvmStatic val LORMYTE_CRYSTAL_BLOCK by BLOCKS.register { BlockEndBase("lormyte_crystal_block", Material.ROCK) }
