@@ -76,16 +76,6 @@ public final class Configs {
         @Comment({ "When player falls to void in The End, he teleports to the Overworld" })
         public boolean teleporterEnd = true;
 
-        @Name("Disabled items")
-        @RequiresMcRestart
-        @Comment({ "Registry paths without mod id of items to not register" })
-        public String[] disabledItems = {};
-
-        @Name("Disabled blocks")
-        @RequiresMcRestart
-        @Comment({ "Registry paths without mod id of blocks to not register" })
-        public String[] disabledBlocks = {};
-
         private ServerSideConfigs() {}
     }
 }

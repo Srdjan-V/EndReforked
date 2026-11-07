@@ -3,9 +3,14 @@ package io.github.srdjanv.endreforked.compat.tconstruct
 import io.github.srdjanv.endreforked.common.ModItems
 import io.github.srdjanv.endreforked.compat.CompatManger
 import io.github.srdjanv.endreforked.EndReforked
+import net.minecraft.block.Block
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
+import net.minecraft.util.ResourceLocation
+import net.minecraftforge.client.event.ModelRegistryEvent
+import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.fluids.FluidRegistry
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
@@ -13,6 +18,7 @@ import slimeknights.tconstruct.library.TinkerRegistry
 import slimeknights.tconstruct.library.fluid.FluidMolten
 import slimeknights.tconstruct.library.materials.*
 import slimeknights.tconstruct.library.traits.ITrait
+import slimeknights.tconstruct.smeltery.block.BlockMolten
 import slimeknights.tconstruct.library.utils.HarvestLevels
 
 /** Tinkers' materials of the mod. Loaded only when `tconstruct` is loaded, see [CompatManger]. */
@@ -22,13 +28,30 @@ class TConstruct : CompatManger.ModCompat {
     private val infused = Material("endreborn_infused", 0xb060e0)
     private val dragonScale = Material("endreborn_dragonscale", 0xa020f0)
 
+    /**
+     * The fluid blocks. Tinkers only creates a block for a fluid without one, and maps its model to its own `fluid_block` blockstate,
+     * which has no variant for our fluids. So the mod makes them: same ids Tinkers would use, our own blockstate (`fluids.json`).
+     */
+    private val blocks = mutableListOf<BlockMolten>()
+
     /** A castable material: the fluid, the stats (head, handle, extra), the ore dictionary suffix of the smeltery. */
     private fun metal(m: Material, color: Int, temperature: Int, suffix: String, head: HeadMaterialStats, handle: HandleMaterialStats, extra: ExtraMaterialStats) {
         val fluid = FluidMolten(m.identifier, color).setTemperature(temperature).setLuminosity(10)
         FluidRegistry.registerFluid(fluid)
+        // Before the block registry event, so Tinkers sees a block and skips its own
+        blocks += BlockMolten(fluid).also { fluid.block = it; it.registryName = ResourceLocation("tconstruct", "molten_${fluid.name}") }
         TinkerRegistry.addMaterialStats(m, head, handle, extra)
         TinkerRegistry.integrate(m, fluid, suffix).preInit()
     }
+
+    override fun registerEventBus() = registerThisToEventBus()
+
+    @SubscribeEvent
+    fun onBlockRegister(event: RegistryEvent.Register<Block>) = blocks.forEach(event.registry::register)
+
+    @SubscribeEvent
+    fun registerModels(event: ModelRegistryEvent) =
+        blocks.forEach { EndReforked.getProxy().registerFileStateMapper(it, null, "fluids", it.fluid.name) }
 
     override fun preInit(event: FMLPreInitializationEvent) {
         // Material ids are new (the mod is in alpha), the prefix avoids clashes with other mods

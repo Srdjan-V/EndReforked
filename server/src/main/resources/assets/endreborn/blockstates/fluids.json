@@ -24,6 +24,27 @@
           "fluid": "organa"
         }
       }
+    ],
+    "endreborn_infused": [
+      {
+        "custom": {
+          "fluid": "endreborn_infused"
+        }
+      }
+    ],
+    "endreborn_endorium": [
+      {
+        "custom": {
+          "fluid": "endreborn_endorium"
+        }
+      }
+    ],
+    "endreborn_tungsten": [
+      {
+        "custom": {
+          "fluid": "endreborn_tungsten"
+        }
+      }
     ]
   }
 }
