@@ -29,28 +29,26 @@ class BlockOrganaFlowerStem : BaseBlockCrops("organa_flower_stem") {
     init {
         setTickRandomly(true)
         sustainableBlocks.add(ModBlocks.END_MOSS_GRASS_BLOCK)
-        setDefaultState(
-            blockState.baseState.withProperty(BlockOrganaFlowerStem.AGE, 0).withProperty(FACING, EnumFacing.UP),
-        )
+        defaultState = blockState.baseState.withProperty(AGE, 0).withProperty(FACING, EnumFacing.UP)
     }
 
-    override fun createBlockState() = BlockStateContainer(this, BlockOrganaFlowerStem.AGE, FACING)
+    override fun createBlockState() = BlockStateContainer(this, AGE, FACING)
 
     override fun getSeed(): Item = ModItems.ORGANA_FLOWER_SEED
 
     override fun getCrop(): Item = ModItems.ORGANA_FLOWER
 
-    override fun isMaxAge(state: IBlockState) = state.getValue(BlockOrganaFlowerStem.AGE) >= 7
+    override fun isMaxAge(state: IBlockState) = state.getValue(AGE) >= 7
 
     override fun getMaxAge() = 7
 
-    fun isDead(state: IBlockState) = state.getValue(BlockOrganaFlowerStem.AGE) >= 9
+    fun isDead(state: IBlockState) = state.getValue(AGE) >= 9
 
-    override fun getAgeProperty(): PropertyInteger = BlockOrganaFlowerStem.AGE
+    override fun getAgeProperty(): PropertyInteger = AGE
 
     override fun getBoundingBox(state: IBlockState, source: IBlockAccess, pos: BlockPos): AxisAlignedBB =
         if (getActualState(state, source, pos).getValue(FACING) == EnumFacing.UP) {
-            STEM_AABB[minOf(state.getValue(BlockOrganaFlowerStem.AGE), maxAge)]
+            STEM_AABB[minOf(state.getValue(AGE), maxAge)]
         } else STEM_AABB[4]
 
     override fun getActualState(state: IBlockState, worldIn: IBlockAccess, pos: BlockPos): IBlockState {
@@ -96,7 +94,7 @@ class BlockOrganaFlowerStem : BaseBlockCrops("organa_flower_stem") {
         var fruitPos = plantPos
         if (ForgeHooks.onCropsGrowPre(worldIn, plantPos, state, rand.nextInt((25.0f / f).toInt() + 1) == 0)) {
             if (!isMaxAge(state)) {
-                worldIn.setBlockState(plantPos, state.withProperty(BlockOrganaFlowerStem.AGE, state.getValue(BlockOrganaFlowerStem.AGE) + 1), 2)
+                worldIn.setBlockState(plantPos, state.withProperty(AGE, state.getValue(AGE) + 1), 2)
                 worldIn.playEvent(1033, plantPos, 0)
             } else {
                 for (facing in EnumFacing.Plane.HORIZONTAL)
@@ -108,7 +106,7 @@ class BlockOrganaFlowerStem : BaseBlockCrops("organa_flower_stem") {
                 if (worldIn.isAirBlock(fruitPos) &&
                     soil.block.canSustainPlant(soil, worldIn, fruitPos.down(), EnumFacing.UP, this)
                 ) {
-                    val newState = state.withProperty(BlockOrganaFlowerStem.AGE, state.getValue(BlockOrganaFlowerStem.AGE) + 1)
+                    val newState = state.withProperty(AGE, state.getValue(AGE) + 1)
                     if (isDead(newState)) {
                         worldIn.setBlockState(plantPos, ModBlocks.ORGANA_FLOWER_STEM_DEAD_BLOCK.defaultState, 2)
                     } else worldIn.setBlockState(plantPos, newState, 2)
@@ -120,9 +118,9 @@ class BlockOrganaFlowerStem : BaseBlockCrops("organa_flower_stem") {
         }
     }
 
-    override fun getStateFromMeta(meta: Int): IBlockState = defaultState.withProperty(BlockOrganaFlowerStem.AGE, meta)
+    override fun getStateFromMeta(meta: Int): IBlockState = defaultState.withProperty(AGE, meta)
 
-    override fun getMetaFromState(state: IBlockState): Int = state.getValue(BlockOrganaFlowerStem.AGE)
+    override fun getMetaFromState(state: IBlockState): Int = state.getValue(AGE)
 
     override fun handleAssets() {
         super.handleAssets()

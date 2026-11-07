@@ -19,10 +19,10 @@ import java.util.Random
 
 class BlockEndCoral : BaseBlockBush("end_coral", Material.VINE), IShearable, IGrowable {
     init {
-        sustainableBlocks.add(Blocks.END_BRICKS)
-        sustainableBlocks.add(Blocks.END_STONE)
-        sustainableBlocks.add(ModBlocks.ENTROPY_END_STONE)
-        sustainableBlocks.add(ModBlocks.ENTROPY_CROP_BLOCK)
+        addSustainableBlock(Blocks.END_BRICKS)
+        addSustainableBlock(Blocks.END_STONE)
+        addSustainableBlock(ModBlocks.ENTROPY_END_STONE)
+        addSustainableBlock(ModBlocks.ENTROPY_CROP_BLOCK)
     }
 
     override fun getBoundingBox(state: IBlockState, source: IBlockAccess, pos: BlockPos) = END_BUSH_AABB

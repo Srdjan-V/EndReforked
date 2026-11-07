@@ -25,7 +25,7 @@ import java.util.Random
 class BlockOrganaWeed : BaseBlockBush("organa_weed", Material.VINE), IShearable {
 
     init {
-        sustainableBlocks.add(ModBlocks.END_MOSS_GRASS_BLOCK)
+        addSustainableBlock(ModBlocks.END_MOSS_GRASS_BLOCK)
     }
 
     override fun hasTileEntity(state: IBlockState) = true

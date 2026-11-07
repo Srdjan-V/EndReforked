@@ -8,8 +8,14 @@ import net.minecraft.block.material.Material
 import net.minecraft.block.state.IBlockState
 
 open class BaseBlockBush(name: String, material: Material) : BlockBush(material), InventoryBlockModel {
-    @JvmField
-    protected val sustainableBlocks: MutableList<Block> = ArrayList()
+    private val sustainableBlocks: MutableList<Block> = ArrayList()
+
+    protected fun addSustainableBlock(block: Block) {
+        if (block == null) {
+            throw NullPointerException("Block is null")
+        }
+        sustainableBlocks.add(block)
+    }
 
     init {
         setTranslationKey(name)
