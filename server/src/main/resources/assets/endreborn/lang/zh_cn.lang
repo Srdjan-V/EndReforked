@@ -13,7 +13,7 @@ item.item_ender_string.name=生命之线
 item.dragonite_tea.name=龙梅茶
 item.item_angel_feather.name=天使之羽
 item.dragon_scales.name=龙鳞
-item.entropy_shard.name=熵之本质
+item.entropy_shard.name=熵碎片
 item.catalyst.name=黑曜石粉
 
 # Blocks -
@@ -39,7 +39,7 @@ tile.end_stone_smooth_wall.name=平滑末地石墙
 tile.purpur_wall.name=紫珀墙
 tile.end_magma_block.name=末地岩浆块
 tile.end_forge_block.name=虚空冶炼炉
-tile.entropy_crop.name=龙之精华矿
+tile.entropy_crop.name=熵碎片簇
 tile.materializer_block.name=物质实化机
 
 # Tools -

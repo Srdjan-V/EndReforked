@@ -5,7 +5,6 @@ import io.github.srdjanv.endreforked.common.capabilities.entropy.CapabilityEntro
 import io.github.srdjanv.endreforked.common.capabilities.timedflight.CapabilityTimedFlightHandler
 import io.github.srdjanv.endreforked.common.configs.Configs
 import io.github.srdjanv.endreforked.common.tiles.*
-import io.github.srdjanv.endreforked.common.tiles.passiveinducers.EntropyCropTile
 import io.github.srdjanv.endreforked.common.tiles.passiveinducers.FluidEntropyTile
 import io.github.srdjanv.endreforked.common.tiles.passiveinducers.FluidOrganaTile
 import io.github.srdjanv.endreforked.common.tiles.passiveinducers.OrganaFlowerTile
@@ -47,7 +46,6 @@ class Registration : Initializer {
 
         tile(OrganaFlowerTile::class.java, "organa_flower_tile")
         tile(OrganaWeedTile::class.java, "organa_weed_tile")
-        tile(EntropyCropTile::class.java, "entropy_crop_tile")
         tile(FluidEntropyTile::class.java, "fluid_entropy_tile")
         tile(FluidOrganaTile::class.java, "fluid_organa_tile")
     }

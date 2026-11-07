@@ -4,7 +4,7 @@ import io.github.srdjanv.endreforked.EndReforked
 import io.github.srdjanv.endreforked.common.ModBlocks
 import io.github.srdjanv.endreforked.common.ModItems
 import io.github.srdjanv.endreforked.common.blocks.base.BaseBlockCrops
-import io.github.srdjanv.endreforked.common.tiles.passiveinducers.EntropyCropTile
+import io.github.srdjanv.endreforked.common.entropy.world.EntropyWorldHandler
 import net.minecraft.block.SoundType
 import net.minecraft.block.material.Material
 import net.minecraft.block.properties.PropertyInteger
@@ -42,6 +42,7 @@ class BlockEntropyCrop : BaseBlockCrops("entropy_crop") {
     init {
         setSoundType(SoundType.STONE)
         setHardness(3.0F)
+        setTickRandomly(true)
         setHarvestLevel("pickaxe", 2)
     }
 
@@ -50,11 +51,6 @@ class BlockEntropyCrop : BaseBlockCrops("entropy_crop") {
         3 -> 2
         else -> 0
     }
-
-    override fun hasTileEntity(state: IBlockState) = state.getValue(AGE) == 3
-
-    override fun createTileEntity(world: World, state: IBlockState): TileEntity? =
-        if (state.getValue(AGE) == 3) EntropyCropTile() else null
 
     override fun canSilkHarvest(world: World, pos: BlockPos, state: IBlockState, player: EntityPlayer) = true
 
@@ -77,7 +73,7 @@ class BlockEntropyCrop : BaseBlockCrops("entropy_crop") {
 
     override fun canUseBonemeal(worldIn: World, rand: Random, pos: BlockPos, state: IBlockState) = false
 
-    override fun getPlantType(world: IBlockAccess, pos: BlockPos) = XORCITE
+    override fun getPlantType(world: IBlockAccess, pos: BlockPos) = ENTROPY
 
     override fun getPlant(world: IBlockAccess?, pos: BlockPos?): IBlockState {
         if (world == null || pos == null) return defaultState
@@ -85,19 +81,33 @@ class BlockEntropyCrop : BaseBlockCrops("entropy_crop") {
         return if (state.block != this) defaultState else state
     }
 
-    override fun updateTick(worldIn: World, pos: BlockPos, state: IBlockState, rand: Random) {
+    override fun tickRate(world: World?): Int {
+        return 35
+    }
+
+    override fun randomTick(worldIn: World, pos: BlockPos, state: IBlockState, rand: Random) {
+        if (worldIn.isRemote) return
         if (isMaxAge(state)) return
         if (!worldIn.isAreaLoaded(pos, 1)) return
 
         // TODO: 17/11/2023 add config options
-        val existing = BlockPos.getAllInBox(pos.add(2, 2, 2), pos.add(-2, -2, -2)).asSequence()
+        val existing = BlockPos.getAllInBox(pos.add(2, 2, 2), pos.add(-2, -2, -2))
+            .asSequence()
             .filter { worldIn.getBlockState(it).block == ModBlocks.ENTROPY_CROP_BLOCK }
             .take(6).count()
         if (existing < 6) {
-            BlockPos.getAllInBox(pos.add(1, 1, 1), pos.add(-1, -1, -1))
-                .filter { worldIn.getBlockState(it).block == Blocks.END_STONE }
-                .shuffled().take(3)
-                .forEach { worldIn.setBlockState(it, defaultState) }
+            val entropyChunkWorld = EntropyWorldHandler.getEntropyChunkWorld(worldIn.provider.dimension, pos)
+            if (entropyChunkWorld.isPresent) {
+                BlockPos.getAllInBox(pos.add(1, 1, 1), pos.add(-1, -1, -1))
+                    .filter { worldIn.getBlockState(it).block == Blocks.END_STONE }
+                    .shuffled().take(3)
+                    .forEach {
+                        val entropyChunk = entropyChunkWorld.get()
+                        if (entropyChunk.drainEntropy(25, false) > 0) {
+                            worldIn.setBlockState(it, defaultState)
+                        }
+                    }
+            }
         }
 
         if (rand.nextInt(if (worldIn.provider.dimension == 1) 2 else 10) != 0) return
@@ -195,12 +205,12 @@ class BlockEntropyCrop : BaseBlockCrops("entropy_crop") {
 
     @SideOnly(Side.CLIENT)
     override fun addInformation(stack: ItemStack, player: World?, tooltip: MutableList<String>, advanced: ITooltipFlag) {
-        tooltip.add(I18n.format("tile.dragon_essence.tooltip"))
+        tooltip.add(I18n.format("tile.entropy_crop.tooltip"))
     }
 
     companion object {
         @JvmField
-        val XORCITE: EnumPlantType = EnumPlantType.getPlantType("xorcite")
+        val ENTROPY: EnumPlantType = EnumPlantType.getPlantType("entropy")
 
         @JvmField
         val AGE: PropertyInteger = PropertyInteger.create("age", 0, 3)

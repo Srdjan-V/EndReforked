@@ -14,7 +14,7 @@ item.item_ender_string.name=Нить жизни
 item.dragonite_tea.name=Драгонитовый чай
 item.item_angel_feather.name=Ангельское перо
 item.dragon_scales.name=Драконья чешуя
-item.entropy_shard.name=Ксорцит
+item.entropy_shard.name=Осколок энтропии
 item.catalyst.name=Пыль обсидиана
 item.sword_shard.name=Часть сломанного меча
 item.ingot_infused.name=Заряженный эндориум
@@ -42,7 +42,7 @@ tile.end_stone_smooth_wall.name=Полированная эндернякова�
 tile.purpur_wall.name=Пурпурная ограда
 tile.end_magma_block.name=Эндер-магма
 tile.end_forge_block.name=Кузня пустоты
-tile.entropy_crop.name=Кластер ксорцита
+tile.entropy_crop.name=Кластер осколков энтропии
 tile.materializer_block.name=Материализер
 tile.voidbloom_crop_withered.name=Увядший цветок Пустоты
 
@@ -76,7 +76,7 @@ enchantment.ender_killer=Убийца эндеров
 #Other
 tile.soup.tooltip=Имеет положительные эффекты
 tile.flesh.tooltip=Деликатес, который улучшает зрение
-tile.dragon_essence.tooltip=Разлом мира, который медленно растет
+tile.entropy_crop.tooltip=Осколки энтропии, которые медленно распространяются по мере роста
 tile.essence.tooltip=Вещество, появляющееся среди обсидиана
 tile.user.tooltip=Позволяет удваивать руды
 tile.tea.tooltip=Работает как и обычный корус
