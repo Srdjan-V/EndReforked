@@ -66,9 +66,13 @@ object EntropyTuning {
     val entropyCrop = Inducer(25)
     val fluidEntropy = Inducer(25)
     val fluidOrgana = Inducer(30)
+
     private val inducers = mapOf(
-        "organaWeed" to organaWeed, "organaFlower" to organaFlower, "entropyCrop" to entropyCrop,
-        "fluidEntropy" to fluidEntropy, "fluidOrgana" to fluidOrgana,
+        "organaWeed" to organaWeed,
+        "organaFlower" to organaFlower,
+        "entropyCrop" to entropyCrop,
+        "fluidEntropy" to fluidEntropy,
+        "fluidOrgana" to fluidOrgana,
     )
 
     /** The inducer of a script by name: [inducers] keys. Null for an unknown name. */

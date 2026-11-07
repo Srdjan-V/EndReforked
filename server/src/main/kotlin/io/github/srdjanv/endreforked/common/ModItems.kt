@@ -109,8 +109,8 @@ object ModItems {
         registerItemBlock(ModBlocks.ORGANA_FLOWER_BLOCK) { block ->
             BaseMetaItemBlock(block) { meta ->
                 when (meta) {
-                    10 -> "mature\$big"
-                    8 -> "mature\$small"
+                    10 -> $$"mature$big"
+                    8 -> $$"mature$small"
                     else -> null
                 }
             }

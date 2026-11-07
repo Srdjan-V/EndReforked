@@ -9,9 +9,9 @@ import net.minecraft.util.math.BlockPos
 import net.minecraftforge.common.DimensionManager
 import net.minecraftforge.event.world.ChunkEvent
 import net.minecraftforge.event.world.WorldEvent
-import net.minecraftforge.fml.common.gameevent.TickEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
-import java.util.Optional
+import net.minecraftforge.fml.common.gameevent.TickEvent
+import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
 object EntropyWorldHandler {
@@ -24,8 +24,9 @@ object EntropyWorldHandler {
         getEntropyWorld(dim)?.getEntropyChunk(pos.x shr 4, pos.z shr 4) ?: Optional.empty()
 
     /** The level of the chunk at [pos]. Stable if the chunk has no entropy data. */
-    fun levelAt(dim: Int, pos: BlockPos): EntropyLevel =
-        getEntropyChunkWorld(dim, pos).map { EntropyTuning.level(it.currentEntropy, it.maxEntropy) }.orElse(EntropyLevel.STABLE)
+    fun levelAt(dim: Int, pos: BlockPos): EntropyLevel = getEntropyChunkWorld(dim, pos)
+        .map { EntropyTuning.level(it.currentEntropy, it.maxEntropy) }
+        .orElse(EntropyLevel.STABLE)
 
     private fun getEntropyWorld(dim: Int): EntropyWorld? {
         val entropyWorld = worlds[dim] ?: return null
