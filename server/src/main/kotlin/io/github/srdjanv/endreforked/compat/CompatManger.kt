@@ -3,6 +3,8 @@ package io.github.srdjanv.endreforked.compat
 import io.github.srdjanv.endreforked.compat.baubles.BaublesCompat
 import io.github.srdjanv.endreforked.compat.conarm.ConArm
 import io.github.srdjanv.endreforked.compat.tconstruct.TConstruct
+import io.github.srdjanv.endreforked.compat.theoneprobe.TheOneProbeCompat
+import io.github.srdjanv.endreforked.compat.waila.WailaCompat
 import io.github.srdjanv.endreforked.utils.Initializer
 import net.minecraftforge.fml.common.Loader
 import net.minecraftforge.fml.common.event.*
@@ -15,6 +17,8 @@ class CompatManger private constructor() : Initializer {
         "baubles" to { BaublesCompat() },
         "tconstruct" to { TConstruct() },
         "conarm" to { ConArm() },
+        "theoneprobe" to { TheOneProbeCompat() },
+        "waila" to { WailaCompat() },
     ).filter { Loader.isModLoaded(it.first) && (it.first != "conarm" || Loader.isModLoaded("tconstruct")) }.map { it.second() }
 
     override fun registerEventBus() = mods.forEach { it.registerEventBus() }

@@ -16,6 +16,8 @@ val modularUI = "2.4.3"
 val netherAPI = "1.3.0"
 val groovyScript = project.property("groovyScriptVersion") as String
 val craftTweaker = project.property("craftTweakerFileId") as String
+val theOneProbeFileId = "2667280"
+val hwylaFileId = "2568751"
 
 /**
  * The deobfuscated jar of [notation] without its signature files, for the dev classpath.
@@ -71,6 +73,10 @@ dependencies {
 
     // Optional: the script API in compat/crafttweaker. Compile only, deobfuscated to the MCP names of this classpath.
     compileOnly(cleanroom.deobf("curse.maven:crafttweaker-239197:$craftTweaker"))
+
+    // Optional probe integrations. These are compile-only because both mods are supported at runtime when present.
+    compileOnly(cleanroom.deobf("curse.maven:the-one-probe-245211:$theOneProbeFileId"))
+    compileOnly(cleanroom.deobf("curse.maven:hwyla-253449:$hwylaFileId"))
 
     // Dropped: CodeChickenLib, Redstone Flux, CoFH Core/World, Thermal Expansion/Foundation/Dynamics.
     // No source uses them, and CCL 3.2.3 crashes in the Cleanroom dev env (see report).
