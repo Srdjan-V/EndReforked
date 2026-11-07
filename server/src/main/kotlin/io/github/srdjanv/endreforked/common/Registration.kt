@@ -8,7 +8,6 @@ import io.github.srdjanv.endreforked.common.tiles.*
 import io.github.srdjanv.endreforked.common.tiles.passiveinducers.FluidEntropyTile
 import io.github.srdjanv.endreforked.common.tiles.passiveinducers.FluidOrganaTile
 import io.github.srdjanv.endreforked.common.tiles.passiveinducers.OrganaFlowerTile
-import io.github.srdjanv.endreforked.common.tiles.passiveinducers.OrganaWeedTile
 import io.github.srdjanv.endreforked.common.village.EndVillagerHandler
 import io.github.srdjanv.endreforked.utils.Initializer
 import net.minecraft.init.Items
@@ -45,7 +44,6 @@ class Registration : Initializer {
         tile(EntropyChamberTile::class.java, "entropy_chamber_tile")
 
         tile(OrganaFlowerTile::class.java, "organa_flower_tile")
-        tile(OrganaWeedTile::class.java, "organa_weed_tile")
         tile(FluidEntropyTile::class.java, "fluid_entropy_tile")
         tile(FluidOrganaTile::class.java, "fluid_organa_tile")
     }

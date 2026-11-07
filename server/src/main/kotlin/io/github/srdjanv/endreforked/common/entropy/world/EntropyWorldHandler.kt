@@ -6,6 +6,7 @@ import io.github.srdjanv.endreforked.api.entropy.EntropyLevel
 import io.github.srdjanv.endreforked.api.util.DimPos
 import io.github.srdjanv.endreforked.common.entropy.EntropyTuning
 import net.minecraft.util.math.BlockPos
+import net.minecraft.world.World
 import net.minecraftforge.common.DimensionManager
 import net.minecraftforge.event.world.ChunkEvent
 import net.minecraftforge.event.world.WorldEvent
@@ -19,6 +20,9 @@ object EntropyWorldHandler {
 
     fun getEntropyChunkWorld(pos: DimPos): Optional<EntropyChunk> =
         getEntropyWorld(pos.dim)?.getEntropyChunk(pos.chunkPosX, pos.chunkPosZ) ?: Optional.empty()
+
+    fun getEntropyChunkWorld(world: World, pos: BlockPos): Optional<EntropyChunk> =
+        getEntropyChunkWorld(world.provider.dimension, pos)
 
     fun getEntropyChunkWorld(dim: Int, pos: BlockPos): Optional<EntropyChunk> =
         getEntropyWorld(dim)?.getEntropyChunk(pos.x shr 4, pos.z shr 4) ?: Optional.empty()

@@ -6,6 +6,7 @@ import io.github.srdjanv.endreforked.api.util.Ticker
 import io.github.srdjanv.endreforked.common.entropy.EntropyTuning
 import io.github.srdjanv.endreforked.common.entropy.chunks.PassiveEntropyChunkInducer
 import io.github.srdjanv.endreforked.common.entropy.world.EntropyChunkReader
+import io.github.srdjanv.endreforked.utils.renderParticle
 import net.minecraft.util.EnumParticleTypes
 import net.minecraft.util.ITickable
 import java.util.Optional
@@ -27,15 +28,7 @@ abstract class BasePassiveInducer(
     override fun update() {
         inducer.induce()
         if (world.isRemote && particleTicker.tick()) {
-            world.spawnParticle(
-                particleType,
-                pos.x + (world.rand.nextDouble() - 0.5),
-                pos.y + (world.rand.nextDouble() - 0.5),
-                pos.z + (world.rand.nextDouble() - 0.5),
-                (particleColor shr 16 and 255) / 255.0,
-                (particleColor shr 8 and 255) / 255.0,
-                (particleColor and 255) / 255.0,
-            )
+            renderParticle(pos, world, particleType, particleColor)
         }
     }
 }
