@@ -44,7 +44,7 @@ import net.minecraft.util.ITickable
 import net.minecraft.util.SoundCategory
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.text.ITextComponent
-import net.minecraft.util.text.TextComponentString
+import net.minecraft.util.text.TextComponentTranslation
 import net.minecraft.world.World
 import net.minecraft.world.WorldServer
 import net.minecraftforge.common.capabilities.Capability
@@ -107,7 +107,7 @@ class MaterializerTile : BaseTileEntity(), ITickable, IGuiHolder<PosGuiData> {
         inventoriesToDrop.add(itemOut)
     }
 
-    override fun getDisplayName(): ITextComponent = TextComponentString("container.entropy_user")
+    override fun getDisplayName(): ITextComponent = TextComponentTranslation("container.entropy_user")
 
     /** The WORKING state change must not recreate the tile. */
     override fun shouldRefresh(world: World, pos: BlockPos, oldState: IBlockState, newState: IBlockState) =

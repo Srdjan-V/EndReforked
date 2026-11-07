@@ -12,7 +12,7 @@ import mezz.jei.api.ingredients.IIngredients
 import net.minecraft.client.Minecraft
 
 /** The item at x 35, the catalyst at x 55 and the output at x 105. As before, it shows a help icon and no world events. */
-class MaterializerCategory(helper: IGuiHelper) : MachineCategory(helper, UID, "tile.materializer.name") {
+class MaterializerCategory(helper: IGuiHelper) : MachineCategory(helper, UID, "tile.materializer_block.name") {
     override fun drawExtras(minecraft: Minecraft) {
         super.drawExtras(minecraft)
         GuiTextures.HELP.draw(142f, 42f, 16f, 16f)

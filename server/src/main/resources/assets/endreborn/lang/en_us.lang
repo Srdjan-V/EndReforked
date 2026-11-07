@@ -21,46 +21,71 @@ item.tungsten_ingot.name=Tungsten Ingot
 item.tungsten_nugget.name=Tungsten Nugget
 item.item_shard_obsidian.name=Obsidian Shard
 item.item_raw_endorium.name=Endorium Nugget
-item.item_dragonite_seeds.name=Dragonite Seeds
 item.item_end_essence.name=Essence
 item.item_end_shard.name=Purpur Shards
 item.item_end_rune.name=Purpur Rune
 item.item_lormyte_crystal.name=Lormyte Crystal
 item.item_ender_string.name=String of Life
-item.item_dragonite_tea.name=Dragonite Tea
+item.dragonite_tea.name=Dragonite Tea
 item.item_angel_feather.name=Angel Feather
 item.dragon_scales.name=Dragon Scales
-item.xorcite_ingot.name=Xorcite Shard
+item.entropy_shard.name=Xorcite Shard
 item.catalyst.name=Obsidian Dust
 item.sword_shard.name=Broken Sword Part
 item.ingot_infused.name=Infused Endorium
+item.entropy_radius_upgrade_1.name=Entropy Radius Upgrade II
+item.entropy_radius_upgrade_2.name=Entropy Radius Upgrade III
+item.entropy_reader.name=Entropy Reader
+item.entropy_wings.name=Entropy Wings
+item.entropy_wings_ring.name=Entropy Wings Ring
+item.organa_flower_seed.name=Organa Flower Seed
 
 # Blocks -
-tile.block_endorium.name=Endorium Block
+tile.endorium_block.name=Endorium Block
 tile.tungsten_block.name=Tungsten Block
 tile.tungsten_ore.name=Tungsten Ore
-tile.block_end_stone_pillar.name=End Stone Pillar
-tile.block_end_stone_smooth.name=Smooth End Stone
-tile.block_purpur_lamp.name=Purpur Lamp
-tile.crop_dragonite.name=Dragonite
-tile.crop_ender_flower.name=Enderemus
-tile.block_essence_ore.name=Essence Ore
-tile.block_phantom.name=Phantom Block
-tile.block_lormyte_crystal.name=Lormyte Stone
-tile.block_decorative_lormyte.name=Decorative Lormyte Stone
-tile.block_entropy_end_stone.name=Entropy End Stone
-tile.block_rune.name=Runic Purpur Block
-tile.e_end_bricks_stairs.name=End Stone Stairs
-tile.smooth_end_stone_stairs.name=Smooth End Stone Stairs
-tile.e_end_bricks_wall.name=End Stone Wall
-tile.smooth_end_stone_wall.name=Smooth End Stone Wall
-tile.e_purpur_wall.name=Purpur Wall
-tile.block_end_magma.name=End Magma
-tile.block_end_forge.name=Void Forge
-tile.xorcite_block.name=Xorcite Cluster
-tile.entropy_user.name=Materializer
-tile.broken_ender_flower.name=Broken Enderemus
-tile.chiseled_end_bricks.name=Chiseled End Bricks
+tile.end_stone_pillar.name=End Stone Pillar
+tile.end_stone_smooth_block.name=Smooth End Stone
+tile.purpur_lamp_block.name=Purpur Lamp
+tile.dragonite_crop.name=Dragonite
+tile.ender_flower_crop.name=Enderemus
+tile.essence_ore.name=Essence Ore
+tile.phantom_block.name=Phantom Block
+tile.lormyte_crystal_block.name=Lormyte Stone
+tile.decorative_lormyte_block.name=Decorative Lormyte Stone
+tile.entropy_end_stone.name=Entropy End Stone
+tile.rune_block.name=Runic Purpur Block
+tile.end_bricks_stairs.name=End Stone Stairs
+tile.end_stone_smooth_stairs.name=Smooth End Stone Stairs
+tile.end_bricks_wall.name=End Stone Wall
+tile.end_stone_smooth_wall.name=Smooth End Stone Wall
+tile.purpur_wall.name=Purpur Wall
+tile.end_magma_block.name=End Magma
+tile.end_forge_block.name=Void Forge
+tile.entropy_crop.name=Xorcite Cluster
+tile.entropy_crop.mature.name=Mature Xorcite Cluster
+tile.materializer_block.name=Materializer
+tile.ender_flower_crop_dead.name=Broken Enderemus
+tile.end_bricks_chiseled.name=Chiseled End Bricks
+tile.end_coral.name=End Coral
+tile.end_moss.name=End Moss
+tile.end_moss_grass.name=End Moss Grass
+tile.entropy_fire.name=Entropy Fire
+tile.organa_flower.name=Organa Flower
+tile.organa_flower.mature.big.name=Large Organa Flower
+tile.organa_flower.mature.small.name=Small Organa Flower
+tile.organa_flower_stem.name=Organa Flower Stem
+tile.organa_flower_stem_dead.name=Dead Organa Flower Stem
+tile.organa_plant.name=Organa Plant
+tile.organa_weed.name=Organa Weed
+tile.small_entropy_battery.name=Small Entropy Battery
+tile.tungsten_end_ore.name=Tungsten End Ore
+tile.end_magma.name=Liquid End Magma
+tile.entropy.name=Liquid Entropy
+tile.organa.name=Liquid Organa
+fluid.end_magma=Liquid End Magma
+fluid.entropy=Liquid Entropy
+fluid.organa=Liquid Organa
 
 # Tools -
 item.entropy_wand.name=Wand Of Entropy
@@ -70,27 +95,23 @@ entropy_cell.tooltip=Entropy: %s / %s
 entropy_cell.filled=Cell filled: +%s (%s / %s)
 entropy_cell.emptied=Cell emptied: -%s (%s / %s)
 
-#Armors
-
 #Food
-item.food_ender_flesh.name=Mysical Flesh
-item.food_dragonite_berries.name=Dragonite Berries
-item.food_chorus_soup.name=Chorus Soup
+item.ender_flesh.name=Mysical Flesh
+item.dragonite_berries.name=Dragonite Berries
+item.chorus_soup.name=Chorus Soup
+item.organa_fruit.name=Organa Fruit
 
 #Entities
 entity.endguard.name=Purpur Guard
 entity.watcher.name=Watcher
 entity.chronologist.name=Chronologist
-entity.cold_fireball.name=Cold Fireball
+entity.entropy_fireball.name=Cold Fireball
 entity.Villager.endreborn.nether_explorer.name=Nether Explorer
 entity.Villager.endreborn.end_explorer.name=End Explorer
 entity.Villager.endreborn.overworld_explorer.name=World Explorer
 
-#Compat
-
 #JEI
 endreborn.jei.entropy_wand.item_cost=Damage to item to convert
-
 
 #Book
 item.endreborn.book.name=Book of The End
@@ -108,9 +129,6 @@ enchantment.ender_killer=Ender Killer
 enchantment.endreborn.ender_killer.desc=Higher damage while in the End
 
 #Other
-tile.a_pearl.tooltip=No more delay!
-tile.mirror.tooltip_0=Teleports to zero coordinates
-tile.mirror.tooltip_1=We are not responsible for the consequences
 tile.soup.tooltip=Looks tasty
 
 tile.flesh.tooltip=Can improve eyesight
@@ -120,31 +138,28 @@ tile.user.tooltip=Allows to double some resources
 tile.tea.tooltip=Allows one to fly
 tile.block_forge.tooltip=The heat of this forge changes the properties of some materials
 tile.wand.tooltip=Changes some blocks to their destroyed state
-tile.catalyst.tooltip=Materializer recipes �atalyst
-
+tile.catalyst.tooltip=Materializer recipes catalyst
 
 effect.ender_eyes=Ender eyes
+effect.timed_flight=Timed Flight
+commands.endreforked.usage=/endreborn <subcommand>
+container.entropy_user=Materializer
+fluid.interaction.state=Fluid Block Interactions
+fluid.interaction.entity=Fluid Entity Interactions
 
 #Lang
 status.fluid.matching=Matching fluid by:
 status.fluid.fluid=Type
-status.fluid.amount=Amount
-status.fluid.tag=Tag
 
 status.item.matching=Matching item by:
 status.item.item=Type
-status.item.count=Count
 status.item.damage=Damage
-status.item.tag=Tag
 
 #Materializer
-tile.materializer.name=Materializer
 tile.materializer.render.show=Show required structure
 tile.materializer.render.info=%s %% chance to trigger at %s %% recipe progress
 tile.materializer.render.fail=Failed to find structure
 tile.materializer.render.followStruct=Follow the required structure as the recipe progresses
-tile.materializer.render.nextStruct=Show next structure
-tile.materializer.render.prevStruct=Show previous structure
 
 tile.materializer.render.toggleFullRender=Toggle full structure rendering
 tile.materializer.render.nextLayer=Show next layer
@@ -158,10 +173,8 @@ entropy.range.chunks=Number of chunks it has access to
 entropy.range.radius=Radius of chunks it has access to
 
 entropy.chunk.available=Available entropy in chunk
-entropy.chunk.max=Max entropy in chunk
 
 entropy.storage.available=Available entropy in storage
-entropy.storage.max=Max Entropy in storage
 
 entropy.storage_reference.linked.true=Storage is linked
 entropy.storage_reference.linked.false=Storage is not linked
@@ -169,7 +182,6 @@ entropy.storage_reference.linked.false=Storage is not linked
 #SmallEntropyBattery
 tile.small_entropy_battery.entropy.combined=Combined entropy available
 tile.small_entropy_battery.entropy.link=Link battery to chunk
-tile.small_entropy_battery.entropy.linked=Battery is linked to chunk
 
 #Tile Status
 tile.status.gui.output_full=Output is full
@@ -180,22 +192,22 @@ tile.status.gui.failed=Failed to craft recipe
 tile.status.gui.not_enough_entropy=Not enough entropy
 
 #Banners
-item.banner.endreborn_rune.white=White Rune 
-item.banner.endreborn_rune.black=Black Rune 
-item.banner.endreborn_rune.blue=Blue Rune 
-item.banner.endreborn_rune.red=Red Rune 
+item.banner.endreborn_rune.white=White Rune
+item.banner.endreborn_rune.black=Black Rune
+item.banner.endreborn_rune.blue=Blue Rune
+item.banner.endreborn_rune.red=Red Rune
 item.banner.endreborn_rune.brown=Brown Rune
-item.banner.endreborn_rune.yellow=Yellow Rune 
-item.banner.endreborn_rune.gray=Gray Rune 
-item.banner.endreborn_rune.silver=Light Gray Rune 
-item.banner.endreborn_rune.purple=Purple Rune 
-item.banner.endreborn_rune.cyan=Cyan Rune 
-item.banner.endreborn_rune.pink=Pink Rune 
-item.banner.endreborn_rune.green=Green Rune 
+item.banner.endreborn_rune.yellow=Yellow Rune
+item.banner.endreborn_rune.gray=Gray Rune
+item.banner.endreborn_rune.silver=Light Gray Rune
+item.banner.endreborn_rune.purple=Purple Rune
+item.banner.endreborn_rune.cyan=Cyan Rune
+item.banner.endreborn_rune.pink=Pink Rune
+item.banner.endreborn_rune.green=Green Rune
 item.banner.endreborn_rune.lime=Lime Rune
-item.banner.endreborn_rune.lightBlue=Light Blue Rune  
-item.banner.endreborn_rune.magenta=Magenta Rune  
-item.banner.endreborn_rune.orange=Orange Rune 
+item.banner.endreborn_rune.lightBlue=Light Blue Rune
+item.banner.endreborn_rune.magenta=Magenta Rune
+item.banner.endreborn_rune.orange=Orange Rune
 item.banner.endreborn_end.white=White Symbol
 item.banner.endreborn_end.black=Black Symbol
 item.banner.endreborn_end.blue=Blue Symbol
@@ -209,8 +221,8 @@ item.banner.endreborn_end.cyan=Cyan Symbol
 item.banner.endreborn_end.pink=Pink Symbol
 item.banner.endreborn_end.green=Green Symbol
 item.banner.endreborn_end.lime=Lime Symbol
-item.banner.endreborn_end.lightBlue=Light Blue Symbol 
-item.banner.endreborn_end.magenta=Magenta Symbol 
+item.banner.endreborn_end.lightBlue=Light Blue Symbol
+item.banner.endreborn_end.magenta=Magenta Symbol
 item.banner.endreborn_end.orange=Orange Symbol
 item.banner.endreborn_pearl.white=White Pearl
 item.banner.endreborn_pearl.black=Black Pearl
@@ -225,64 +237,17 @@ item.banner.endreborn_pearl.cyan=Cyan Pearl
 item.banner.endreborn_pearl.pink=Pink Pearl
 item.banner.endreborn_pearl.green=Green Pearl
 item.banner.endreborn_pearl.lime=Lime Pearl
-item.banner.endreborn_pearl.lightBlue=Light Blue Pearl 
-item.banner.endreborn_pearl.magenta=Magenta Pearl 
+item.banner.endreborn_pearl.lightBlue=Light Blue Pearl
+item.banner.endreborn_pearl.magenta=Magenta Pearl
 item.banner.endreborn_pearl.orange=Orange Pearl
 
-#Advancements 
-advancements.endreborn.root.title=End: Reborn
-advancements.endreborn.root.description=The new beginning!
-
-advancements.endreborn.end_stone.title=Souvenir
-advancements.endreborn.end_stone.description=Collect: End Stone
-
-advancements.endreborn.raw_endorium.title=The Densest Material
-advancements.endreborn.raw_endorium.description=Collect: Endorium
-
-advancements.endreborn.crop_ender_flower.title=Mutation
-advancements.endreborn.crop_ender_flower.description=Collect: Ender`s Flower
-
-
-
-advancements.endreborn.ender_flesh.title=Delicacy
-advancements.endreborn.ender_flesh.description=Eat: Ender`s Flesh
-
-
-
-advancements.endreborn.mine_essence.title=Power of Obsidian 
-advancements.endreborn.mine_essence.description=Obtain: Essence Ore
-
-advancements.endreborn.end_rune.title=I see you...
-advancements.endreborn.end_rune.description=Collect: Purpur Rune
-
-advancements.endreborn.lormyte_crystal.title=Something new
-advancements.endreborn.lormyte_crystal.description=Obtain: Lormyte Crystal
-
-
-advancements.endreborn.tungsten_ingot.title=He melted!
-advancements.endreborn.tungsten_ingot.description=Collect: Tungsten Ingot
-
-
-
-advancements.endreborn.food_chorus_soup.title=Like a borscht!
-advancements.endreborn.food_chorus_soup.description=Collect: Chorus Soup
-
-advancements.endreborn.end_forge.title=World in fire
-advancements.endreborn.end_forge.description=Collect: Void Forge
-
-advancements.endreborn.dragon_scales.title=EleC0TroN shards
-advancements.endreborn.dragon_scales.description=Collect: Dragon Scales
-
-advancements.endreborn.entropy.title=Mighty Collector
-advancements.endreborn.entropy.description=Collect: Xorcite
-
-advancements.endreborn.entropy_user.title=Dangerous toy
-advancements.endreborn.entropy_user.description=Collect: Materializer
+#HUD
 hud.entropy.level.stable=Stable
 hud.entropy.level.charged=Charged
 hud.entropy.level.critical=Critical
 hud.entropy.chunk=Chunk entropy: %s
 
+#Tinkers' Construct and Armory
 material.endreborn_endorium.name=Endorium
 material.endreborn_tungsten.name=Tungsten
 material.endreborn_infused.name=Infused Endorium

@@ -1,82 +1,71 @@
-﻿# Tab -
+# Tab -
 itemGroup.endertab=Энд: Возрождение
 
 # Items -
 item.item_ingot_endorium.name=Эндориумовый слиток
 item.tungsten_ingot.name=Вольфрамовый слиток
-item.tungsten_nugget.name=Tungsten Nugget
 item.item_shard_obsidian.name=Обсидиановый осколок
 item.item_raw_endorium.name=Сырой эндориум
-item.item_dragonite_seeds.name=Семена драгонита
 item.item_end_essence.name=Эссенция края
 item.item_end_shard.name=Фрагмент Края
 item.item_end_rune.name=Скрижаль Края
 item.item_lormyte_crystal.name=Кристалл лормита
 item.item_ender_string.name=Нить жизни
-item.item_dragonite_tea.name=Драгонитовый чай
+item.dragonite_tea.name=Драгонитовый чай
 item.item_angel_feather.name=Ангельское перо
 item.dragon_scales.name=Драконья чешуя
-item.xorcite_ingot.name=Ксорцит
+item.entropy_shard.name=Ксорцит
 item.catalyst.name=Пыль обсидиана
 item.sword_shard.name=Часть сломанного меча
 item.ingot_infused.name=Заряженный эндориум
 
 # Blocks -
-tile.block_endorium.name=Блок эндориума
+tile.endorium_block.name=Блок эндориума
 tile.tungsten_block.name=Вольфрамовый блок
 tile.tungsten_ore.name=Вольфрамовая руда
-tile.block_end_stone_pillar.name=Эндерняковый пилон
-tile.block_end_stone_smooth.name=Полированный эндерняк
-tile.block_purpur_lamp.name=Пурпурная лампа
-tile.crop_ender_flower.name=Цветок эндера
-tile.crop_dragonite.name=Драгонит
-tile.block_essence_ore.name=Руда эссенции
-tile.block_phantom.name=Фантомный блок
-tile.block_lormyte_crystal.name=Блок лормита
-tile.block_decorative_lormyte.name=Декоративный лормит
-tile.block_entropy_end_stone.name=Энтропийный эндерняк
-tile.block_rune.name=Рунический блок
-tile.e_end_bricks_stairs.name=Эндерняковые ступеньки
-tile.smooth_end_stone_stairs.name=Полированные эндерняковые ступеньки
-tile.e_end_bricks_wall.name=Эндерняковая ограда
-tile.smooth_end_stone_wall.name=Полированная эндерняковая ограда
-tile.e_purpur_wall.name=Пурпурная ограда
-tile.block_end_magma.name=Эндер-магма
-tile.block_end_forge.name=Кузня пустоты
-tile.xorcite_block.name=Кластер ксорцита
-tile.entropy_user.name=Материализер
-tile.broken_ender_flower.name=Сломанный цветок эндера
+tile.end_stone_pillar.name=Эндерняковый пилон
+tile.end_stone_smooth_block.name=Полированный эндерняк
+tile.purpur_lamp_block.name=Пурпурная лампа
+tile.ender_flower_crop.name=Цветок эндера
+tile.dragonite_crop.name=Драгонит
+tile.essence_ore.name=Руда эссенции
+tile.phantom_block.name=Фантомный блок
+tile.lormyte_crystal_block.name=Блок лормита
+tile.decorative_lormyte_block.name=Декоративный лормит
+tile.entropy_end_stone.name=Энтропийный эндерняк
+tile.rune_block.name=Рунический блок
+tile.end_bricks_stairs.name=Эндерняковые ступеньки
+tile.end_stone_smooth_stairs.name=Полированные эндерняковые ступеньки
+tile.end_bricks_wall.name=Эндерняковая ограда
+tile.end_stone_smooth_wall.name=Полированная эндерняковая ограда
+tile.purpur_wall.name=Пурпурная ограда
+tile.end_magma_block.name=Эндер-магма
+tile.end_forge_block.name=Кузня пустоты
+tile.entropy_crop.name=Кластер ксорцита
+tile.materializer_block.name=Материализер
+tile.ender_flower_crop_dead.name=Сломанный цветок эндера
 
 # Tools -
 item.entropy_wand.name=Посох энтропии
-item.lormyte_charm.name=Lormyte Charm
-item.entropy_cell.name=Entropy Cell
-entropy_cell.tooltip=Entropy: %s / %s
-entropy_cell.filled=Cell filled: +%s (%s / %s)
-entropy_cell.emptied=Cell emptied: -%s (%s / %s)
 
 #Armors
 
 #Food
-item.food_ender_flesh.name=Плоть эндера
-item.food_dragonite_berries.name=Ягоды драгонита
-item.food_chorus_soup.name=Настой из коруса
+item.ender_flesh.name=Плоть эндера
+item.dragonite_berries.name=Ягоды драгонита
+item.chorus_soup.name=Настой из коруса
 
 #Entities
 entity.endguard.name=Страж Края
 entity.watcher.name=Наблюдатель
 entity.chronologist.name=Хронолог
-entity.end_fireball.name=Огненный шар стража
-entity.Villager.endreborn.nether_explorer=Исследователь Нижнего мира
-entity.Villager.endreborn.end_explorer=Исследователь Края
-entity.Villager.endreborn.overworld_explorer=Исследователь мира
 
 #Compat
 
 #Book
 item.endreborn.book.name=Книга Края
 info.endreborn.book.landing=Много времени прошло со времен открытия мною измерения Края. Я начинаю задумываться, все ли я увидел, открыл и изучил в нем, думаю пришло время отправиться в новое путешествие!
-info.endreborn.book.subtitle=Ваши изучения мира 
+info.endreborn.book.subtitle=Ваши изучения мира
 
 #Enchants
 enchantment.shulker_core=Ядро Шалкера
@@ -84,53 +73,47 @@ enchantment.ender_core=Ядро Эндера
 enchantment.ender_killer=Убийца эндеров
 
 #Other
-tile.a_pearl.tooltip=Без задержки, и больше стак
-tile.mirror.tooltip_0=Телепортирует в нулевой координат
-tile.mirror.tooltip_1=За последствия ответственности не несем
 tile.soup.tooltip=Имеет положительные эффекты
-tile.lormyte.tooltip=Появляетя в Незере
 tile.flesh.tooltip=Деликатес, который улучшает зрение
 tile.dragon_essence.tooltip=Разлом мира, который медленно растет
 tile.essence.tooltip=Вещество, появляющееся среди обсидиана
 tile.user.tooltip=Позволяет удваивать руды
 tile.tea.tooltip=Работает как и обычный корус
-tile.block_forge.tooltip=Жар этой кузни меняет свойства эндориума 
+tile.block_forge.tooltip=Жар этой кузни меняет свойства эндориума
 tile.wand.tooltip=Меняет некоторые блоки в их разрушенное состояние
 tile.catalyst.tooltip=Действует как катализатор
 container.entropy_user=Материализер
 
 #Banners
-item.banner.endreborn_rune.white=Белая руна 
-item.banner.endreborn_rune.black=Черная руна 
-item.banner.endreborn_rune.blue=Синяя руна 
-item.banner.endreborn_rune.red=Красная руна 
-item.banner.endreborn_rune.gray=Коричневая руна 
-item.banner.endreborn_rune.yellow=Желтая руна 
-item.banner.endreborn_rune.gray=Серая руна 
-item.banner.endreborn_rune.silver=Светло-серая руна 
-item.banner.endreborn_rune.purple=Фиолетовая руна 
-item.banner.endreborn_rune.cyan=Бирюзовая руна 
-item.banner.endreborn_rune.pink=Розовая руна 
-item.banner.endreborn_rune.green=Зеленая руна 
+item.banner.endreborn_rune.white=Белая руна
+item.banner.endreborn_rune.black=Черная руна
+item.banner.endreborn_rune.blue=Синяя руна
+item.banner.endreborn_rune.red=Красная руна
+item.banner.endreborn_rune.gray=Коричневая руна
+item.banner.endreborn_rune.yellow=Желтая руна
+item.banner.endreborn_rune.silver=Светло-серая руна
+item.banner.endreborn_rune.purple=Фиолетовая руна
+item.banner.endreborn_rune.cyan=Бирюзовая руна
+item.banner.endreborn_rune.pink=Розовая руна
+item.banner.endreborn_rune.green=Зеленая руна
 item.banner.endreborn_rune.lime=Лаймовая руна
-item.banner.endreborn_rune.lightBlue=Светло-синяя руна  
-item.banner.endreborn_rune.magenta=Сиреневая руна  
-item.banner.endreborn_rune.orange=Оранжевая руна 
+item.banner.endreborn_rune.lightBlue=Светло-синяя руна
+item.banner.endreborn_rune.magenta=Сиреневая руна
+item.banner.endreborn_rune.orange=Оранжевая руна
 item.banner.endreborn_end.white=Белый символ
 item.banner.endreborn_end.black=Черный символ
 item.banner.endreborn_end.blue=Синий символ
 item.banner.endreborn_end.red=Красный символ
 item.banner.endreborn_end.gray=Коричневый символ
 item.banner.endreborn_end.yellow=Желтый символ
-item.banner.endreborn_end.gray=Серый символ
 item.banner.endreborn_end.silver=Светло-серый символ
 item.banner.endreborn_end.purple=Фиолетовый символ
 item.banner.endreborn_end.cyan=Бирюзовый символ
 item.banner.endreborn_end.pink=Розовый символ
 item.banner.endreborn_end.green=Зеленый символ
 item.banner.endreborn_end.lime=Лаймовый символ
-item.banner.endreborn_end.lightBlue=Светло-синий символ 
-item.banner.endreborn_end.magenta=Сиреневый символ 
+item.banner.endreborn_end.lightBlue=Светло-синий символ
+item.banner.endreborn_end.magenta=Сиреневый символ
 item.banner.endreborn_end.orange=Оранжевый символ
 item.banner.endreborn_pearl.white=Белый жемчуг
 item.banner.endreborn_pearl.black=Черный жемчуг
@@ -138,91 +121,14 @@ item.banner.endreborn_pearl.blue=Синий жемчуг
 item.banner.endreborn_pearl.red=Красный жемчуг
 item.banner.endreborn_pearl.gray=Коричневый жемчуг
 item.banner.endreborn_pearl.yellow=Желтый жемчуг
-item.banner.endreborn_pearl.gray=Серый жемчуг
 item.banner.endreborn_pearl.silver=Светло-серый жемчуг
 item.banner.endreborn_pearl.purple=Фиолетовый жемчуг
 item.banner.endreborn_pearl.cyan=Бирюзовый жемчуг
 item.banner.endreborn_pearl.pink=Розовый жемчуг
 item.banner.endreborn_pearl.green=Зеленый жемчуг
 item.banner.endreborn_pearl.lime=Лаймовый жемчуг
-item.banner.endreborn_pearl.lightBlue=Светло-синий жемчуг 
-item.banner.endreborn_pearl.magenta=Сиреневый жемчуг 
+item.banner.endreborn_pearl.lightBlue=Светло-синий жемчуг
+item.banner.endreborn_pearl.magenta=Сиреневый жемчуг
 item.banner.endreborn_pearl.orange=Оранжевый жемчуг
 
-#Advancements 
-advancements.endreborn.root.title=Энд: Возрождение
-advancements.endreborn.root.description=Начало чего-то большего
-
-advancements.endreborn.end_stone.title=Сувенир
-advancements.endreborn.end_stone.description=Получить: Эндерняк
-
-advancements.endreborn.raw_endorium.title=Плотный материал
-advancements.endreborn.raw_endorium.description=Создать: Эндориум
-
-advancements.endreborn.crop_ender_flower.title=Мутация
-advancements.endreborn.crop_ender_flower.description=Создать: Цветок эндера
-
-
-
-advancements.endreborn.ender_flesh.title=Деликатес
-advancements.endreborn.ender_flesh.description=Съесть: Плоть эндера
-
-
-
-advancements.endreborn.mine_essence.title=Сила обсидиана
-advancements.endreborn.mine_essence.description=Добыть: Руда эссенции
-
-advancements.endreborn.end_rune.title=Я вижу...
-advancements.endreborn.end_rune.description=Создать: Руна Края
-
-advancements.endreborn.lormyte_crystal.title=Что-то новое
-advancements.endreborn.lormyte_crystal.description=Добыть: Кристалл лормита
-
-
-advancements.endreborn.item_ingot_wolframium.title=Он расплавился!
-advancements.endreborn.item_ingot_wolframium.description=Получить: Вольфрамовый слиток
-
-
-
-advancements.endreborn.food_chorus_soup.title=Вкус борща!
-advancements.endreborn.food_chorus_soup.description=Создать: Настой из коруса
-
-advancements.endreborn.end_forge.title=Мир в огне
-advancements.endreborn.end_forge.description=Создать: Кузня пустоты
-
-advancements.endreborn.dragon_scales.title=Часть EleC0TroN`а
-advancements.endreborn.dragon_scales.description=Добыть: Драконья 
-
-advancements.endreborn.entropy.title=Развивай уничтожая
-advancements.endreborn.entropy.description=Добыть: Сущность энтропии
-
-advancements.endreborn.entropy_user.title=Шайтан-машина
-advancements.endreborn.entropy_user.description=Получить: Материализер
-hud.entropy.level.stable=Stable
-hud.entropy.level.charged=Charged
-hud.entropy.level.critical=Critical
-hud.entropy.chunk=Chunk entropy: %s
-
-material.endreborn_endorium.name=Endorium
-material.endreborn_tungsten.name=Tungsten
-material.endreborn_infused.name=Infused Endorium
-material.endreborn_dragonscale.name=Dragon Scale
-fluid.endreborn_endorium=Molten Endorium
-fluid.endreborn_tungsten=Molten Tungsten
-fluid.endreborn_infused=Molten Infused Endorium
-modifier.endreborn_rift.name=Rift
-modifier.endreborn_rift.desc=Drops and XP go to your inventory, then to your ender chest
-modifier.endreborn_grounding.name=Grounding
-modifier.endreborn_grounding.desc=A hit target cannot teleport for 10 s. Longer in charged and critical chunks
-modifier.endreborn_siphon.name=Siphon
-modifier.endreborn_siphon.desc=Breaking blocks drains chunk entropy: it repairs the tool and gives mining speed
-modifier.endreborn_breath.name=Breath
-modifier.endreborn_breath.desc=A fully drawn arrow leaves a dragon breath cloud
-modifier.endreborn_blink_armor.name=Blink
-modifier.endreborn_blink_armor.desc=A projectile that would hit you teleports you away, like an enderman. Cooldown 5 s
-modifier.endreborn_anchored_armor.name=Anchored
-modifier.endreborn_anchored_armor.desc=Immune to levitation and forced teleports. Your chunk is safe from critical events
-modifier.endreborn_absorb_armor.name=Absorb
-modifier.endreborn_absorb_armor.desc=Converts chunk entropy into absorption hearts
-modifier.endreborn_voidrescue_armor.name=Void Rescue
-modifier.endreborn_voidrescue_armor.desc=In the void you teleport to the last safe block and the armor loses much durability. Immune to dragon breath
+#Advancements

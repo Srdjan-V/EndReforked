@@ -10,7 +10,7 @@ import mezz.jei.api.gui.IRecipeLayout
 import mezz.jei.api.ingredients.IIngredients
 
 /** The fluid at x 35, the item at x 55 and the output at x 105. */
-class EndForgeCategory(helper: IGuiHelper) : MachineCategory(helper, UID, "tile.block_end_forge.name") {
+class EndForgeCategory(helper: IGuiHelper) : MachineCategory(helper, UID, "tile.end_forge_block.name") {
     override fun setRecipe(layout: IRecipeLayout, recipe: MachineRecipeWrapper, ingredients: IIngredients) {
         layout.fluidStacks.init(0, true, 35, 20, 18, 18, 16000, true, null)
         layout.fluidStacks.set(ingredients)
