@@ -1,6 +1,7 @@
 package io.github.srdjanv.endreforked.compat
 
 import io.github.srdjanv.endreforked.compat.baubles.BaublesCompat
+import io.github.srdjanv.endreforked.compat.conarm.ConArm
 import io.github.srdjanv.endreforked.compat.tconstruct.TConstruct
 import io.github.srdjanv.endreforked.utils.Initializer
 import net.minecraftforge.fml.common.Loader
@@ -13,7 +14,8 @@ class CompatManger private constructor() : Initializer {
     private val mods: List<ModCompat> = listOf<Pair<String, () -> ModCompat>>(
         "baubles" to { BaublesCompat() },
         "tconstruct" to { TConstruct() },
-    ).filter { Loader.isModLoaded(it.first) }.map { it.second() }
+        "conarm" to { ConArm() },
+    ).filter { Loader.isModLoaded(it.first) && (it.first != "conarm" || Loader.isModLoaded("tconstruct")) }.map { it.second() }
 
     override fun registerEventBus() = mods.forEach { it.registerEventBus() }
     override fun preInit(event: FMLPreInitializationEvent) = mods.forEach { it.preInit(event) }

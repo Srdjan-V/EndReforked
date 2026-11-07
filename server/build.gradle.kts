@@ -35,6 +35,7 @@ dependencies {
     api(cleanroom.deobf("curse.maven:baubles-227083:2518667"))
     api(cleanroom.deobf("curse.maven:tinkersconstruct-74072:2902483"))
     api(cleanroom.deobf("curse.maven:mantle-74924:2713386"))
+    api(cleanroom.deobf("curse.maven:constructs-armory-287683:3174535"))
     api("com.cleanroommc:modularui:$modularUI")
     api(cleanroom.deobf("maven.modrinth:nether-api:$netherAPI"))
     api(cleanroom.deobf("curse.maven:just_enough_resources-240630:2728586"))
@@ -59,7 +60,7 @@ val tags = mapOf(
     "MODID" to "\"$modId\"",
     "MODNAME" to "\"$modName\"",
     "VERSION" to "\"$modVersion\"",
-    "MOD_DEPS" to "\"required-after:modularui@[$modularUI,);required-after:nether_api@[$netherAPI,);required-after:forgelin_continuous@[2.4.20.0,);after:tconstruct;after:mantle\"",
+    "MOD_DEPS" to "\"required-after:modularui@[$modularUI,);required-after:nether_api@[$netherAPI,);required-after:forgelin_continuous@[2.4.20.0,);after:tconstruct;after:mantle;after:conarm\"",
     "MOD_PREFIX" to "\"$modId:\"",
     "DATAFIXER_VERSION" to "1",
     "CLIENTSERVICES" to "\"$modGroup.client.di.ClientServices\"",

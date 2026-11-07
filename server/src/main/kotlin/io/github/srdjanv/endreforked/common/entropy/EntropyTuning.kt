@@ -49,6 +49,18 @@ object EntropyTuning {
     @Volatile var siphonSpeedPerPoint = 0.05
     @Volatile var siphonEntropyPerDurability = 2
 
+    /** Blink trait (armor): ticks of cooldown per player. */
+    @Volatile var blinkCooldown = 5 * 20
+
+    /** Absorb trait (armor): ticks between two drains, entropy per step, absorption points per step, absorption cap in points per armor piece with the trait. */
+    @Volatile var absorbInterval = 5 * 20
+    @Volatile var absorbEntropy = 50
+    @Volatile var absorbPoints = 2f
+    @Volatile var absorbCapPerPiece = 8f
+
+    /** Void rescue trait (armor): durability lost by the piece, in percent of its maximum. */
+    @Volatile var voidRescueWearPercent = 25
+
     val organaWeed = Inducer(5)
     val organaFlower = Inducer(10)
     val entropyCrop = Inducer(25)
@@ -82,6 +94,12 @@ object EntropyTuning {
         siphonBonusTicks = 3 * 20
         siphonSpeedPerPoint = 0.05
         siphonEntropyPerDurability = 2
+        blinkCooldown = 5 * 20
+        absorbInterval = 5 * 20
+        absorbEntropy = 50
+        absorbPoints = 2f
+        absorbCapPerPiece = 8f
+        voidRescueWearPercent = 25
         inducers.values.forEach(Inducer::reset)
     }
 
