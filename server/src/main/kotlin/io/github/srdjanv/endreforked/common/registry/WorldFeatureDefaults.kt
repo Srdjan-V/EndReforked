@@ -50,7 +50,6 @@ object WorldFeatureDefaults {
     fun all(): List<WorldFeature> = ores() + generic() + structures()
 
     private fun ores(): List<WorldFeature> {
-        val organa = ModBioms.ORGANA_BIOME.get().registryName!!
         fun ore(name: String, block: Block?, replace: IBlockState, params: GenParams? = null, dims: Condition<Int> = Condition(), biomes: Condition<ResourceLocation> = Condition()) =
             state(block)?.let { WorldFeature(id(name), FeatureKind.ORE, 0, Feature.Ore(it, replace), params, dims, biomes) }
         val diorite = Blocks.STONE.defaultState.withProperty(BlockStone.VARIANT, BlockStone.EnumType.DIORITE)
@@ -58,8 +57,7 @@ object WorldFeatureDefaults {
             ore("obsidian_essence_ore", ModBlocks.OBSIDIAN_ESSENCE_ORE.get(), Blocks.OBSIDIAN.defaultState,
                 dims = dims(OVERWORLD to params(0, 256, rarity = 80, amount = 20), END to params(0, 256, rarity = 60, amount = 40))),
             ore("entropy_ore_crop", ModBlocks.ENTROPY_CROP_BLOCK.get(), Blocks.END_STONE.defaultState,
-                dims = dims(END to params(0, 60, rarity = 25, amount = 20)),
-                biomes = biomes(organa to params(0, 60, rarity = 15, amount = 25))),
+                dims = dims(END to params(0, 60, rarity = 25, amount = 20))),
             ore("tungsten_ore", ModBlocks.TUNGSTEN_ORE.get(), diorite,
                 dims = dims(OVERWORLD to params(0, 48, rarity = 15, amount = 10))),
             ore("tungsten_end", ModBlocks.TUNGSTEN_END_ORE.get(), Blocks.END_STONE.defaultState,
@@ -75,7 +73,7 @@ object WorldFeatureDefaults {
         val fluidMagma = ModBlocks.FLUID_END_MAGMA_BLOCK.get().defaultState
         fun generic(name: String, feature: Feature?, dims: Condition<Int> = Condition(), biomes: Condition<ResourceLocation> = Condition()) =
             feature?.let { WorldFeature(id(name), FeatureKind.GENERIC, 0, it, null, dims, biomes) }
-        val bushAge = ModBlocks.DRAGONITE_CROP.get()?.let { Feature.Bush(it.defaultState, randomAge = true) }
+        fun cropBush(block: Block?) = block?.let { Feature.Bush(it.defaultState, randomAge = true) }
         return ordered(FeatureKind.GENERIC, listOf(
             generic("lormyte", state(ModBlocks.LORMYTE_CRYSTAL_BLOCK.get())?.let { Feature.Sphere(listOf(endStone, moss), it) },
                 dims(END to params(20, 45, rarity = 80, radius = 12))),
@@ -90,10 +88,8 @@ object WorldFeatureDefaults {
                 dims(END to params(50, 90, rarity = 25, radius = 4))),
             generic("end_coral", Feature.Bush(ModBlocks.END_CORAL.get().defaultState),
                 dims(END to params(50, 90, rarity = 0, amount = 20))),
-            // The next two look swapped: the crop places coral, and the flower places crops. Kept as they were.
-            generic("dragonite_crop", Feature.Bush(ModBlocks.END_CORAL.get().defaultState),
-                dims(END to params(50, 90, rarity = 5, amount = 6))),
-            generic("end_flower", bushAge, dims(END to params(50, 90, rarity = 5, amount = 6))),
+            generic("dragonite_crop", cropBush(ModBlocks.DRAGONITE_CROP.get()), dims(END to params(50, 90, rarity = 5, amount = 6))),
+            generic("end_flower", cropBush(ModBlocks.ENDER_FLOWER_CROP.get()), dims(END to params(50, 90, rarity = 5, amount = 6))),
         ))
     }
 
@@ -117,7 +113,8 @@ object WorldFeatureDefaults {
                 types = Condition(mapOf(BiomeDictionary.Type.getType("ORGANA") to params(90, 115, rarity = 120))),
                 flowers = listOf(flower(7, 7, 100), flower(4, 9, 31), flower(11, 6, 31))),
             template("observatory", "observ", params(3, 3, spacing = grid("observatory", 64, 50)),
-                Condition.of(mc("desert"), mc("ocean"), mc("deep_ocean"), mc("forest"), mc("birch_forest"), mc("swampland"))),
+                Condition.of(mc("desert"), mc("ocean"), mc("deep_ocean"), mc("forest"), mc("birch_forest"), mc("swampland")),
+                locator = listOf(Step.Surface(), Step.Move(0, 1, 0))),
             template("ship_wreck", "end_shipwreck", params(50, 70, spacing = grid("ship_wreck", 64, 50)), Condition.of(mc("sky")), end,
                 locator = listOf(Step.Move(10, 0, 10), Step.Surface(), Step.Move(0, -2, 2))),
         ))

@@ -95,7 +95,7 @@ class BlockEndMossGrass : BlockBase("end_moss_grass", Material.GRASS, MapColor.P
             val up = worldIn.getBlockState(randPos.up())
             if (worldIn.getBlockState(randPos).block == ModBlocks.END_MOSS_BLOCK.get() &&
                 worldIn.getLightFromNeighbors(randPos.up()) >= 4 &&
-                up.getLightOpacity(worldIn, pos.up()) <= 2
+                up.getLightOpacity(worldIn, randPos.up()) <= 2
             ) {
                 worldIn.setBlockState(randPos, defaultState)
             }

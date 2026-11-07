@@ -66,7 +66,7 @@ class OrganaBiome : BiomeEnd(BiomeProperties("Organa").setRainDisabled()), IEndB
 
             // chunkPos is player pos
             val cx = (pos.x shr 4).toLong()
-            val cz = (pos.y shr 4).toLong()
+            val cz = (pos.z shr 4).toLong()
             if (cx * cx + cz * cz > 4096L) {
                 repeat(rand.nextInt(5)) {
                     val xOffset = rand.nextInt(16) + 8

@@ -290,7 +290,7 @@ class EntropyChamberTile : BaseTileEntity(), ITickable, EntropyDataProvider, IGu
             if (item is EntropyRadiusUpgrade) {
                 val range = item.entropyRadius
                 tooltip.addLine(LangKey("entropy.range.chunks").get() + ": " + range.chunks)
-                tooltip.addLine(LangKey("entropy.range.chunks").get() + ": " + range.radius)
+                tooltip.addLine(LangKey("entropy.range.radius").get() + ": " + range.radius)
             }
         }
         data.jeiSettings.addJeiExclusionArea(upgradeSlotWidget)

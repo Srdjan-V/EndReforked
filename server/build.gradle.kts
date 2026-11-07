@@ -86,3 +86,9 @@ val generateTags = tasks.register("generateTags") {
 sourceSets.main { java.srcDir(generateTags.map { tagsDir }) }
 
 tasks.test { useJUnitPlatform() }
+
+tasks.processResources {
+    val version = modVersion
+    inputs.property("version", version)
+    filesMatching("mcmod.info") { expand("version" to version) }
+}

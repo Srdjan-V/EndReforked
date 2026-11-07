@@ -54,7 +54,6 @@ class EntityWatcher @JvmOverloads constructor(
         getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).baseValue = 0.0
     }
 
-    // Original behaviour kept: this does not call super, so the day teleport of EndEntity never runs.
     override fun updateAITasks() {
         if (ticksExisted >= targetChangeTime + huntCooldown) {
             dataManager.set(TIMES_ESCAPED, 0)

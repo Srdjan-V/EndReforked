@@ -44,6 +44,7 @@ object Fixer : Initializer {
         "block_decorative_lormyte" to "decorative_lormyte_block",
         "block_end_magma" to "end_magma_block",
         "block_rune" to "rune_block",
+        "ogana_weed" to "organa_weed",
     )
 
     private val blocks = common + mappings("dragon_essence" to "xorcite_block")

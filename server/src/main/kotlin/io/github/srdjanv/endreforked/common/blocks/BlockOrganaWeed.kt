@@ -22,7 +22,7 @@ import net.minecraft.world.World
 import net.minecraftforge.common.IShearable
 import java.util.Random
 
-class BlockOrganaWeed : BaseBlockBush("ogana_weed", Material.VINE), IShearable {
+class BlockOrganaWeed : BaseBlockBush("organa_weed", Material.VINE), IShearable {
 
     init {
         sustainableBlocks.add(ModBlocks.END_MOSS_GRASS_BLOCK.get())

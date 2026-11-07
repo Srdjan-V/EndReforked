@@ -81,7 +81,7 @@ class BlockEnderCrop : BaseBlockCrops("ender_flower_crop") {
     }
 
     override fun updateTick(worldIn: World, pos: BlockPos, state: IBlockState, rand: Random) {
-        if (!worldIn.isRemote) return
+        if (worldIn.isRemote) return
         checkAndDropBlock(worldIn, pos, state)
         // Forge: prevent loading unloaded chunks when checking neighbor's light
         if (!worldIn.isAreaLoaded(pos, 1)) return

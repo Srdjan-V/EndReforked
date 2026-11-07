@@ -83,8 +83,7 @@ class BlockStateRendereWidget : ParentWidget<BlockStateRendereWidget>(), Interac
 
     fun prevRenderLayer() = setRenderLayer(max(renderInfo!!.blockIndex - 1, -1))
 
-    // Original bug kept: the same as prevRenderLayer, it never moves forward.
-    fun nextRenderLayer() = setRenderLayer(max(renderInfo!!.blockIndex - 1, -1))
+    fun nextRenderLayer() = renderInfo!!.blockIndex.plus(1).let { setRenderLayer(if (it >= maxRenderLayer) -1 else it) }
 
     fun setRenderLayer(layer: Int) = renderInfo!!.setLayerLimiter(layer)
 
