@@ -54,17 +54,18 @@ object MachineRecipeDefaults {
         ),
     )
 
-    /** Lava and End Magma, 1,000 mB each, plus one item. End Magma gives 4 times the output and is faster. */
+    /** Lava and End Magma, 1,000 mB each, plus one item. End Magma gives 4 times the output and is faster, and costs 40 chunk entropy. */
     private fun endForge(): List<MachineRecipe> {
         val lava = FluidRegistry.LAVA
         val endMagma = ModFluids.END_MAGMA.get()
-        fun recipe(name: String, fluid: Fluid, input: Item, ticks: Int, output: Item, count: Int) = MachineRecipe(
+        fun recipe(name: String, fluid: Fluid, input: Item, ticks: Int, output: Item, count: Int, entropy: Int = 0) = MachineRecipe(
             id = ResourceLocation(Tags.MODID, "end_forge/$name"),
             machine = END_FORGE,
             itemInputs = listOf(ItemIngredient.Item(ItemStack(input))),
             fluidInputs = listOf(FluidStack(fluid, 1_000)),
             itemOutputs = listOf(ItemStack(output, count)),
             ticks = ticks,
+            entropy = entropy,
         )
         val endorium = ModItems.INGOT_ENDORIUM.get()
         val essence = ModItems.END_ESSENCE.get()
@@ -76,10 +77,10 @@ object MachineRecipeDefaults {
             recipe("lava_magma_cream", lava, Items.SLIME_BALL, 200, Items.MAGMA_CREAM, 1),
             recipe("lava_blaze_powder", lava, essence, 200, Items.BLAZE_POWDER, 1),
             recipe("lava_end_magma_block", lava, entropyStone, 200, magmaBlock, 1),
-            recipe("end_magma_infused_metall", endMagma, endorium, 100, infused, 4),
-            recipe("end_magma_magma_cream", endMagma, Items.SLIME_BALL, 150, Items.MAGMA_CREAM, 4),
-            recipe("end_magma_blaze_powder", endMagma, essence, 150, Items.BLAZE_POWDER, 4),
-            recipe("end_magma_end_magma_block", endMagma, entropyStone, 150, magmaBlock, 4),
+            recipe("end_magma_infused_metall", endMagma, endorium, 100, infused, 4, entropy = 40),
+            recipe("end_magma_magma_cream", endMagma, Items.SLIME_BALL, 150, Items.MAGMA_CREAM, 4, entropy = 40),
+            recipe("end_magma_blaze_powder", endMagma, essence, 150, Items.BLAZE_POWDER, 4, entropy = 40),
+            recipe("end_magma_end_magma_block", endMagma, entropyStone, 150, magmaBlock, 4, entropy = 40),
         )
     }
 
@@ -98,6 +99,7 @@ object MachineRecipeDefaults {
                 itemInputs = listOf(ItemIngredient.Item(ItemStack(Items.IRON_INGOT)), catalyst),
                 itemOutputs = listOf(ItemStack(Items.IRON_INGOT, 2)),
                 ticks = 200,
+                entropy = 100,
                 worldEvents = listOf(
                     event(30, 15, stone, listOf(listOf("X")), WorldAction.SetBlock(iron)),
                     event(60, 15, iron, listOf(listOf("X")), WorldAction.SetBlock(gold)),
@@ -110,6 +112,7 @@ object MachineRecipeDefaults {
                 itemInputs = listOf(ItemIngredient.Item(ItemStack(Items.DIAMOND)), catalyst),
                 itemOutputs = listOf(ItemStack(Items.DIAMOND)),
                 ticks = 600,
+                entropy = 300,
                 worldEvents = listOf(
                     event(30, 2, stone, List(6) { listOf("X") }, WorldAction.SetBlock(iron)),
                     event(60, 2, iron, listOf(listOf("XXXXXXX")) + List(6) { listOf("X      ") }, WorldAction.SetBlock(gold)),

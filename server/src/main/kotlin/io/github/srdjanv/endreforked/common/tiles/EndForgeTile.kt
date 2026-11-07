@@ -14,6 +14,7 @@ import com.cleanroommc.modularui.widgets.ProgressWidget
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import io.github.srdjanv.endreforked.api.base.crafting.TileStatus
 import io.github.srdjanv.endreforked.api.machine.MachineRecipe
+import io.github.srdjanv.endreforked.common.entropy.world.EntropyChunkReader
 import io.github.srdjanv.endreforked.common.entropy.world.EntropyWorldHandler
 import io.github.srdjanv.endreforked.common.machine.InputHandler
 import io.github.srdjanv.endreforked.common.machine.InputTank
@@ -39,6 +40,7 @@ import net.minecraftforge.items.CapabilityItemHandler
  * The inputs stay in their slot and tank until the recipe is done, then the recipe takes its amounts.
  */
 class EndForgeTile : BaseTileEntity(), ITickable, IGuiHolder<PosGuiData> {
+    private val reader = EntropyChunkReader.ofTileEntity(this)
     private val process: MachineProcess = MachineProcess(
         MachineRecipeDefaults.END_FORGE,
         MachineIO(
@@ -88,7 +90,7 @@ class EndForgeTile : BaseTileEntity(), ITickable, IGuiHolder<PosGuiData> {
     }
 
     override fun update() {
-        if (!world.isRemote) process.tick(level = EntropyWorldHandler.levelAt(world.provider.dimension, pos))
+        if (!world.isRemote) process.tick(reader.entropyView, EntropyWorldHandler.levelAt(world.provider.dimension, pos))
     }
 
     override fun buildUI(data: PosGuiData, syncManager: GuiSyncManager): ModularPanel {
