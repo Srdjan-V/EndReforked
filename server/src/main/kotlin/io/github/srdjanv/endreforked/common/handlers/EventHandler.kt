@@ -2,7 +2,7 @@ package io.github.srdjanv.endreforked.common.handlers
 
 import io.github.srdjanv.endreforked.common.ModBlocks
 import io.github.srdjanv.endreforked.common.configs.Configs
-import io.github.srdjanv.endreforked.common.entity.EntityEndGuard
+import io.github.srdjanv.endreforked.common.entity.EntityEntropyBlaze
 import io.github.srdjanv.endreforked.common.entity.EntityWatcher
 import io.github.srdjanv.endreforked.common.entropy.EntropyTuning
 import io.github.srdjanv.endreforked.common.entropy.world.EntropyWorldHandler
@@ -20,13 +20,13 @@ object EventHandler {
     // ponytail: the list of a spawn query is the biome's own list, so the weight is set in place just before the game reads it.
     private val baseWeights = java.util.IdentityHashMap<Biome.SpawnListEntry, Int>()
 
-    /** The weight of the spawn entries of Watcher and Endguard is x1, x2 or x3 by the level of the spawn chunk. */
+    /** The weight of the spawn entries of Watcher and Entropy Blaze is x1, x2 or x3 by the level of the spawn chunk. */
     @SubscribeEvent
     @JvmStatic
     fun onPotentialSpawns(event: WorldEvent.PotentialSpawns) {
         val level = EntropyWorldHandler.levelAt(event.world.provider.dimension, event.pos)
         for (entry in event.list) {
-            if (entry.entityClass != EntityWatcher::class.java && entry.entityClass != EntityEndGuard::class.java) continue
+            if (entry.entityClass != EntityWatcher::class.java && entry.entityClass != EntityEntropyBlaze::class.java) continue
             entry.itemWeight = baseWeights.getOrPut(entry) { entry.itemWeight } * EntropyTuning.spawnFactor(level)
         }
     }

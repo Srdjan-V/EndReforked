@@ -1,6 +1,7 @@
 package io.github.srdjanv.endreforked.common.entity
 
 import io.github.srdjanv.endreforked.common.LootHandler
+import io.github.srdjanv.endreforked.common.entropy.world.EntropyChunkReader
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.SharedMonsterAttributes
 import net.minecraft.entity.ai.*
@@ -21,9 +22,9 @@ import net.minecraft.world.World
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 
-class EntityEndGuard(world: World) : EntityMob(world) {
+class EntityEntropyBlaze(world: World) : EntityMob(world) {
     companion object {
-        private val ON_FIRE: DataParameter<Byte> = EntityDataManager.createKey(EntityEndGuard::class.java, DataSerializers.BYTE)
+        private val ON_FIRE: DataParameter<Byte> = EntityDataManager.createKey(EntityEntropyBlaze::class.java, DataSerializers.BYTE)
     }
 
     private var heightOffset = 0.5f
@@ -67,11 +68,16 @@ class EntityEndGuard(world: World) : EntityMob(world) {
     override fun getDeathSound(): SoundEvent = SoundEvents.ENTITY_BLAZE_DEATH
 
     @SideOnly(Side.CLIENT)
-    override fun getBrightnessForRender() = 15728880
+    override fun getBrightnessForRender() = 10028880
 
-    override fun getBrightness() = 1f
+    override fun getBrightness() = 0.95f
 
     override fun onLivingUpdate() {
+        // Entropy Blazes corrupt the chunk they inhabit while they are alive.
+        if (!world.isRemote && ticksExisted % 20 == 0) {
+            increaseEntropy()
+        }
+
         if (!onGround && motionY < 0.0) motionY *= 0.6
 
         if (world.isRemote) {
@@ -112,7 +118,7 @@ class EntityEndGuard(world: World) : EntityMob(world) {
 
     override fun isBurning() = isCharged
 
-    override fun getLootTable(): ResourceLocation = LootHandler.END_GUARD
+    override fun getLootTable(): ResourceLocation = LootHandler.ENTROPY_BLAZE
 
     val isCharged: Boolean get() = dataManager.get(ON_FIRE).toInt() and 1 != 0
 
@@ -121,9 +127,13 @@ class EntityEndGuard(world: World) : EntityMob(world) {
         dataManager.set(ON_FIRE, (if (onFire) flags or 1 else flags and -2).toByte())
     }
 
+    private fun increaseEntropy() {
+        EntropyChunkReader.ofEntity(this).centerEntropy?.induceEntropy(2, false)
+    }
+
     override fun isValidLightLevel() = true
 
-    private class AIFireballAttack(private val blaze: EntityEndGuard) : EntityAIBase() {
+    private class AIFireballAttack(private val blaze: EntityEntropyBlaze) : EntityAIBase() {
         private var attackStep = 0
         private var attackTime = 0
 
@@ -147,7 +157,7 @@ class EntityEndGuard(world: World) : EntityMob(world) {
             if (distSq < 4.0) {
                 if (attackTime <= 0) {
                     attackTime = 20
-                    blaze.attackEntityAsMob(target)
+                    if (blaze.attackEntityAsMob(target)) blaze.increaseEntropy()
                 }
                 blaze.moveHelper.setMoveTo(target.posX, target.posY, target.posZ, 1.0)
             } else if (distSq < followDistance * followDistance) {
@@ -178,6 +188,7 @@ class EntityEndGuard(world: World) : EntityMob(world) {
                         )
                         fireball.posY = blaze.posY + blaze.height / 2.0 + 0.5
                         blaze.world.spawnEntity(fireball)
+                        blaze.increaseEntropy()
                     }
                 }
 

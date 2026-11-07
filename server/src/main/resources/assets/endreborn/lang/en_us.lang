@@ -103,7 +103,7 @@ item.chorus_soup.name=Chorus Soup
 item.organa_fruit.name=Organa Fruit
 
 #Entities
-entity.endguard.name=Purpur Guard
+entity.entropy_blaze.name=Entropy Blaze
 entity.watcher.name=Watcher
 entity.chronologist.name=Chronologist
 entity.entropy_fireball.name=Cold Fireball

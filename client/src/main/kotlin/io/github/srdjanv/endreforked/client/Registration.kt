@@ -15,7 +15,7 @@ internal class Registration : Initializer {
     @SubscribeEvent
     fun registerModels(event: ModelRegistryEvent) {
         RenderingRegistry.registerEntityRenderingHandler(EntityEntropyFireball::class.java, ::RenderColdFireball)
-        RenderingRegistry.registerEntityRenderingHandler(EntityEndGuard::class.java, ::RenderEGuard)
+        RenderingRegistry.registerEntityRenderingHandler(EntityEntropyBlaze::class.java, ::RenderEntropyBlaze)
         RenderingRegistry.registerEntityRenderingHandler(EntityWatcher::class.java, ::RenderWatcher)
         RenderingRegistry.registerEntityRenderingHandler(EntityChronologist::class.java, ::RenderChronologist)
     }

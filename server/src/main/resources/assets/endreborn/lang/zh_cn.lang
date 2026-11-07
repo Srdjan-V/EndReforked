@@ -53,7 +53,7 @@ item.dragonite_berries.name=龙梅浆果
 item.chorus_soup.name=紫颂汤
 
 #Entities
-entity.endguard.name=末地守卫
+entity.entropy_blaze.name=熵烈焰人
 entity.watcher.name=观察者
 entity.chronologist.name=年代学者
 entity.Villager.endreborn.nether_explorer.name=下界探险家

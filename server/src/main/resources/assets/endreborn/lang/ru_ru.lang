@@ -57,7 +57,7 @@ item.dragonite_berries.name=Ягоды драгонита
 item.chorus_soup.name=Настой из коруса
 
 #Entities
-entity.endguard.name=Страж Края
+entity.entropy_blaze.name=Энтропийный ифрит
 entity.watcher.name=Наблюдатель
 entity.chronologist.name=Хронолог
 

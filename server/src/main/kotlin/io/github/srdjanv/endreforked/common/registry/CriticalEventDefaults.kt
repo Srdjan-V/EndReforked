@@ -15,7 +15,7 @@ object CriticalEventDefaults {
         CriticalEvent(id("corruption"), 10, 3, 20, CriticalAction.Convert),
         CriticalEvent(
             id("rift"), 5, 0, 60,
-            CriticalAction.SpawnMobs(listOf(ResourceLocation(Tags.MODID, "watcher"), ResourceLocation(Tags.MODID, "endguard")), 1, 3),
+            CriticalAction.SpawnMobs(listOf(ResourceLocation(Tags.MODID, "watcher"), ResourceLocation(Tags.MODID, "entropy_blaze")), 1, 3),
         ),
         // like the dragon breath of the vanilla dragon
         CriticalEvent(id("burst"), 2, 4, 150, CriticalAction.Cloud(4f, 200, PotionEffect(MobEffects.INSTANT_DAMAGE))),

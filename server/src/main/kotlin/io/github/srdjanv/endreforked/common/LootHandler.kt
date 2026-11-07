@@ -12,7 +12,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 
 class LootHandler : Initializer {
     companion object {
-        @JvmField val END_GUARD = ResourceLocation(Tags.MODID, "entities/endguard")
+        @JvmField val ENTROPY_BLAZE = ResourceLocation(Tags.MODID, "entities/entropy_blaze")
         @JvmField val WATCHER = ResourceLocation(Tags.MODID, "entities/watcher")
 
         // TODO: 08/02/2024 add shipWreck loot table
@@ -39,7 +39,7 @@ class LootHandler : Initializer {
     }
 
     override fun preInit(event: FMLPreInitializationEvent) {
-        listOf(END_GUARD, WATCHER).forEach(LootTableList::register)
+        listOf(ENTROPY_BLAZE, WATCHER).forEach(LootTableList::register)
     }
 
     @SubscribeEvent
