@@ -1,5 +1,6 @@
 package io.github.srdjanv.endreforked.common.blocks
 
+import io.github.srdjanv.endreforked.api.entropy.EntropyLevel
 import io.github.srdjanv.endreforked.common.blocks.base.BlockBase
 import io.github.srdjanv.endreforked.common.entropy.world.EntropyWorldHandler
 import io.github.srdjanv.endreforked.common.entropy.EntropyTuning
@@ -40,18 +41,21 @@ class EntropyLantern(name: String) : BlockBase(name, Material.ROCK) {
     override fun getStateForPlacement(
         world: World, pos: BlockPos, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float,
         meta: Int, placer: EntityLivingBase,
-    ): IBlockState = defaultState.withProperty(HANGING, facing == EnumFacing.DOWN)
-
-    override fun randomTick(world: World, pos: BlockPos, state: IBlockState, random: java.util.Random) {
-        if (world.isRemote) return
-        val next = lightForChunk(world, pos)
-        if (state.getValue(LIGHT_LEVEL) != next) {
-            world.setBlockState(pos, state.withProperty(LIGHT_LEVEL, next), 3)
-        }
+    ): IBlockState {
+        return defaultState.withProperty(HANGING, world.isSideSolid(pos.up(), EnumFacing.DOWN))
     }
 
-    override fun canPlaceBlockAt(worldIn: World, pos: BlockPos): Boolean =
-        worldIn.isSideSolid(pos.down(), EnumFacing.UP) || worldIn.isSideSolid(pos.up(), EnumFacing.DOWN)
+    override fun randomTick(world: World, pos: BlockPos, state: IBlockState, random: java.util.Random) {
+        updateLightLevel(state, world, pos)
+    }
+
+    override fun tickRate(world: World?): Int {
+        return 25
+    }
+
+    override fun canPlaceBlockAt(worldIn: World, pos: BlockPos): Boolean {
+        return worldIn.isSideSolid(pos.down(), EnumFacing.UP) || worldIn.isSideSolid(pos.up(), EnumFacing.DOWN)
+    }
 
     override fun neighborChanged(state: IBlockState, worldIn: World, pos: BlockPos, blockIn: Block, fromPos: BlockPos) {
         if (!canPlaceBlockAt(worldIn, pos)) worldIn.destroyBlock(pos, true)
@@ -67,17 +71,30 @@ class EntropyLantern(name: String) : BlockBase(name, Material.ROCK) {
         .withProperty(LIGHT_LEVEL, (meta and 3).coerceIn(0, 2))
 
     override fun getLightValue(state: IBlockState, world: IBlockAccess, pos: BlockPos): Int {
-        return state.getValue(LIGHT_LEVEL)
+        return when (state.getValue(LIGHT_LEVEL)) {
+            0 -> 5
+            1 -> 10
+            2 -> 15
+            else -> 0
+        }
+    }
+
+    private fun updateLightLevel(state: IBlockState, world: World, pos: BlockPos) {
+        if (world.isRemote) return
+        val next = lightForChunk(world, pos)
+        if (state.getValue(LIGHT_LEVEL) != next) {
+            world.setBlockState(pos, state.withProperty(LIGHT_LEVEL, next), 3)
+        }
     }
 
     private fun lightForChunk(world: World, pos: BlockPos): Int = when (
         EntropyWorldHandler.getEntropyChunkWorld(world.provider.dimension, pos)
             .map { EntropyTuning.level(it.currentEntropy, it.maxEntropy) }
-            .orElse(io.github.srdjanv.endreforked.api.entropy.EntropyLevel.STABLE)
+            .orElse(EntropyLevel.STABLE)
     ) {
-        io.github.srdjanv.endreforked.api.entropy.EntropyLevel.STABLE -> 0
-        io.github.srdjanv.endreforked.api.entropy.EntropyLevel.CHARGED -> 1
-        io.github.srdjanv.endreforked.api.entropy.EntropyLevel.CRITICAL -> 2
+        EntropyLevel.STABLE -> 0
+        EntropyLevel.CHARGED -> 1
+        EntropyLevel.CRITICAL -> 2
     }
 
     companion object {
