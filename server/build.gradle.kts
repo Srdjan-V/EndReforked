@@ -17,6 +17,30 @@ val netherAPI = "1.3.0"
 val groovyScript = project.property("groovyScriptVersion") as String
 val craftTweaker = project.property("craftTweakerFileId") as String
 
+/**
+ * The deobfuscated jar of [notation] without its signature files, for the dev classpath.
+ * Deobfuscation changes the classes, so the JDK signature check of a signed jar fails at run time.
+ * The CleanroomGradle deobf step cannot strip signatures itself (the renamer gets no --strip-sigs).
+ */
+fun unsigned(notation: String): FileCollection {
+    val name = notation.split(':')[1]
+    val signed = configurations.create("signed-$name") { isTransitive = false }
+    dependencies.add(signed.name, cleanroom.deobf(notation))
+    val archives = objects.newInstance<ArchiveOps>().archives
+    val unsign = tasks.register<Zip>("unsign-$name") {
+        archiveFileName.set("$name-deobf-unsigned.jar")
+        destinationDirectory.set(layout.buildDirectory.dir("unsigned"))
+        from(signed.elements.map { jars -> jars.map { archives.zipTree(it) } }) {
+            exclude("META-INF/*.SF", "META-INF/*.RSA", "META-INF/*.DSA", "META-INF/*.EC")
+        }
+    }
+    return files(unsign)
+}
+
+interface ArchiveOps {
+    @get:javax.inject.Inject val archives: ArchiveOperations
+}
+
 dependencies {
     api(project(":impl"))
 
@@ -35,7 +59,7 @@ dependencies {
     api(cleanroom.deobf("curse.maven:baubles-227083:2518667"))
     api(cleanroom.deobf("curse.maven:tinkersconstruct-74072:2902483"))
     api(cleanroom.deobf("curse.maven:mantle-74924:2713386"))
-    api(cleanroom.deobf("curse.maven:constructs-armory-287683:3174535"))
+    api(unsigned("curse.maven:constructs-armory-287683:3174535"))
     api("com.cleanroommc:modularui:$modularUI")
     api(cleanroom.deobf("maven.modrinth:nether-api:$netherAPI"))
     api(cleanroom.deobf("curse.maven:just_enough_resources-240630:2728586"))
