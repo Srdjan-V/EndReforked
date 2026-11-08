@@ -1,0 +1,32 @@
+{
+    "type": "minecraft:crafting_shaped",
+    
+    "pattern":
+    [
+        "020",
+	"030", 
+        "030"     
+    ],
+    
+    "key":
+    {
+        "0":
+        {
+            "item": "endreborn:end_stone_smooth_block"
+        },
+	"3":
+        {
+            "item": "endreborn:entropy_shard"
+        },
+	"2":
+        {
+            "item": "minecraft:glass"
+        }
+    },
+    
+    "result":
+    {
+        "item": "endreborn:materializer_block",
+        "count": 1
+    }
+}

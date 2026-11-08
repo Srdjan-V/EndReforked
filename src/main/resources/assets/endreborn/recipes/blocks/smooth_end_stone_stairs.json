@@ -1,0 +1,24 @@
+{
+    "type": "minecraft:crafting_shaped",
+    
+    "pattern":
+    [
+        "0  ", 
+        "00 ",
+        "000"      
+    ],
+    
+    "key":
+    {
+        "0":
+        {
+            "item": "endreborn:end_stone_smooth_block"
+        }
+    },
+    
+    "result":
+    {
+        "item": "endreborn:end_stone_smooth_stairs",
+        "count": 4
+    }
+}

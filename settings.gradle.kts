@@ -13,5 +13,3 @@ plugins {
 
 rootProject.name = "EndReforked"
 
-// Dependencies: impl -> api, wire; server -> impl; client -> server; mod -> all. Nothing depends on client or mod.
-include("api", "wire", "impl", "server", "client", "mod")
