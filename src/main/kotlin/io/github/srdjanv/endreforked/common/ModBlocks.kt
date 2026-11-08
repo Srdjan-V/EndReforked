@@ -23,7 +23,7 @@ object ModBlocks {
     @get:JvmStatic val ENTROPY_FIRE by BLOCKS.register(::BlockEntropyFire)
     @get:JvmStatic val END_CORAL by BLOCKS.register(::BlockEndCoral)
 
-    @get:JvmStatic val END_MAGMA_BLOCK by BLOCKS.register(::BlockEndMagma)
+    @get:JvmStatic val END_MAGMA_BLOCK by BLOCKS.register(::BlockOrganaLiquid)
 
     @get:JvmStatic val LORMYTE_CRYSTAL_BLOCK by BLOCKS.register { BlockEndBase("lormyte_crystal_block", Material.ROCK) }
     @get:JvmStatic val DECORATIVE_LORMYTE_BLOCK by BLOCKS.register { BlockEndBase("decorative_lormyte_block", Material.ROCK) }
@@ -58,8 +58,8 @@ object ModBlocks {
     @get:JvmStatic val FLUID_ENTROPY_BLOCK by BLOCKS.register(::BlockFluidEntropy)
     @get:JvmStatic val FLUID_ORGANA_BLOCK by BLOCKS.register(::BlockFluidOrgana)
 
-    @get:JvmStatic val END_MOSS_GRASS_BLOCK by BLOCKS.register(::BlockEndMossGrass)
-    @get:JvmStatic val END_MOSS_BLOCK by BLOCKS.register(::BlockEndMoss)
+    @get:JvmStatic val ORGANA_BLOCK by BLOCKS.register(::BlockOrgana)
+    @get:JvmStatic val ORGANA_END_STONE_BLOCK by BLOCKS.register(::BlockOrganaEndStone)
 
     @get:JvmStatic val ORGANA_FLOWER_BLOCK by BLOCKS.register(::BlockOrganaFlower)
     @get:JvmStatic val ORGANA_PLANT_BLOCK by BLOCKS.register(::BlockOrganaPlant)

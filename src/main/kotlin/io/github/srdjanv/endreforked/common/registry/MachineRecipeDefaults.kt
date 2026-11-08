@@ -48,7 +48,7 @@ object MachineRecipeDefaults {
             id = ResourceLocation(Tags.MODID, "entropy_chamber/end_moss_grass"),
             machine = ENTROPY_CHAMBER,
             itemInputs = listOf(ItemIngredient.Item(ItemStack(Blocks.GRASS, 20))),
-            itemOutputs = listOf(ItemStack(ModItems.END_MOSS_GRASS_BLOCK, 2)),
+            itemOutputs = listOf(ItemStack(ModItems.ORGANA_BLOCK, 2)),
             ticks = 5 * 20,
             entropy = 2,
         ),

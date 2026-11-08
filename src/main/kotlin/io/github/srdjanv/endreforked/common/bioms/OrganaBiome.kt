@@ -5,14 +5,12 @@ import git.jbredwards.nether_api.api.biome.INoSpawnBiome
 import git.jbredwards.nether_api.api.world.INetherAPIChunkGenerator
 import io.github.srdjanv.endreforked.common.ModBlocks
 import io.github.srdjanv.endreforked.common.bioms.base.BiomeDictionaryHandler
-import io.github.srdjanv.endreforked.common.blocks.BlockEndMossGrass
+import io.github.srdjanv.endreforked.common.blocks.BlockOrgana
 import io.github.srdjanv.endreforked.common.blocks.BlockOrganaFlower
 import net.minecraft.block.material.Material
 import net.minecraft.init.Blocks
-import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import net.minecraft.world.biome.Biome
-import net.minecraft.world.biome.Biome.BiomeProperties
 import net.minecraft.world.biome.BiomeDecorator
 import net.minecraft.world.biome.BiomeEnd
 import net.minecraft.world.chunk.ChunkPrimer
@@ -23,8 +21,8 @@ class OrganaBiome : BiomeEnd(BiomeProperties("Organa").setRainDisabled()), IEndB
 
     init {
         setRegistryName("organa")
-        topBlock = ModBlocks.END_MOSS_GRASS_BLOCK.defaultState
-        fillerBlock = ModBlocks.END_MOSS_BLOCK.defaultState
+        topBlock = ModBlocks.ORGANA_BLOCK.defaultState
+        fillerBlock = ModBlocks.ORGANA_END_STONE_BLOCK.defaultState
         flowers.clear()
         decorator = createBiomeDecorator()
     }
@@ -75,7 +73,7 @@ class OrganaBiome : BiomeEnd(BiomeProperties("Organa").setRainDisabled()), IEndB
 
                     if (y > 0 && world.isAirBlock(pos.add(xOffset, y, zOffset))) {
                         val ground = world.getBlockState(pos.add(xOffset, y - 1, zOffset))
-                        if (ground == ModBlocks.END_MOSS_GRASS_BLOCK.defaultState)
+                        if (ground == ModBlocks.ORGANA_BLOCK.defaultState)
                             BlockOrganaFlower.generatePlant(world, pos.add(xOffset, y, zOffset), rand, 8)
                     }
                 }
@@ -89,7 +87,7 @@ class OrganaBiome : BiomeEnd(BiomeProperties("Organa").setRainDisabled()), IEndB
                 val currentPos = pos.add(xOffset, y - 1, zOffset)
                 val currentBlockState = world.getBlockState(currentPos)
                 val ground = currentBlockState.block
-                if (ground is BlockEndMossGrass && ground.canGrow(world, currentPos, currentBlockState, false))
+                if (ground is BlockOrgana && ground.canGrow(world, currentPos, currentBlockState, false))
                     ground.grow(world, rand, currentPos, currentBlockState)
             }
         }

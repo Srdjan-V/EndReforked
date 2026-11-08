@@ -15,7 +15,7 @@ import java.util.Optional
 import java.util.OptionalInt
 import java.util.Random
 
-/** Shared by [BlockEntropyEndStone] and [BlockEndMoss]. */
+/** Shared by [BlockEntropyEndStone] and [BlockOrganaEndStone]. */
 internal val ONE_ENTROPY = object : EntropyDataProvider.PassiveInducer {
     override val frequency: OptionalInt = OptionalInt.empty()
     override val induced = 1
@@ -29,7 +29,7 @@ class BlockEntropyEndStone : BlockBase("entropy_end_stone", Material.ROCK), Entr
         setTickRandomly(true)
     }
 
-    override fun getItemDropped(state: IBlockState, rand: Random, fortune: Int): Item = ModItems.END_MOSS_BLOCK
+    override fun getItemDropped(state: IBlockState, rand: Random, fortune: Int): Item = ModItems.ORGANA_END_STONE_BLOCK
 
     override val entropyRadius: Optional<EntropyRadius> = Optional.of(EntropyRadius.ONE)
 

@@ -24,7 +24,7 @@ import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import java.util.Random
 
-class BlockEndMagma : BlockBase("end_magma_block", Material.ROCK) {
+class BlockOrganaLiquid : BlockBase("organa_liquid", Material.ROCK) {
     init {
         setTickRandomly(true)
         setSoundType(SoundType.STONE)

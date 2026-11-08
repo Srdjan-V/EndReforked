@@ -36,7 +36,7 @@ class BlockOrganaFlower : BlockBase("organa_flower", Material.PLANTS, MapColor.P
 
     init {
         setTickRandomly(true)
-        setDefaultState(blockState.baseState.withProperty(AGE, 0))
+        defaultState = blockState.baseState.withProperty(AGE, 0)
         setHarvestLevel("pickaxe", 2)
         setHardness(1.25f)
     }
@@ -79,14 +79,14 @@ class BlockOrganaFlower : BlockBase("organa_flower", Material.PLANTS, MapColor.P
         val downBlockState = worldIn.getBlockState(pos.down())
         val downBlock = downBlockState.block
 
-        if (downBlock === ModBlocks.END_MOSS_GRASS_BLOCK) {
+        if (downBlock === ModBlocks.ORGANA_BLOCK) {
             growOnlyUp = true
         } else if (downBlock === ModBlocks.ORGANA_PLANT_BLOCK) {
             var j = 1
             for (k in 0 until 4) {
                 val block1 = worldIn.getBlockState(pos.down(j + 1)).block
                 if (block1 !== ModBlocks.ORGANA_PLANT_BLOCK) {
-                    if (block1 === ModBlocks.END_MOSS_GRASS_BLOCK) flag1 = true
+                    if (block1 === ModBlocks.ORGANA_BLOCK) flag1 = true
                     break
                 }
                 ++j
@@ -156,7 +156,7 @@ class BlockOrganaFlower : BlockBase("organa_flower", Material.PLANTS, MapColor.P
         val belowState = worldIn.getBlockState(pos.down())
         val belowBlock = belowState.block
 
-        if (belowBlock === ModBlocks.ORGANA_PLANT_BLOCK || belowBlock === ModBlocks.END_MOSS_GRASS_BLOCK)
+        if (belowBlock === ModBlocks.ORGANA_PLANT_BLOCK || belowBlock === ModBlocks.ORGANA_BLOCK)
             return true
         if (belowState.material !== Material.AIR) return false
         var i = 0

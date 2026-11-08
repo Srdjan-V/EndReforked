@@ -14,9 +14,9 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import java.util.Random
 
-class BlockEndMossGrass : BlockBase("end_moss_grass", Material.GRASS, MapColor.PURPLE), IGrowable {
+class BlockOrgana : BlockBase("organa_block", Material.PLANTS, MapColor.PURPLE), IGrowable {
     init {
-        setSoundType(SoundType.GLASS)
+        setSoundType(SoundType.SLIME)
         setHarvestLevel("pickaxe", 2)
         setHardness(1F)
         setTickRandomly(true)
@@ -87,13 +87,13 @@ class BlockEndMossGrass : BlockBase("end_moss_grass", Material.GRASS, MapColor.P
         if (worldIn.getLightFromNeighbors(pos.up()) < 4 &&
             worldIn.getBlockState(pos.up()).getLightOpacity(worldIn, pos.up()) > 2
         ) {
-            worldIn.setBlockState(pos, ModBlocks.END_MOSS_BLOCK.defaultState)
+            worldIn.setBlockState(pos, ModBlocks.ORGANA_END_STONE_BLOCK.defaultState)
         }
         for (i in 0 until 4) {
             val randPos = pos.add(rand.nextInt(3) - 1, rand.nextInt(5) - 3, rand.nextInt(3) - 1)
             if (randPos.y in 0..255 && !worldIn.isBlockLoaded(randPos)) return
             val up = worldIn.getBlockState(randPos.up())
-            if (worldIn.getBlockState(randPos).block == ModBlocks.END_MOSS_BLOCK &&
+            if (worldIn.getBlockState(randPos).block == ModBlocks.ORGANA_END_STONE_BLOCK &&
                 worldIn.getLightFromNeighbors(randPos.up()) >= 4 &&
                 up.getLightOpacity(worldIn, randPos.up()) <= 2
             ) {

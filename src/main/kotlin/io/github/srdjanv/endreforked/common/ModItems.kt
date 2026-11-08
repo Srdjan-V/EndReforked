@@ -84,8 +84,8 @@ object ModItems {
     @get:JvmStatic val END_CORAL by itemBlock(ModBlocks::END_CORAL)
 
     @get:JvmStatic val ORGANA_WEED_BLOCK by itemBlock(ModBlocks::ORGANA_WEED_BLOCK)
-    @get:JvmStatic val END_MOSS_GRASS_BLOCK by itemBlock(ModBlocks::END_MOSS_GRASS_BLOCK)
-    @get:JvmStatic val END_MOSS_BLOCK by itemBlock(ModBlocks::END_MOSS_BLOCK)
+    @get:JvmStatic val ORGANA_BLOCK by itemBlock(ModBlocks::ORGANA_BLOCK)
+    @get:JvmStatic val ORGANA_END_STONE_BLOCK by itemBlock(ModBlocks::ORGANA_END_STONE_BLOCK)
 
     @get:JvmStatic val ORGANA_FLOWER_SEED by ITEMS.register(::ItemOrganaFlowerSeed)
     @get:JvmStatic val ORGANA_PLANT_BLOCK by itemBlock(ModBlocks::ORGANA_PLANT_BLOCK)

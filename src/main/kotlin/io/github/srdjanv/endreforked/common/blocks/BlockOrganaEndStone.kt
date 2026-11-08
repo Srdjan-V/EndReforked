@@ -15,7 +15,7 @@ import net.minecraft.world.World
 import java.util.Optional
 import java.util.Random
 
-class BlockEndMoss : BlockBase("end_moss", Material.ROCK, MapColor.PURPLE), EntropyDataProvider {
+class BlockOrganaEndStone : BlockBase("organa_end_stone_block", Material.ROCK, MapColor.PURPLE), EntropyDataProvider {
     init {
         setSoundType(SoundType.STONE)
         setHarvestLevel("pickaxe", 3)
@@ -23,7 +23,7 @@ class BlockEndMoss : BlockBase("end_moss", Material.ROCK, MapColor.PURPLE), Entr
         setTickRandomly(true)
     }
 
-    override fun getItemDropped(state: IBlockState, rand: Random, fortune: Int): Item = ModItems.END_MOSS_BLOCK
+    override fun getItemDropped(state: IBlockState, rand: Random, fortune: Int): Item = ModItems.ORGANA_END_STONE_BLOCK
 
     override val entropyRadius: Optional<EntropyRadius> = Optional.of(EntropyRadius.ONE)
 

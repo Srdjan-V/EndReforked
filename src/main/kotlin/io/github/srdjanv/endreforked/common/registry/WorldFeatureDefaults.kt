@@ -68,7 +68,7 @@ object WorldFeatureDefaults {
     private fun generic(): List<WorldFeature> {
         val organa = ModBioms.ORGANA_BIOME.registryName!!
         val endStone = Blocks.END_STONE.defaultState
-        val moss = ModBlocks.END_MOSS_BLOCK.defaultState
+        val moss = ModBlocks.ORGANA_END_STONE_BLOCK.defaultState
         val magma = ModBlocks.END_MAGMA_BLOCK.defaultState
         val fluidMagma = ModBlocks.FLUID_END_MAGMA_BLOCK.defaultState
         fun generic(name: String, feature: Feature?, dims: Condition<Int> = Condition(), biomes: Condition<ResourceLocation> = Condition()) =
@@ -84,7 +84,7 @@ object WorldFeatureDefaults {
             generic("entropy_end_stone", Feature.Ore(ModBlocks.ENTROPY_END_STONE.defaultState, endStone),
                 dims(END to params(10, 30, rarity = 25, amount = 30))),
             generic("end_moss_patch",
-                Feature.RadiusSurface(endStone, ModBlocks.END_MOSS_GRASS_BLOCK.defaultState, ModBlocks.ORGANA_WEED_BLOCK.defaultState),
+                Feature.RadiusSurface(endStone, ModBlocks.ORGANA_BLOCK.defaultState, ModBlocks.ORGANA_WEED_BLOCK.defaultState),
                 dims(END to params(50, 90, rarity = 25, radius = 4))),
             generic("end_coral", Feature.Bush(ModBlocks.END_CORAL.defaultState),
                 dims(END to params(50, 90, rarity = 0, amount = 20))),
@@ -94,7 +94,7 @@ object WorldFeatureDefaults {
     }
 
     private fun structures(): List<WorldFeature> {
-        val grass = ModBlocks.END_MOSS_GRASS_BLOCK.defaultState
+        val grass = ModBlocks.ORGANA_BLOCK.defaultState
         val islandBiomes = Condition.of(mc("sky"), mc("plains"), mc("desert"), mc("ocean"), mc("deep_ocean"), mc("savanna"))
         fun grid(name: String, spacing: Int, separation: Int) = Spacing(name.hashCode(), spacing, separation)
         fun template(name: String, structure: String, params: GenParams?, biomes: Condition<ResourceLocation>,
