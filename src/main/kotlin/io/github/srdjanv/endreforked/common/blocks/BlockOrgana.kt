@@ -12,9 +12,10 @@ import net.minecraft.entity.EntityLivingBase
 import net.minecraft.init.Blocks
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
+import net.minecraft.world.IBlockAccess
 import java.util.Random
 
-class BlockOrgana : BlockBase("organa_block", Material.PLANTS, MapColor.PURPLE), IGrowable {
+class BlockOrgana : BlockBase("organa_block", Material.ROCK, MapColor.PURPLE), IGrowable {
     init {
         setSoundType(SoundType.SLIME)
         setHarvestLevel("pickaxe", 2)

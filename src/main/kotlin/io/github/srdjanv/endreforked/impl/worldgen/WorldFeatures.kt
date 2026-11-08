@@ -39,8 +39,8 @@ class WorldFeatures(entries: Collection<WorldFeature>) : FrozenRegistry<WorldFea
             if (p.rarity < 0) return "rarity must not be negative"
             p.spacing?.let { if (it.separation < 0 || it.spacing <= it.separation) return "needs 0 <= separation < spacing" }
             return when (feature) {
-                is Feature.Ore, is Feature.Bush -> if (p.amount < 1) "amount must be at least 1" else null
-                is Feature.Sphere, is Feature.RadiusSurface -> if (p.radius < 1) "radius must be at least 1" else null
+                is Feature.Ore, is Feature.Bush, Feature.FlowerGeneration -> if (p.amount < 1) "amount must be at least 1" else null
+                is Feature.Sphere, is Feature.RadiusSurface, is Feature.Lake -> if (p.radius < 1) "radius must be at least 1" else null
                 is Feature.FilledSphere -> if (p.radius < 1 || p.fillRadius < 0) "needs radius >= 1 and fillRadius >= 0" else null
                 is Feature.Template -> null
             }
@@ -54,7 +54,9 @@ class WorldFeatures(entries: Collection<WorldFeature>) : FrozenRegistry<WorldFea
                 is Feature.FilledSphere ->
                     if (feature.replace.isEmpty()) "replace must not be empty" else if (bad(feature.outerChance)) "a chance is not in 0..100" else null
                 is Feature.RadiusSurface -> if (bad(feature.chance, feature.plantChance, feature.growChance)) "a chance is not in 0..100" else null
+                is Feature.Lake -> if (feature.depth < 1) "lake depth must be at least 1" else null
                 is Feature.Bush -> if (feature.block.block !is BlockBush) "${feature.block.block.registryName} is not a bush" else null
+                Feature.FlowerGeneration -> null
                 is Feature.Template ->
                     if (feature.locator.isEmpty()) "the locator has no steps"
                     else if (feature.flowers.any { it.locator.isEmpty() || bad(it.chance) }) "a flower has no steps or a chance outside 0..100"

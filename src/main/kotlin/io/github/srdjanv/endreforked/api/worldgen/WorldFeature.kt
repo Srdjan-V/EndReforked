@@ -96,8 +96,20 @@ sealed interface Feature {
         val growChance: Int = 6,
     ) : Feature
 
+    /** A shallow fluid lake carved into the top surface of matching blocks. */
+    data class Lake(
+        val replace: List<IBlockState>,
+        val top: IBlockState,
+        val shell: IBlockState,
+        val fluid: IBlockState,
+        val depth: Int = 2,
+    ) : Feature
+
     /** `amount` plants of [block] (a `BlockBush`) on the surface in the area. With [randomAge] a crop starts with a random age below its maximum. */
     data class Bush(val block: IBlockState, val randomAge: Boolean = false) : Feature
+
+    /** Organa flower growth, resolved after terrain-changing features. */
+    data object FlowerGeneration : Feature
 
     /** A structure template of the structure folder, placed in one chunk. After it, the [flowers] try to grow. */
     data class Template(

@@ -15,6 +15,8 @@ import net.minecraft.block.BlockBush
 import net.minecraft.block.IGrowable
 import net.minecraft.block.properties.PropertyInteger
 import net.minecraft.block.state.IBlockState
+import net.minecraft.init.Blocks.AIR
+import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.ChunkPos
 import net.minecraft.world.World
@@ -30,6 +32,7 @@ import net.minecraftforge.fml.common.IWorldGenerator
 import net.minecraftforge.fml.common.registry.GameRegistry
 import org.apache.logging.log4j.Logger
 import java.util.Random
+import kotlin.math.*
 
 /** Registers the world generator and the End biomes. Call it once in the init phase, after the registries are built. */
 object WorldGen {
@@ -74,7 +77,9 @@ class FeatureGenerator(private val registry: () -> WorldFeatures, private val lo
             is Feature.Sphere -> sphere(world, rand, ft, p, origin)
             is Feature.FilledSphere -> filledSphere(world, rand, ft, p, origin)
             is Feature.RadiusSurface -> radiusSurface(world, rand, ft, p, origin)
+            is Feature.Lake -> lake(world, rand, ft, p, origin)
             is Feature.Bush -> bush(world, rand, ft, p, origin)
+            Feature.FlowerGeneration -> organaFlowers(world, rand, p, origin)
             is Feature.Template -> template(world, rand, f, ft, p, origin)
         }
     }
@@ -122,9 +127,95 @@ class FeatureGenerator(private val registry: () -> WorldFeatures, private val lo
             if (rand.nextInt(100) >= ft.chance) continue
             world.setBlockState(pos, ft.ground)
             if (rand.nextInt(100) >= ft.plantChance) continue
+            if (ft.plant.block is BlockBush) {
+                if (!ft.plant.block.canPlaceBlockAt(world, pos.up())) continue
+            }
             world.setBlockState(pos.up(), ft.plant)
             if (rand.nextInt(100) >= ft.growChance) continue
             (ft.ground.block as? IGrowable)?.grow(world, rand, pos, ft.ground)
+        }
+    }
+
+    private fun lake(world: WorldServer, rand: Random, ft: Feature.Lake, p: GenParams, origin: BlockPos) {
+        val surface = locate(world, rand, p, origin, SURFACE) ?: return
+        val radius = p.radius
+        val sy = surface.y
+        val reach = radius + 2
+        val maxStep = 3
+        val air = AIR.defaultState
+
+        class Col(val x: Int, val z: Int, val ground: Int, val depth: Int)
+
+        // Pass 1: read only. Nothing is written unless the footprint is usable.
+        val cols = ArrayList<Col>()
+        val probe = BlockPos.MutableBlockPos()
+        for (x in surface.x - reach..surface.x + reach) for (z in surface.z - reach..surface.z + reach) {
+            val dx = x - surface.x
+            val dz = z - surface.z
+            val edge = radius + Math.floorMod(x * 73428767 + z * 912931, 5) - 2
+            if (edge <= 0) continue
+            val d2 = dx * dx + dz * dz
+            if (d2 > edge * edge) continue
+            val t2 = d2.toDouble() / (edge * edge)
+
+            // Highest terrain block near the water level. Unlike getTopSolidOrLiquidBlock
+            // this ignores plants and chorus trunks.
+            var ground = Int.MIN_VALUE
+            for (y in sy + maxStep + 1 downTo sy - maxStep) {
+                if (world.getBlockState(probe.setPos(x, y, z)) in ft.replace) { ground = y; break }
+            }
+            if (ground == Int.MIN_VALUE || ground > sy + maxStep) {
+                if (t2 > 0.6) continue   // outer rim: leave it as natural bank
+                return                   // inner area: cliff or hole, don't generate here
+            }
+            cols += Col(x, z, ground, max(1, (ft.depth * (1.0 - t2)).roundToInt()))
+        }
+        if (cols.isEmpty()) return
+
+        // Pass 2: level every column to sy and flood it.
+        val flooded = HashSet<BlockPos>()
+        for (c in cols) {
+            // Cut everything above the water level, including the plants on top.
+            for (y in sy + 1..c.ground + 2) world.setBlockState(BlockPos(c.x, y, c.z), air, 2)
+            // Low ground: build a bed up to the water level.
+            for (y in c.ground + 1 until sy) world.setBlockState(BlockPos(c.x, y, c.z), ft.shell, 2)
+
+            // The surface layer is always fluid, whatever block was there before.
+            world.setBlockState(BlockPos(c.x, sy, c.z), ft.fluid, 2)
+            if (c.ground >= sy) {
+                for (d in 1 until c.depth) {
+                    val pos = BlockPos(c.x, sy - d, c.z)
+                    if (world.getBlockState(pos) !in ft.replace) break
+                    world.setBlockState(pos, ft.shell, 2)
+                }
+            }
+            flooded += BlockPos(c.x, sy, c.z)
+        }
+
+        // Pass 3: seal. Each open side gets one top block, with shell underneath.
+        for (pos in flooded) {
+            for (face in EnumFacing.HORIZONTALS) {
+                val side = pos.offset(face)
+                if (side in flooded) continue
+                val mat = world.getBlockState(side).material
+                if (!mat.isReplaceable || mat.isLiquid) continue   // solid already, or another liquid
+
+                // Support column. A natural top block directly below becomes shell,
+                // so the new cap is never stacked on another top block.
+                var y = sy - 1
+                while (y > sy - 6) {
+                    val b = BlockPos(side.x, y, side.z)
+                    val bs = world.getBlockState(b)
+                    if (bs.material.isReplaceable) {
+                        world.setBlockState(b, ft.shell, 2)
+                    } else {
+                        if (bs.block === ft.top.block) world.setBlockState(b, ft.shell, 2)
+                        break
+                    }
+                    y--
+                }
+                world.setBlockState(side, ft.top, 2)
+            }
         }
     }
 
@@ -141,13 +232,23 @@ class FeatureGenerator(private val registry: () -> WorldFeatures, private val lo
         for (i in 0 until p.amount * 2) {
             if (count > p.amount) break
             val pos = start.add(rand.nextInt(8) - rand.nextInt(8), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(8) - rand.nextInt(8))
-            if (world.isAirBlock(pos) && pos.y < world.height - 1) {
+            if (world.isAirBlock(pos) && pos.y < world.height - 1 && block.canBlockStay(world, pos, ft.block)) {
                 val state = if (ft.randomAge) withRandomAge(ft.block, rand) else ft.block
                 if (block.canBlockStay(world, pos, state)) {
                     world.setBlockState(pos, state, 2)
                     count++
                 }
             }
+        }
+    }
+
+    private fun organaFlowers(world: WorldServer, rand: Random, p: GenParams, origin: BlockPos) {
+        repeat(p.amount) {
+            val at = locate(world, rand, p, origin, SURFACE) ?: return@repeat
+            if (world.getBlockState(at) != io.github.srdjanv.endreforked.common.ModBlocks.ORGANA_BLOCK.defaultState ||
+                !world.isAirBlock(at.up())
+            ) return@repeat
+            BlockOrganaFlower.generatePlant(world, at.up(), rand, 8)
         }
     }
 

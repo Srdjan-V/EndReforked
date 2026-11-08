@@ -15,6 +15,7 @@ import net.minecraft.init.MobEffects
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.potion.PotionEffect
+import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumParticleTypes
 import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
@@ -28,6 +29,28 @@ class BlockOrganaWeed : BaseBlockBush("organa_weed", Material.VINE, { setOf(ModB
 
     init {
         tickRandomly = true
+    }
+
+    override fun getStateForPlacement(
+        p_180642_1_: World?,
+        p_180642_2_: BlockPos?,
+        p_180642_3_: EnumFacing?,
+        p_180642_4_: Float,
+        p_180642_5_: Float,
+        p_180642_6_: Float,
+        p_180642_7_: Int,
+        p_180642_8_: EntityLivingBase?
+    ): IBlockState? {
+        return super.getStateForPlacement(
+            p_180642_1_,
+            p_180642_2_,
+            p_180642_3_,
+            p_180642_4_,
+            p_180642_5_,
+            p_180642_6_,
+            p_180642_7_,
+            p_180642_8_
+        )
     }
 
     override fun tickRate(world: World): Int {

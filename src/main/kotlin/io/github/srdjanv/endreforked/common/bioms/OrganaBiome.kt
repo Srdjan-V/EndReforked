@@ -56,40 +56,9 @@ class OrganaBiome : BiomeEnd(BiomeProperties("Organa").setRainDisabled()), IEndB
         )
     }
 
-    // todo gen mushrooms
     private class Decorator : BiomeDecorator() {
         override fun genDecorations(biomeIn: Biome, world: World, rand: Random) {
             generateOres(world, rand)
-            val pos = chunkPos
-
-            // chunkPos is player pos
-            val cx = (pos.x shr 4).toLong()
-            val cz = (pos.z shr 4).toLong()
-            if (cx * cx + cz * cz > 4096L) {
-                repeat(rand.nextInt(5)) {
-                    val xOffset = rand.nextInt(16) + 8
-                    val zOffset = rand.nextInt(16) + 8
-                    val y = world.getHeight(pos.add(xOffset, 0, zOffset)).y
-
-                    if (y > 0 && world.isAirBlock(pos.add(xOffset, y, zOffset))) {
-                        val ground = world.getBlockState(pos.add(xOffset, y - 1, zOffset))
-                        if (ground == ModBlocks.ORGANA_BLOCK.defaultState)
-                            BlockOrganaFlower.generatePlant(world, pos.add(xOffset, y, zOffset), rand, 8)
-                    }
-                }
-            }
-
-            val xOffset = rand.nextInt(16) + 8
-            val zOffset = rand.nextInt(16) + 8
-            val y = world.getHeight(pos.add(xOffset, 0, zOffset)).y
-
-            if (y > 0 && world.isAirBlock(pos.add(xOffset, y, zOffset))) {
-                val currentPos = pos.add(xOffset, y - 1, zOffset)
-                val currentBlockState = world.getBlockState(currentPos)
-                val ground = currentBlockState.block
-                if (ground is BlockOrgana && ground.canGrow(world, currentPos, currentBlockState, false))
-                    ground.grow(world, rand, currentPos, currentBlockState)
-            }
         }
     }
 }
