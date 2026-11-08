@@ -79,6 +79,7 @@ tile.organa_flower_stem.name=Organa Flower Stem
 tile.organa_flower_stem_dead.name=Dead Organa Flower Stem
 tile.organa_plant.name=Organa Plant
 tile.organa_weed.name=Organa Weed
+tile.organa_spore.name=Organa Spore
 tile.small_entropy_battery.name=Small Entropy Battery
 tile.tungsten_end_ore.name=Tungsten End Ore
 tile.end_magma.name=Liquid End Magma

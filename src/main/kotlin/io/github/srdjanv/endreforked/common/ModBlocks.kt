@@ -52,6 +52,7 @@ object ModBlocks {
 
     // todo fixup
     @get:JvmStatic val ORGANA_WEED_BLOCK by BLOCKS.register(::BlockOrganaWeed)
+    @get:JvmStatic val ORGANA_SPORE_BLOCK by BLOCKS.register(::BlockOrganaSpore)
 
     // fluids
     @get:JvmStatic val FLUID_END_MAGMA_BLOCK by BLOCKS.register(::BlockFluidEndMagma)
