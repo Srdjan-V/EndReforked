@@ -1,6 +1,6 @@
 {
     "parent": "block/cube_all",
 	"textures": {
-	    "all": "endreborn:blocks/end_magma_block"
+	    "all": "endreborn:blocks/organa_liquid"
     }
 }

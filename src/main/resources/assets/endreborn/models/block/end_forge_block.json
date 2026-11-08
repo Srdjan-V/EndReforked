@@ -2,9 +2,9 @@
         "parent": "block/cube_all",
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "endreborn:blocks/end_magma_block",
+		"0": "endreborn:blocks/organa_liquid",
 		"1": "endreborn:blocks/end_forge_block",
-		"particle": "endreborn:blocks/end_magma_block"
+		"particle": "endreborn:blocks/organa_liquid"
 	},
 	"elements": [
 		{

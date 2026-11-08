@@ -44,7 +44,10 @@ object Fixer : Initializer {
         "block_phantom" to "phantom_block",
         "block_lormyte_crystal" to "lormyte_crystal_block",
         "block_decorative_lormyte" to "decorative_lormyte_block",
-        "block_end_magma" to "end_magma_block",
+        "block_end_magma" to "organa_liquid",
+        "end_magma_block" to "organa_liquid",
+        "end_moss_grass" to "organa_block",
+        "end_moss" to "organa_end_stone_block",
         "block_rune" to "rune_block",
         "ogana_weed" to "organa_weed",
     )
