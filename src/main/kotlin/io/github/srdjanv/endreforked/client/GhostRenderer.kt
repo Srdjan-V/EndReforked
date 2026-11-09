@@ -25,6 +25,7 @@ import org.lwjgl.opengl.GL11
 object GhostRenderer {
     private const val RANGE = 32.0
     private const val ALPHA = 0x80
+    private const val SCALE = 0.8
 
     @SubscribeEvent
     fun onRender(event: RenderWorldLastEvent) {
@@ -57,6 +58,9 @@ object GhostRenderer {
             if (world.getBlockState(pos) == ghost) continue // already built
             GlStateManager.pushMatrix()
             GlStateManager.translate(pos.x - camX, pos.y - camY, pos.z - camZ)
+            GlStateManager.translate(0.5, 0.5, 0.5)
+            GlStateManager.scale(SCALE, SCALE, SCALE)
+            GlStateManager.translate(-0.5, -0.5, -0.5)
             val buffer = Tessellator.getInstance().buffer
             buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM)
             val model = mc.blockRendererDispatcher.getModelForState(ghost)
