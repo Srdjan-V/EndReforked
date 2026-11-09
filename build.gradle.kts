@@ -58,6 +58,15 @@ dependencies {
     compileOnly("org.jetbrains:annotations:24.1.0")
 
     runtimeOnly(cleanroom.deobf("maven.modrinth:forgelin-continuous:2.4.20.0"))
+    // Fugue patches old mods for new Java, for example the CodeChickenLib removeFinal stack overflow on the client
+    runtimeOnly(cleanroom.deobf("maven.modrinth:fugue:0.25.5"))
+    // Test mods for the dev client: machines, power and pipes to test the game mechanics
+    runtimeOnly(cleanroom.deobf("curse.maven:actually-additions-228404:3117927"))
+    runtimeOnly(cleanroom.deobf("curse.maven:thermal-expansion-69163:2926431"))
+    runtimeOnly(cleanroom.deobf("curse.maven:thermal-foundation-222880:2926428"))
+    runtimeOnly(cleanroom.deobf("curse.maven:cofh-core-69162:2920433"))
+    runtimeOnly(cleanroom.deobf("curse.maven:cofh-world-271384:2920434"))
+    runtimeOnly(cleanroom.deobf("curse.maven:redstone-flux-270789:2920436"))
 
 
     implementation(cleanroom.userdev(cleanroomVersion))
