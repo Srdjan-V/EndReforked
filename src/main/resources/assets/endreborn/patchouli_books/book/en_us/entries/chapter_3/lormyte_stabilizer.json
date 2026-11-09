@@ -1,0 +1,33 @@
+{
+    "name": "Lormyte Stabilizer",
+    "icon": "endreborn:lormyte_stabilizer",
+    "category": "chapter_3",
+    "pages": [
+        {
+            "type": "text",
+            "text": "A stabilizer keeps the chunk entropy below the critical level (the charged cap, 80 %). Inducers waste the extra. This makes the best output (charged) possible at a base.$(br2)Tier I: its own chunk. Tier II: 3x3 chunks. Tier III: 5x5 chunks."
+        },
+        {
+            "type": "spotlight",
+            "item": "endreborn:lormyte_stabilizer",
+            "link_recipe": true,
+            "text": "Tier I."
+        },
+        {
+            "type": "spotlight",
+            "item": "endreborn:lormyte_stabilizer:1",
+            "link_recipe": true,
+            "text": "Tier II needs tier I in the centre."
+        },
+        {
+            "type": "spotlight",
+            "item": "endreborn:lormyte_stabilizer:2",
+            "link_recipe": true,
+            "text": "Tier III needs tier II in the centre."
+        },
+        {
+            "type": "text",
+            "text": "A redstone signal turns the crystal off. Then the chunk can go critical on purpose. Mine it to get it back with its tier.$(br2)In the Entropy biome it does nothing."
+        }
+    ]
+}

@@ -42,6 +42,7 @@ class ClientProxy(side: Side, registrySync: RegistrySync, val clientRegistries: 
         MinecraftForge.EVENT_BUS.register(ParticleHandler::class.java)
         MinecraftForge.EVENT_BUS.register(TextureHandler::class.java)
         MinecraftForge.EVENT_BUS.register(EntropyHud(chunkEntropy))
+        MinecraftForge.EVENT_BUS.register(GhostRenderer)
     }
 
     override fun registerItemRenderer(item: Item, meta: Int, id: String) =

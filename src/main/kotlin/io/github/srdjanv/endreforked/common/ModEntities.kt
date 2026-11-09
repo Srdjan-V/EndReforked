@@ -32,11 +32,7 @@ object ModEntities : Initializer {
     private val defs = listOf(
         Def(
             "entropy_blaze", EntityEntropyBlaze::class.java, 0, 64, 3, false, 9654933 to 11237052,
-            listOf(
-                Spawn({ Biomes.SKY }, 1, 0, 2),
-                Spawn({ ModBioms.ORGANA_BIOME }, 3, 2, 4),
-                Spawn({ ModBioms.ENTROPY_BIOME }, 2, 2, 4),
-            )
+            listOf(Spawn({ ModBioms.ENTROPY_BIOME }, 2, 2, 4)),
         ),
         Def("entropy_fireball", EntityEntropyFireball::class.java, 1, 30, 1, true, null, emptyList()),
         Def(

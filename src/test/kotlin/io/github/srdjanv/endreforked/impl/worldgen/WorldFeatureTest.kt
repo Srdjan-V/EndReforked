@@ -227,4 +227,18 @@ class WorldFeatureTest {
         }
         assertTrue(chosen(1) != chosen(2))
     }
+
+    @Test
+    fun aGeodeHasAShellALiningAndAHollowCentre() {
+        // radius 5: the shell is farther than 4 blocks from the centre, the lining farther than 3, the rest is air
+        assertEquals(GeodeLayer.AIR, geodeLayer(0.0, 5))
+        assertEquals(GeodeLayer.AIR, geodeLayer(3.0, 5))
+        assertEquals(GeodeLayer.LINING, geodeLayer(3.01, 5))
+        assertEquals(GeodeLayer.LINING, geodeLayer(4.0, 5))
+        assertEquals(GeodeLayer.SHELL, geodeLayer(4.01, 5))
+        assertEquals(GeodeLayer.SHELL, geodeLayer(5.0, 5))
+        // the layers keep their width for any radius
+        assertEquals(GeodeLayer.AIR, geodeLayer(5.0, 8))
+        assertEquals(GeodeLayer.SHELL, geodeLayer(7.5, 8))
+    }
 }

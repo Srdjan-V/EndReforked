@@ -31,13 +31,10 @@ class EntropyCellTest {
     }
 
     @Test
-    fun fillAndEmptyMath() {
+    fun fillMath() {
         assertEquals(300, EntropyCell.fill(0, 1000, 300))
         assertEquals(100, EntropyCell.fill(900, 1000, 500))
         assertEquals(0, EntropyCell.fill(1000, 1000, 500))
-        assertEquals(50, EntropyCell.empty(200, 50))
-        assertEquals(200, EntropyCell.empty(200, 900))
-        assertEquals(0, EntropyCell.empty(0, 900))
     }
 
     @Test

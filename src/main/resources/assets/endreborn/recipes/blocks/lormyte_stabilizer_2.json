@@ -1,0 +1,26 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "BIB",
+        " S ",
+        "BIB"
+    ],
+    "key": {
+        "B": {
+            "item": "endreborn:lormyte_crystal_block"
+        },
+        "I": {
+            "type": "forge:ore_dict",
+            "ore": "ingotInfused"
+        },
+        "S": {
+            "item": "endreborn:lormyte_stabilizer",
+            "data": 0
+        }
+    },
+    "result": {
+        "item": "endreborn:lormyte_stabilizer",
+        "count": 1,
+        "data": 1
+    }
+}

@@ -1,0 +1,26 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "TBT",
+        "BIB",
+        "TBT"
+    ],
+    "key": {
+        "T": {
+            "type": "forge:ore_dict",
+            "ore": "ingotTungsten"
+        },
+        "B": {
+            "item": "endreborn:lormyte_crystal_block"
+        },
+        "I": {
+            "type": "forge:ore_dict",
+            "ore": "ingotInfused"
+        }
+    },
+    "result": {
+        "item": "endreborn:lormyte_stabilizer",
+        "count": 1,
+        "data": 0
+    }
+}

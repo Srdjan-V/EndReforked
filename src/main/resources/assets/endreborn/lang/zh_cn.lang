@@ -3,13 +3,10 @@
 # Items -
 item.item_ingot_endorium.name=末影锭
 item.tungsten_ingot.name=钨锭
-item.item_shard_obsidian.name=黑曜石碎片
-item.item_raw_endorium.name=生末影锭
 item.item_end_essence.name=末地精华
 item.item_end_shard.name=末影碎片
 item.item_end_rune.name=末影符文
 item.item_lormyte_crystal.name=洛米特水晶
-item.item_ender_string.name=生命之线
 item.dragonite_tea.name=龙梅茶
 item.item_angel_feather.name=天使之羽
 item.dragon_scales.name=龙鳞
@@ -37,28 +34,23 @@ tile.end_stone_smooth_stairs.name=平滑末地石台阶
 tile.end_bricks_wall.name=末地石墙
 tile.end_stone_smooth_wall.name=平滑末地石墙
 tile.purpur_wall.name=紫珀墙
-tile.organa_liquid.name=有机液体
 tile.end_forge_block.name=虚空冶炼炉
 tile.entropy_crop.name=熵碎片簇
 tile.materializer_block.name=物质实化机
 
 # Tools -
-item.entropy_wand.name=熵之杖
 
 #Armors
 
 #Food
 item.ender_flesh.name=末影腐肉
 item.dragonite_berries.name=龙梅浆果
-item.chorus_soup.name=紫颂汤
 
 #Entities
 entity.entropy_blaze.name=熵烈焰人
 entity.watcher.name=观察者
 entity.chronologist.name=年代学者
-entity.Villager.endreborn.nether_explorer.name=下界探险家
 entity.Villager.endreborn.end_explorer.name=末地探险家
-entity.Villager.endreborn.overworld_explorer.name=主世界探险家
 
 #Compat
 
@@ -74,8 +66,23 @@ enchantment.ender_core=末影之心
 
 #Other
 tile.block_forge.tooltip=会烧制在其上方的矿物
-tile.wand.tooltip=将东西转化为它们被破坏时的样子
 tile.catalyst.tooltip=就像触媒
 container.entropy_user=物质实化机
 
 #Advancements
+tile.ichor.name=Ichor
+fluid.ichor=Ichor
+tile.entropy_rift.name=Entropy Rift
+endreborn.jei.min_level=Needs a %s chunk
+tile.materializer.mode.auto=Mode: Auto
+tile.materializer.mode.manual=Mode: Manual
+tile.materializer.start=Start
+tile.materializer.ghost.on=Ghost: On
+tile.materializer.ghost.off=Ghost: Off
+tile.status.gui.waiting_start=Waiting for start
+tile.lormyte_stabilizer.name=Lormyte Stabilizer
+tile.lormyte_stabilizer.tier_1.name=Lormyte Stabilizer II
+tile.lormyte_stabilizer.tier_2.name=Lormyte Stabilizer III
+modifier.endreborn_ender_pocket.name=Ender Pocket
+modifier.endreborn_ender_pocket.desc=Drops and XP go to your inventory, then to your ender chest (or the ender chest of your Ender Pouch)
+tile.organa_sensor_soil.name=Organa Sensor Soil

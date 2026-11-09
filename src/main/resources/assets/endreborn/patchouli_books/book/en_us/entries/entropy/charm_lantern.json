@@ -1,0 +1,19 @@
+{
+    "name": "Lormyte Charm and Entropy Lantern",
+    "icon": "endreborn:lormyte_charm",
+    "category": "entropy",
+    "pages": [
+        {
+            "type": "spotlight",
+            "item": "endreborn:lormyte_charm",
+            "link_recipe": true,
+            "text": "The charm shows the entropy level of your chunk on the screen. It works from the inventory, and from a Baubles slot."
+        },
+        {
+            "type": "spotlight",
+            "item": "endreborn:entropy_lantern_block",
+            "link_recipe": true,
+            "text": "The light level of the lantern shows the entropy level of its chunk."
+        }
+    ]
+}

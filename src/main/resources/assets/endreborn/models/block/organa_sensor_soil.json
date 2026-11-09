@@ -1,0 +1,8 @@
+{
+    "parent": "block/cube_bottom_top",
+    "textures": {
+        "bottom": "endreborn:blocks/end_moss",
+        "top": "endreborn:blocks/organa_sensor_soil",
+        "side": "endreborn:blocks/end_moss_grass_side"
+    }
+}

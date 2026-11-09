@@ -1,0 +1,13 @@
+{
+    "name": "Small Entropy Battery",
+    "icon": "endreborn:small_entropy_battery",
+    "category": "chapter_3",
+    "pages": [
+        {
+            "type": "spotlight",
+            "item": "endreborn:small_entropy_battery",
+            "link_recipe": true,
+            "text": "The battery only raises the capacity of its own chunk. It cannot move entropy, and it always drops empty.$(br2)If you break a filled battery, its entropy is released as one critical event at its position. A stabilizer with Organa fluid can absorb it."
+        }
+    ]
+}

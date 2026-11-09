@@ -1,0 +1,15 @@
+{
+    "name": "Organa Absorption",
+    "icon": "endreborn:lormyte_stabilizer",
+    "category": "chapter_3",
+    "pages": [
+        {
+            "type": "text",
+            "text": "A stabilizer that a redstone signal turned off can take the damage of critical entropy. Put Organa fluid source blocks next to it.$(br2)When an overload or a critical event happens in its area, the crystal absorbs it. The effect does not happen. One Organa fluid source next to the crystal is used up."
+        },
+        {
+            "type": "text",
+            "text": "Without Organa fluid next to the crystal, the effect happens as normal. An active stabilizer needs no absorption. It does not work in the Entropy biome."
+        }
+    ]
+}

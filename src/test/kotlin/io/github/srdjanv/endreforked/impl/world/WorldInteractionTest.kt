@@ -1,13 +1,13 @@
 package io.github.srdjanv.endreforked.impl.world
 
 import io.github.srdjanv.endreforked.api.world.BlockMatch
+import io.github.srdjanv.endreforked.api.world.CorruptionConversion
 import io.github.srdjanv.endreforked.api.world.EntityResult
 import io.github.srdjanv.endreforked.api.world.FluidBlockInteraction
 import io.github.srdjanv.endreforked.api.world.FluidEntityInteraction
 import io.github.srdjanv.endreforked.api.world.ITEM_ENTITY
-import io.github.srdjanv.endreforked.api.world.WandConversion
-import io.github.srdjanv.endreforked.api.world.WorldEffect
 import io.github.srdjanv.endreforked.wire.s2c.RegistrySnapshot
+import net.minecraft.block.BlockLiquid
 import net.minecraft.block.BlockStone
 import net.minecraft.init.Blocks
 import net.minecraft.init.Bootstrap
@@ -31,10 +31,8 @@ class WorldInteractionTest {
     private val granite = BlockStone.EnumType.GRANITE
     private val entropy = FluidRegistry.LAVA // any registered fluid
 
-    private val stoneToCobble = WandConversion(
-        id("a"), stone(BlockStone.EnumType.STONE), Blocks.COBBLESTONE.defaultState, effects = listOf(WorldEffect.FLINT_SOUND),
-    )
-    private val graniteToDirt = WandConversion(id("b"), stone(granite), Blocks.DIRT.defaultState, itemDamage = 7, priority = 1)
+    private val stoneToCobble = CorruptionConversion(id("a"), stone(BlockStone.EnumType.STONE), Blocks.COBBLESTONE.defaultState)
+    private val graniteToDirt = CorruptionConversion(id("b"), stone(granite), Blocks.DIRT.defaultState, priority = 1)
     private val endStone = FluidBlockInteraction(id("c"), entropy, BlockMatch(Blocks.END_STONE), Blocks.DIRT.defaultState, chance = 5)
     private val chorus = FluidEntityInteraction(
         id("d"), entropy, ITEM_ENTITY, ItemStack(Blocks.CHORUS_FLOWER, 4),
@@ -60,10 +58,20 @@ class WorldInteractionTest {
     }
 
     @Test
+    fun aMatchOnTheFluidLevelAcceptsOnlySources() {
+        val level = BlockLiquid.LEVEL
+        val sourceOnly = BlockMatch(Blocks.WATER, mapOf(level to 0))
+        assertTrue(sourceOnly.matches(Blocks.WATER.defaultState))
+        assertFalse(sourceOnly.matches(Blocks.WATER.defaultState.withProperty(level, 3)))
+        val soil = FluidBlockInteraction(id("soil"), entropy, sourceOnly, Blocks.DIRT.defaultState)
+        assertEquals(listOf(soil), FluidBlockInteractions(listOf(soil)).find(entropy, Blocks.WATER))
+    }
+
+    @Test
     fun lookupsAreOrderedByPriorityThenId() {
-        val wand = WandConversions(listOf(stoneToCobble, graniteToDirt, stoneToCobble.copy(id = id("0"))))
-        assertEquals(listOf(id("b"), id("0"), id("a")), wand.forBlock(Blocks.STONE).map { it.id })
-        assertEquals(emptyList<WandConversion>(), wand.forBlock(Blocks.DIRT))
+        val corruption = CorruptionConversions(listOf(stoneToCobble, graniteToDirt, stoneToCobble.copy(id = id("0"))))
+        assertEquals(listOf(id("b"), id("0"), id("a")), corruption.forBlock(Blocks.STONE).map { it.id })
+        assertEquals(emptyList<CorruptionConversion>(), corruption.forBlock(Blocks.DIRT))
         val blocks = FluidBlockInteractions(listOf(endStone))
         assertEquals(listOf(endStone), blocks.find(entropy, Blocks.END_STONE))
         assertEquals(emptyList<FluidBlockInteraction>(), blocks.find(FluidRegistry.WATER, Blocks.END_STONE))
@@ -77,10 +85,6 @@ class WorldInteractionTest {
 
     @Test
     fun wireRoundTrip() {
-        val wand = WandConversions(listOf(stoneToCobble, graniteToDirt)).toSnapshot()
-        val wandBack = roundTrip(wand).toWandConversions()!!
-        assertEquals(wand, WandConversions(wandBack).toSnapshot())
-        assertEquals(listOf(stoneToCobble, graniteToDirt), wandBack) // no stacks in it
         val blocks = FluidBlockInteractions(listOf(endStone)).toSnapshot()
         assertEquals(listOf(endStone), roundTrip(blocks).toFluidBlockInteractions())
         val entities = FluidEntityInteractions(listOf(chorus, enderman, fruit)).toSnapshot()
@@ -90,30 +94,16 @@ class WorldInteractionTest {
         assertEquals(4, chorusBack.item!!.count)
         assertEquals(4, (chorusBack.result as EntityResult.SpawnItem).item.count)
         assertEquals(Blocks.WATER.defaultState, (back.first { it.id == id("f") }.result as EntityResult.SetFluidBlock).block)
-        assertNull(wand.toFluidBlockInteractions())
-        assertNull(blocks.toWandConversions())
-    }
-
-    @Test
-    fun anEntryWithAnUnknownBlockOrPropertyIsSkipped() {
-        val snapshot = WandConversions(listOf(stoneToCobble, graniteToDirt)).toSnapshot()
-        val wire = snapshot.wand_conversions!!.conversions
-        val badBlock = wire[0].copy(id = "test:x", result = wire[0].result!!.copy(block = "nomod:thing"))
-        val badValue = wire[0].copy(id = "test:y", match = wire[0].match!!.copy(properties = mapOf("variant" to "nope")))
-        val bad = snapshot.copy(wand_conversions = snapshot.wand_conversions!!.copy(conversions = listOf(badBlock, wire[0], badValue)))
-        assertEquals(listOf(id("a")), bad.toWandConversions()!!.map { it.id })
+        assertNull(blocks.toFluidEntityInteractions())
     }
 
     @Test
     fun scriptsOverrideRemoveAndInvalidEntriesAreSkipped() {
-        val wand = WandConversions.managed { listOf(stoneToCobble, graniteToDirt) }
-        wand.add(stoneToCobble.copy(result = Blocks.GRAVEL.defaultState, itemDamage = 9))
-        wand.remove(id("b"))
-        wand.add(graniteToDirt.copy(id = id("neg"), itemDamage = -1))
-        val wandReport = wand.rebuild()
-        assertEquals(listOf("scripts: test:neg: itemDamage must not be negative"), wandReport.errors)
-        assertEquals(2, wandReport.applied["scripts"])
-        assertEquals(listOf(stoneToCobble.copy(result = Blocks.GRAVEL.defaultState, itemDamage = 9)), wand.current.entries.toList())
+        val corruption = CorruptionConversions.managed { listOf(stoneToCobble, graniteToDirt) }
+        corruption.add(stoneToCobble.copy(result = Blocks.GRAVEL.defaultState))
+        corruption.remove(id("b"))
+        assertEquals(0, corruption.rebuild().errors.size)
+        assertEquals(listOf(stoneToCobble.copy(result = Blocks.GRAVEL.defaultState)), corruption.current.entries.toList())
 
         val blocks = FluidBlockInteractions.managed { listOf(endStone) }
         blocks.add(endStone.copy(id = id("c0"), chance = 0))

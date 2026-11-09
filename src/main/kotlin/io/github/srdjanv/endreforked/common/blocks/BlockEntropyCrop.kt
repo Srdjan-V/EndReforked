@@ -4,6 +4,7 @@ import io.github.srdjanv.endreforked.EndReforked
 import io.github.srdjanv.endreforked.common.ModBlocks
 import io.github.srdjanv.endreforked.common.ModItems
 import io.github.srdjanv.endreforked.common.blocks.base.BaseBlockCrops
+import io.github.srdjanv.endreforked.common.entropy.EntropyTuning
 import io.github.srdjanv.endreforked.common.entropy.world.EntropyWorldHandler
 import net.minecraft.block.SoundType
 import net.minecraft.block.material.Material
@@ -13,10 +14,8 @@ import net.minecraft.block.state.IBlockState
 import net.minecraft.client.resources.I18n
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.creativetab.CreativeTabs
-import net.minecraft.enchantment.EnchantmentHelper
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.Blocks
-import net.minecraft.init.Enchantments
 import net.minecraft.init.SoundEvents
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
@@ -103,14 +102,19 @@ class BlockEntropyCrop : BaseBlockCrops("entropy_crop") {
                     .shuffled().take(3)
                     .forEach {
                         val entropyChunk = entropyChunkWorld.get()
-                        if (entropyChunk.drainEntropy(25, false) > 0) {
+                        if (entropyChunk.drainEntropy(EntropyTuning.shardCropSpread, false) > 0) {
                             worldIn.setBlockState(it, defaultState)
                         }
                     }
             }
         }
 
-        if (rand.nextInt(if (worldIn.provider.dimension == 1) 2 else 10) != 0) return
+        if (rand.nextInt(2) != 0) return
+        // Rule D: a stage needs the full amount of chunk entropy. No entropy, no growth.
+        val chunk = EntropyWorldHandler.getEntropyChunkWorld(worldIn.provider.dimension, pos).orElse(null) ?: return
+        val cost = EntropyTuning.shardCropStage
+        if (chunk.drainEntropy(cost, true) < cost) return
+        chunk.drainEntropy(cost, false)
         grow(worldIn, pos, state)
     }
 
@@ -139,9 +143,9 @@ class BlockEntropyCrop : BaseBlockCrops("entropy_crop") {
     ): Boolean {
         if (!isMaxAge(state)) return false
         if (worldIn.isRemote) return true
+        // Right-click gives exactly 1 shard, no fortune, no bonus. Breaking keeps the fortune bonus.
         worldIn.setBlockState(pos, defaultState)
-        val fortune = EnchantmentHelper.getMaxEnchantmentLevel(Enchantments.FORTUNE, playerIn)
-        for (drop in addAdditionalDrops(fortune, ArrayList(), worldIn.rand)) spawnAsEntity(worldIn, pos, drop)
+        spawnAsEntity(worldIn, pos, ItemStack(ModItems.ENTROPY_SHARD, 1))
         return true
     }
 

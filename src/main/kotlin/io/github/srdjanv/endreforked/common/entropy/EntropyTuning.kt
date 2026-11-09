@@ -23,14 +23,24 @@ object EntropyTuning {
     @Volatile var criticalPercent = 80
 
     /** The level that the chunks of the Entropy biome move to, in percent of their capacity. Other biomes move to 0. */
-    @Volatile var entropyBiomePercent = 50
+    @Volatile var entropyBiomePercent = 85
 
-    /** Entropy drained per chunk of the radius, every 10 s. */
-    @Volatile var chamberDrain = 150
+    /** The chance in percent that a finished run in a critical chunk loses its output (overload). */
+    @Volatile var overloadChance = 20
 
     /** Ticks between two critical event rolls of a world, and the chance in percent at the critical threshold. It rises to 100 % at a full chunk. */
     @Volatile var criticalInterval = 30 * 20
     @Volatile var criticalBaseChance = 50
+
+    /** Shard crop: chunk entropy for each growth stage, and for each block it spreads to. */
+    @Volatile var shardCropStage = 33
+    @Volatile var shardCropSpread = 25
+
+    /** Lormyte Stabilizer: the cap in percent of the capacity of a chunk in its area. Below 0 it is [criticalPercent]. */
+    @Volatile var stabilizerCapPercent = -1
+
+    /** Organa absorption: a powered-off Stabilizer with Organa fluid next to it absorbs critical events and overloads. */
+    @Volatile var absorptionEnabled = true
 
     /** Entropy cell capacity. */
     @Volatile var cellCapacity = 1000
@@ -61,18 +71,15 @@ object EntropyTuning {
     /** Void rescue trait (armor): durability lost by the piece, in percent of its maximum. */
     @Volatile var voidRescueWearPercent = 25
 
-    val organaWeed = Inducer(5)
-    val organaFlower = Inducer(10)
-    val entropyCrop = Inducer(25)
-    val fluidEntropy = Inducer(25)
-    val fluidOrgana = Inducer(30)
+    /** The Entropy Rift: a passive inducer in the Entropy biome. */
+    val rift = Inducer(30, 5 * 20)
+
+    /** The Organa flower: the amount it induces each time it grows. Its interval is not used. */
+    val organaFlower = Inducer(20)
 
     private val inducers = mapOf(
-        "organaWeed" to organaWeed,
+        "rift" to rift,
         "organaFlower" to organaFlower,
-        "entropyCrop" to entropyCrop,
-        "fluidEntropy" to fluidEntropy,
-        "fluidOrgana" to fluidOrgana,
     )
 
     /** The inducer of a script by name: [inducers] keys. Null for an unknown name. */
@@ -85,10 +92,14 @@ object EntropyTuning {
     fun reset() {
         chargedPercent = 33
         criticalPercent = 80
-        entropyBiomePercent = 50
-        chamberDrain = 150
+        entropyBiomePercent = 85
+        overloadChance = 20
         criticalInterval = 30 * 20
         criticalBaseChance = 50
+        shardCropStage = 33
+        shardCropSpread = 25
+        stabilizerCapPercent = -1
+        absorptionEnabled = true
         cellCapacity = 1000
         flightChargedFactor = 1.5
         flightCriticalFactor = 2.0
@@ -106,6 +117,10 @@ object EntropyTuning {
         voidRescueWearPercent = 25
         inducers.values.forEach(Inducer::reset)
     }
+
+    /** The most entropy that a chunk of [capacity] may hold under a Stabilizer. */
+    fun stabilizerCap(capacity: Int): Int =
+        (capacity.toLong() * (if (stabilizerCapPercent < 0) criticalPercent else stabilizerCapPercent) / 100).toInt()
 
     fun level(entropy: Int, capacity: Int) = EntropyLevel.of(entropy, capacity, chargedPercent, criticalPercent)
 
@@ -132,6 +147,9 @@ object EntropyTuning {
     }).toInt()
 
     fun spawnFactor(level: EntropyLevel) = level.ordinal + 1
+
+    /** True when a finished run overloads: critical level and a [roll] (a random number in [0, 1)) under [overloadChance]. */
+    fun overload(level: EntropyLevel, roll: Double) = level == EntropyLevel.CRITICAL && roll < overloadChance / 100.0
 
     /** [roll] is a random number in [0, 1). */
     fun bonus(level: EntropyLevel, roll: Double) = level != EntropyLevel.STABLE && roll < BONUS_CHANCE

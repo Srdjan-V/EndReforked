@@ -31,7 +31,7 @@ internal object CtLayers {
     private fun <E : RegistryEntry> layer(registry: ManagedRegistry<E, *>) = ScriptLayer(registry, NAMESPACE, sync::report)
 
     val machines by lazy { layer(registries.machineRecipes) }
-    val wand by lazy { layer(registries.wandConversions) }
+    val corruption by lazy { layer(registries.corruptionConversions) }
     val fluidBlocks by lazy { layer(registries.fluidBlockInteractions) }
     val fluidEntities by lazy { layer(registries.fluidEntityInteractions) }
     val worldFeatures by lazy { layer(registries.worldFeatures) }

@@ -22,6 +22,9 @@ interface ProcessHooks {
 
     /** Called once after a recipe finished and its outputs were given. */
     fun onFinished(recipe: MachineRecipe) {}
+
+    /** Called when a run overloads (critical chunk). Return true to absorb it: the run then ends as normal. Chunk 27 uses it for the Organa absorption. */
+    fun absorbOverload(): Boolean = false
 }
 
 /**
@@ -71,10 +74,12 @@ class MachineProcess(
 
     /**
      * One server tick. [entropy] is the entropy around the machine. A machine without entropy passes null, and only recipes with 0 entropy run.
-     * [level] is the level of the chunk of the machine: it sets the speed and the chance of a bonus output.
-     * A recipe with world events is paused in a stable chunk.
+     * [level] is the level of the chunk of the machine: it sets the speed, the chance of a bonus output and the overload.
+     * A recipe is paused while [level] is below its minimum level.
+     * [roll] gives random numbers in [0, 1) for the overload and the bonus.
+     * A run in a critical chunk overloads with the chance [EntropyTuning.overloadChance]: it takes the inputs and the entropy and gives no output.
      */
-    fun tick(entropy: ChunkEntropyView? = null, level: EntropyLevel = EntropyLevel.STABLE) {
+    fun tick(entropy: ChunkEntropyView? = null, level: EntropyLevel = EntropyLevel.STABLE, roll: () -> Double = Math::random) {
         val match = match
         if (match == null) {
             ticksRun = 0
@@ -91,7 +96,7 @@ class MachineProcess(
             status = TileStatus.NOT_ENOUGH_ENTROPY
             return
         }
-        if (recipe.worldEvents.isNotEmpty() && level == EntropyLevel.STABLE) {
+        if (level < recipe.minLevel) {
             status = TileStatus.NOT_ENOUGH_ENTROPY
             return
         }
@@ -115,11 +120,17 @@ class MachineProcess(
             status = TileStatus.INVALID
         } else if (!io.fits(recipe)) {
             status = TileStatus.OUT_FULL
+        } else if (EntropyTuning.overload(level, roll()) && !hooks.absorbOverload()) {
+            if (recipe.entropy > 0) entropy?.drainEntropy(recipe.entropy, false)
+            io.extract(match, false)
+            ticksRun = 0
+            activeRecipe = null
+            status = TileStatus.FAILED
         } else {
             if (recipe.entropy > 0) entropy?.drainEntropy(recipe.entropy, false)
             io.extract(match, false)
             io.insertOutputs(recipe)
-            if (EntropyTuning.bonus(level, Math.random())) {
+            if (EntropyTuning.bonus(level, roll())) {
                 recipe.itemOutputs.firstOrNull()?.let { io.itemOutputs.insertInternal(it.copy().apply { count = 1 }, false) }
             }
             ticksRun = 0

@@ -3,8 +3,6 @@ package io.github.srdjanv.endreforked.common.blocks
 import io.github.srdjanv.endreforked.common.ModBlocks
 import io.github.srdjanv.endreforked.common.ModItems
 import io.github.srdjanv.endreforked.common.blocks.base.BaseBlockBush
-import io.github.srdjanv.endreforked.common.entropy.EntropyTuning
-import io.github.srdjanv.endreforked.utils.randomTickPassiveInducer
 import net.minecraft.block.material.MapColor
 import net.minecraft.block.material.Material
 import net.minecraft.block.state.IBlockState
@@ -16,7 +14,6 @@ import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.potion.PotionEffect
 import net.minecraft.util.EnumFacing
-import net.minecraft.util.EnumParticleTypes
 import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
@@ -24,12 +21,8 @@ import net.minecraft.world.World
 import net.minecraftforge.common.IShearable
 import java.util.*
 
-class BlockOrganaWeed : BaseBlockBush("organa_weed", Material.VINE, { setOf(ModBlocks.ORGANA_BLOCK) }),
+class BlockOrganaWeed : BaseBlockBush("organa_weed", Material.VINE, { setOf(ModBlocks.ORGANA_BLOCK, ModBlocks.ORGANA_SENSOR_SOIL) }),
     IShearable {
-
-    init {
-        tickRandomly = true
-    }
 
     override fun getStateForPlacement(
         p_180642_1_: World?,
@@ -50,20 +43,6 @@ class BlockOrganaWeed : BaseBlockBush("organa_weed", Material.VINE, { setOf(ModB
             p_180642_6_,
             p_180642_7_,
             p_180642_8_
-        )
-    }
-
-    override fun tickRate(world: World): Int {
-        return EntropyTuning.organaWeed.interval
-    }
-
-    override fun randomTick(worldIn: World, pos: BlockPos, state: IBlockState, random: Random) {
-        randomTickPassiveInducer(
-            worldIn,
-            pos,
-            EntropyTuning.organaWeed,
-            0x9B30FF,
-            EnumParticleTypes.SPELL_MOB,
         )
     }
 

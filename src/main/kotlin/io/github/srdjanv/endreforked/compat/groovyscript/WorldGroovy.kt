@@ -3,12 +3,11 @@ package io.github.srdjanv.endreforked.compat.groovyscript
 import com.cleanroommc.groovyscript.api.GroovyLog
 import com.cleanroommc.groovyscript.helper.Alias
 import io.github.srdjanv.endreforked.api.world.BlockMatch
+import io.github.srdjanv.endreforked.api.world.CorruptionConversion
 import io.github.srdjanv.endreforked.api.world.EntityResult
 import io.github.srdjanv.endreforked.api.world.FluidBlockInteraction
 import io.github.srdjanv.endreforked.api.world.FluidEntityInteraction
 import io.github.srdjanv.endreforked.api.world.ITEM_ENTITY
-import io.github.srdjanv.endreforked.api.world.WandConversion
-import io.github.srdjanv.endreforked.api.world.WorldEffect
 import io.github.srdjanv.endreforked.compat.scripting.ScriptLayer
 import io.github.srdjanv.endreforked.compat.scripting.removeByEntity
 import io.github.srdjanv.endreforked.compat.scripting.removeByFluid
@@ -24,9 +23,10 @@ import net.minecraftforge.fluids.FluidStack
 // The script API of the world interaction registries. A block argument is a block state (`blockstate('minecraft:log:1')`,
 // the properties must match) or a block (`block('minecraft:log')`, every state matches). An id argument is `namespace:path`.
 
-/** `mods.endreborn.entropy_wand`: what the Entropy Wand does to a block. */
-class EntropyWandGroovy(layer: ScriptLayer<WandConversion>) : ReloadableGroovy<WandConversion>(Alias.generateOf("EntropyWand"), layer) {
-    fun recipeBuilder() = WandBuilder(this)
+/** `mods.endreborn.corruption_conversion`: what the Corruption critical event does to a block. */
+class CorruptionConversionGroovy(layer: ScriptLayer<CorruptionConversion>) :
+    ReloadableGroovy<CorruptionConversion>(Alias.generateOf("CorruptionConversion"), layer) {
+    fun recipeBuilder() = CorruptionBuilder(this)
 
     fun remove(id: String) = layer.remove(layer.parse(id))
 
@@ -37,13 +37,11 @@ class EntropyWandGroovy(layer: ScriptLayer<WandConversion>) : ReloadableGroovy<W
     fun removeByOutput(output: IBlockState) = layer.removeByOutput(output)
 }
 
-class WandBuilder(private val registry: EntropyWandGroovy) {
+class CorruptionBuilder(private val registry: CorruptionConversionGroovy) {
     private var name: ResourceLocation? = null
     private var match: BlockMatch? = null
     private var result: IBlockState? = null
-    private var damage: Int? = null
     private var priority = 0
-    private var sound = false
 
     fun name(name: String) = apply { this.name = registry.layer.parse(name) }
 
@@ -55,22 +53,14 @@ class WandBuilder(private val registry: EntropyWandGroovy) {
 
     fun output(block: Block) = apply { result = block.defaultState }
 
-    /** The durability the wand loses. Without it the value of the server config is used. */
-    fun damage(damage: Int) = apply { this.damage = damage }
-
     fun priority(priority: Int) = apply { this.priority = priority }
 
-    /** Plays the sound of a flint and steel. */
-    fun sound() = apply { sound = true }
-
-    fun register(): WandConversion? {
-        val msg = GroovyLog.msg("Error adding an Entropy Wand conversion").error()
+    fun register(): CorruptionConversion? {
+        val msg = GroovyLog.msg("Error adding a corruption conversion").error()
         msg.add(match == null, "needs an input")
         msg.add(result == null, "needs an output")
         if (msg.postIfNotEmpty()) return null
-        return registry.layer.add(name, "wand") {
-            WandConversion(it, match!!, result!!, damage, priority, if (sound) listOf(WorldEffect.FLINT_SOUND) else emptyList())
-        }
+        return registry.layer.add(name, "corruption") { CorruptionConversion(it, match!!, result!!, priority) }
     }
 }
 

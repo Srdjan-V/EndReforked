@@ -1,0 +1,11 @@
+{
+    "name": "Chronologist and the Catalyst",
+    "icon": "endreborn:catalyst",
+    "category": "chapter_4",
+    "pages": [
+        {
+            "type": "text",
+            "text": "The Chronologist spawns only in critical chunks. It drops the catalyst in 50 % of the cases. Ender flesh (Ender Eyes) stops its attacks.$(br2)The catalyst is rare in End city chests."
+        }
+    ]
+}

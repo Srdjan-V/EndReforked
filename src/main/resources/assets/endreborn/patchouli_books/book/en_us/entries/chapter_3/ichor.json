@@ -1,0 +1,13 @@
+{
+    "name": "Ichor and the Infused Ingot",
+    "icon": "endreborn:ingot_infused",
+    "category": "chapter_3",
+    "pages": [
+        {
+            "type": "spotlight",
+            "item": "endreborn:ingot_infused",
+            "link_recipe": true,
+            "text": "Make Organa fluid from Organa fruit. Make Ichor from lava and Organa fluid in the Entropy Chamber. Use Ichor with endorium in the End Forge to make the infused ingot. This is the only way to get it."
+        }
+    ]
+}

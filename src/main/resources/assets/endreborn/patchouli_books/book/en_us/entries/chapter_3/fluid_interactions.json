@@ -1,0 +1,11 @@
+{
+    "name": "Fluid Interactions",
+    "icon": "endreborn:organa_block",
+    "category": "chapter_3",
+    "pages": [
+        {
+            "type": "text",
+            "text": "Enderman in entropy fluid: becomes a Watcher (Watcher farm).$(br2)Entropy fluid on end stone: makes entropy end stone (5 %).$(br2)Entropy fluid next to an Organa fluid source: makes an Organa block. This is soil for your farm anywhere, like lava and water make obsidian."
+        }
+    ]
+}

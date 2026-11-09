@@ -1,0 +1,19 @@
+{
+    "name": "Талисман лормита и Энтропийный фонарь",
+    "icon": "endreborn:lormyte_charm",
+    "category": "entropy",
+    "pages": [
+        {
+            "type": "spotlight",
+            "item": "endreborn:lormyte_charm",
+            "link_recipe": true,
+            "text": "Талисман показывает уровень энтропии вашего чанка на экране. Он работает из инвентаря и из слота Baubles."
+        },
+        {
+            "type": "spotlight",
+            "item": "endreborn:entropy_lantern_block",
+            "link_recipe": true,
+            "text": "Уровень света фонаря показывает уровень энтропии его чанка."
+        }
+    ]
+}

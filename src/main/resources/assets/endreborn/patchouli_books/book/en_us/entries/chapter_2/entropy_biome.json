@@ -1,0 +1,17 @@
+{
+    "name": "The Entropy Biome and the Rift",
+    "icon": "endreborn:entropy_rift",
+    "category": "chapter_2",
+    "pages": [
+        {
+            "type": "text",
+            "text": "The Entropy biome is raw energy. It is always critical: you get overload, events and Blazes. Collect shards here. Do not work here.$(br2)The Entropy Rift keeps the chunks critical. It is unbreakable and drops nothing."
+        },
+        {
+            "type": "spotlight",
+            "item": "endreborn:entropy_end_stone",
+            "link_recipe": true,
+            "text": "Entropy end stone crumbles to end stone when you mine it. Use silk touch to keep it for building."
+        }
+    ]
+}

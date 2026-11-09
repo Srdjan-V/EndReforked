@@ -21,10 +21,8 @@ import io.github.srdjanv.endreforked.api.base.crafting.TileStatus
 import io.github.srdjanv.endreforked.api.entropy.EntropyDataProvider
 import io.github.srdjanv.endreforked.api.entropy.EntropyRadius
 import io.github.srdjanv.endreforked.api.entropy.EntropyRadiusUpgrade
+import io.github.srdjanv.endreforked.common.entropy.Stabilizers
 import io.github.srdjanv.endreforked.common.entropy.world.EntropyChunkReader
-import io.github.srdjanv.endreforked.api.util.Ticker
-import io.github.srdjanv.endreforked.common.entropy.EntropyTuning
-import io.github.srdjanv.endreforked.common.entropy.chunks.PassiveEntropyChunkDrainer
 import io.github.srdjanv.endreforked.common.entropy.world.EntropyWorldHandler
 import io.github.srdjanv.endreforked.common.machine.InputHandler
 import io.github.srdjanv.endreforked.common.machine.InputTank
@@ -32,6 +30,7 @@ import io.github.srdjanv.endreforked.common.machine.MachineIO
 import io.github.srdjanv.endreforked.common.machine.MachineProcess
 import io.github.srdjanv.endreforked.common.machine.OutputHandler
 import io.github.srdjanv.endreforked.common.machine.OutputTank
+import io.github.srdjanv.endreforked.common.machine.ProcessHooks
 import io.github.srdjanv.endreforked.common.machine.recipes
 import io.github.srdjanv.endreforked.common.registry.MachineRecipeDefaults
 import io.github.srdjanv.endreforked.common.tiles.base.BaseTileEntity
@@ -42,6 +41,7 @@ import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.PacketBuffer
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ITickable
+import net.minecraft.world.WorldServer
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.fluids.FluidStack
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler
@@ -52,16 +52,22 @@ import java.util.Optional
 
 /**
  * The entropy chamber has two independent pipelines on the machine recipe registry:
- * items (one input slot, one output slot) and fluids (one 20,000 mB tank each way).
+ * items (one input slot, one output slot, one 20,000 mB output tank for item to fluid recipes)
+ * and fluids (two 20,000 mB input tanks, one 20,000 mB output tank).
  * A recipe with only item inputs runs in the item pipeline, a recipe with only fluid inputs in the fluid pipeline.
+ * The chamber uses entropy only for recipes. The radius upgrade sets the chunks that the recipes take entropy from.
  */
 class EntropyChamberTile : BaseTileEntity(), ITickable, EntropyDataProvider, IGuiHolder<PosGuiData> {
     private val reader = EntropyChunkReader.ofTileEntity(this, EntropyRadius.ONE)
-    private val drainer = PassiveEntropyChunkDrainer(reader, Ticker(10 * 20), { EntropyTuning.chamberDrain }) { reader.radius }
 
     private val upgradeSlot = object : InternalItemStackHandler(1) {
         override fun insertItem(slot: Int, stack: ItemStack, simulate: Boolean): ItemStack =
             if (stack.item is EntropyRadiusUpgrade) super.insertItem(slot, stack, simulate) else stack
+    }
+
+    /** Organa absorption of an overload (see Stabilizers). */
+    private val absorption = object : ProcessHooks {
+        override fun absorbOverload() = Stabilizers.absorb(world as WorldServer, pos)
     }
 
     private val itemProcess: MachineProcess = MachineProcess(
@@ -74,9 +80,10 @@ class EntropyChamberTile : BaseTileEntity(), ITickable, EntropyDataProvider, IGu
             ),
             OutputHandler(1) { markDirty() },
             emptyList(),
-            emptyList(),
+            listOf(OutputTank(20_000) { markDirty() }),
         ),
         this::recipes,
+        absorption,
     )
 
     private val fluidProcess: MachineProcess = MachineProcess(
@@ -84,28 +91,43 @@ class EntropyChamberTile : BaseTileEntity(), ITickable, EntropyDataProvider, IGu
         MachineIO(
             InputHandler(0, { false }) { },
             OutputHandler(0) { },
+            // The two input tanks never hold the same fluid, so a recipe with two fluids finds both.
             listOf(
                 InputTank(
                     20_000,
-                    { recipes().acceptsFluid(MachineRecipeDefaults.ENTROPY_CHAMBER, it.fluid) },
+                    { recipes().acceptsFluid(MachineRecipeDefaults.ENTROPY_CHAMBER, it.fluid) && fluidIn1.fluid?.fluid != it.fluid },
+                    { markDirty(); fluidProcess.inputChanged() },
+                ),
+                InputTank(
+                    20_000,
+                    { recipes().acceptsFluid(MachineRecipeDefaults.ENTROPY_CHAMBER, it.fluid) && fluidIn0.fluid?.fluid != it.fluid },
                     { markDirty(); fluidProcess.inputChanged() },
                 ),
             ),
             listOf(OutputTank(20_000) { markDirty() }),
         ),
         this::recipes,
+        absorption,
     )
+
+    init {
+        inventoriesToDrop.add(itemProcess.io.itemInputs)
+        inventoriesToDrop.add(itemProcess.io.itemOutputs)
+        inventoriesToDrop.add(upgradeSlot)
+    }
 
     private val itemIn get() = itemProcess.io.itemInputs
     private val itemOut get() = itemProcess.io.itemOutputs
-    private val fluidIn get() = fluidProcess.io.fluidInputs[0]
+    private val itemFluidOut get() = itemProcess.io.fluidOutputs[0]
+    private val fluidIn0 get() = fluidProcess.io.fluidInputs[0]
+    private val fluidIn1 get() = fluidProcess.io.fluidInputs[1]
     private val fluidOut get() = fluidProcess.io.fluidOutputs[0]
+    private val tanks get() = listOf(itemFluidOut, fluidIn0, fluidIn1, fluidOut)
 
     // The last values from the server, for the GUI on the client
     private var itemPercentage = 0.0
     private var fluidPercentage = 0.0
     private var availableEntropy = 0
-    private var passiveEntropyDrain = 0
 
     // New layout: each pipeline writes its own inventories and progress, so the two cannot mix up.
     override fun readFromNBT(compound: NBTTagCompound) {
@@ -124,8 +146,6 @@ class EntropyChamberTile : BaseTileEntity(), ITickable, EntropyDataProvider, IGu
 
     override val entropyRadius: Optional<EntropyRadius> get() = Optional.of(reader.radius)
 
-    override val passiveDrainer: Optional<EntropyDataProvider.PassiveDrainer> get() = Optional.of(drainer)
-
     override val activeDrainer: Optional<EntropyDataProvider.ActiveDrainer>
         get() {
             if (itemProcess.recipe == null && fluidProcess.recipe == null) return Optional.empty()
@@ -138,7 +158,6 @@ class EntropyChamberTile : BaseTileEntity(), ITickable, EntropyDataProvider, IGu
 
     override fun update() {
         if (world.isRemote) return
-        drainer.drain()
         updateRange()
         val level = EntropyWorldHandler.levelAt(world.provider.dimension, pos)
         itemProcess.tick(reader.entropyView, level)
@@ -183,26 +202,20 @@ class EntropyChamberTile : BaseTileEntity(), ITickable, EntropyDataProvider, IGu
             }
         })
         syncManager.syncValue("fluid_inv_sync", object : SyncHandler() {
-            private var lastIn: FluidStack? = null
-            private var lastOut: FluidStack? = null
+            private val last = arrayOfNulls<FluidStack>(4)
 
             override fun readOnClient(id: Int, buf: PacketBuffer) {
-                when (id) {
-                    0 -> fluidIn.readFromNBT(buf.readCompoundTag()!!)
-                    1 -> fluidOut.readFromNBT(buf.readCompoundTag()!!)
-                }
+                tanks[id].readFromNBT(buf.readCompoundTag()!!)
             }
 
             override fun readOnServer(id: Int, buf: PacketBuffer) {}
 
             override fun detectAndSendChanges(init: Boolean) {
-                val inFluid = fluidIn.fluid
-                val outFluid = fluidOut.fluid
-                if (init || !same(inFluid, lastIn) || !same(outFluid, lastOut)) {
-                    lastIn = inFluid?.copy()
-                    lastOut = outFluid?.copy()
-                    sync(0) { it.writeCompoundTag(fluidIn.writeToNBT(NBTTagCompound())) }
-                    sync(1) { it.writeCompoundTag(fluidOut.writeToNBT(NBTTagCompound())) }
+                for ((id, tank) in tanks.withIndex()) {
+                    val now = tank.fluid
+                    if (!init && same(now, last[id])) continue
+                    last[id] = now?.copy()
+                    sync(id) { it.writeCompoundTag(tank.writeToNBT(NBTTagCompound())) }
                 }
             }
 
@@ -223,10 +236,6 @@ class EntropyChamberTile : BaseTileEntity(), ITickable, EntropyDataProvider, IGu
         syncManager.syncValue(
             "available_entropy",
             IntSyncValue({ reader.entropyView.currentEntropy }, { availableEntropy = it }),
-        )
-        syncManager.syncValue(
-            "passive_entropy_drain",
-            IntSyncValue({ drainer.drained }, { passiveEntropyDrain = it }),
         )
 
         if (data.isClient) {
@@ -262,19 +271,22 @@ class EntropyChamberTile : BaseTileEntity(), ITickable, EntropyDataProvider, IGu
                     .progress { if (fluidProcess.recipe != null) fluidPercentage else 0.0 },
             )
         }
-        val fluidInSlot = FluidSlot().syncHandler(FluidSlotSyncHandler(fluidIn)).left(55).top(64)
-        fluidInSlot.tooltip().setAutoUpdate(true).tooltipBuilder { tooltip ->
-            if (fluidProcess.recipe != null) {
-                tooltip.addLine("${LangUtil.translateToLocal("status.fluid.matching")} ${LangUtil.translateToLocal("status.fluid.fluid")}")
+        panel.child(FluidSlot().syncHandler(FluidSlotSyncHandler(itemFluidOut)).left(122).top(23))
+        for ((i, tank) in listOf(fluidIn0, fluidIn1).withIndex()) {
+            val fluidInSlot = FluidSlot().syncHandler(FluidSlotSyncHandler(tank)).left(33 + i * 22).top(64)
+            fluidInSlot.tooltip().setAutoUpdate(true).tooltipBuilder { tooltip ->
+                if (fluidProcess.recipe != null) {
+                    tooltip.addLine("${LangUtil.translateToLocal("status.fluid.matching")} ${LangUtil.translateToLocal("status.fluid.fluid")}")
+                }
             }
+            panel.child(fluidInSlot)
         }
-        panel.child(fluidInSlot)
         panel.child(FluidSlot().syncHandler(FluidSlotSyncHandler(fluidOut)).left(100).top(64))
 
         if (data.isClient) {
             val entropyLevel = BasicTextWidget().left(20).right(20).top(85).background(GuiTextures.MC_BACKGROUND)
             entropyLevel.tooltip().tooltipBuilder { tooltip ->
-                tooltip.addLine(LangKey("entropy.drainer.passive").get() + ": " + passiveEntropyDrain)
+                tooltip.addLine(LangKey("entropy.chunk.available").get() + ": " + availableEntropy)
             }
             entropyLevel.setKey { availableEntropy.toString() }
             panel.child(entropyLevel)
@@ -307,7 +319,7 @@ class EntropyChamberTile : BaseTileEntity(), ITickable, EntropyDataProvider, IGu
     @Suppress("UNCHECKED_CAST")
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? = when {
         capability === CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY ->
-            FluidHandlerConcatenate(fluidOut, fluidIn) as T
+            FluidHandlerConcatenate(tanks) as T
         capability === CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ->
             CombinedInvWrapper(itemIn, itemOut) as T
         else -> super.getCapability(capability, facing)

@@ -17,7 +17,7 @@ object CriticalEventZen {
     private fun add(id: String, weight: Int, radius: Int, cost: Int, action: CriticalAction) =
         act("Adding the End Reforked critical event $id") { layer.add(layer.parse(id), "critical") { CriticalEvent(it, weight, radius, cost, action) } }
 
-    /** Converts blocks in the radius with the wand conversions. */
+    /** Converts blocks in the radius with the corruption conversions. */
     @JvmStatic @ZenMethod fun addConvert(id: String, weight: Int, radius: Int, cost: Int) = add(id, weight, radius, cost, CriticalAction.Convert)
 
     /** Spawns [min] to [max] mobs of these entity ids. */

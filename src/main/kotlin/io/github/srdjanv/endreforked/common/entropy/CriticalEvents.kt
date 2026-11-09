@@ -51,7 +51,7 @@ object CriticalEvents {
     }
 
     private fun convert(world: WorldServer, center: BlockPos, radius: Int) {
-        val conversions = EndReforked.getProxy().registries(world).wandConversions.current
+        val conversions = EndReforked.getProxy().registries(world).corruptionConversions.current
         val candidates = BlockPos.getAllInBox(center.add(-radius, -radius, -radius), center.add(radius, radius, radius))
             .map { it.toImmutable() }
             .filter { it.distanceSq(center) <= radius * radius && world.isBlockLoaded(it) }

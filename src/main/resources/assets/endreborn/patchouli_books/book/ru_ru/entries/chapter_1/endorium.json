@@ -1,0 +1,19 @@
+{
+    "name": "Эндориум",
+    "icon": "endreborn:item_ingot_endorium",
+    "category": "chapter_1",
+    "pages": [
+        {
+            "type": "spotlight",
+            "item": "endreborn:item_ingot_endorium",
+            "link_recipe": true,
+            "text": "Эндориум - металл первой главы. Его делают в Кузнице Края с помощью лавы."
+        },
+        {
+            "type": "spotlight",
+            "item": "endreborn:lormyte_charm",
+            "link_recipe": true,
+            "text": "Для талисмана лормита нужны 4 кристалла лормита и 1 слиток эндориума."
+        }
+    ]
+}

@@ -20,8 +20,8 @@ import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.BlockRenderLayer
-import net.minecraft.util.EnumParticleTypes
 import net.minecraft.util.EnumFacing
+import net.minecraft.util.EnumParticleTypes
 import net.minecraft.util.NonNullList
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
@@ -79,14 +79,14 @@ class BlockOrganaFlower : BlockBase("organa_flower", Material.PLANTS, MapColor.P
         val downBlockState = worldIn.getBlockState(pos.down())
         val downBlock = downBlockState.block
 
-        if (downBlock === ModBlocks.ORGANA_BLOCK) {
+        if (ModBlocks.isOrganaSoil(downBlock)) {
             growOnlyUp = true
         } else if (downBlock === ModBlocks.ORGANA_PLANT_BLOCK) {
             var j = 1
             for (k in 0 until 4) {
                 val block1 = worldIn.getBlockState(pos.down(j + 1)).block
                 if (block1 !== ModBlocks.ORGANA_PLANT_BLOCK) {
-                    if (block1 === ModBlocks.ORGANA_BLOCK) flag1 = true
+                    if (ModBlocks.isOrganaSoil(block1)) flag1 = true
                     break
                 }
                 ++j
@@ -126,9 +126,11 @@ class BlockOrganaFlower : BlockBase("organa_flower", Material.PLANTS, MapColor.P
         worldIn.setBlockState(pos, ModBlocks.ORGANA_PLANT_BLOCK.defaultState, 2)
     }
 
+    /** A growing flower (age below 8) induces entropy into its chunk (rule B). Dead flowers and generated ones never do. */
     private fun placeGrownFlower(worldIn: World, pos: BlockPos, age: Int) {
         worldIn.setBlockState(pos, defaultState.withProperty(AGE, age), 2)
         worldIn.playEvent(1033, pos, 0)
+        if (age < 8) randomTickPassiveInducer(worldIn, pos, EntropyTuning.organaFlower, 0x5900B3, EnumParticleTypes.SPELL_MOB)
     }
 
     private fun placeBigDeadFlower(worldIn: World, pos: BlockPos) {
@@ -156,7 +158,7 @@ class BlockOrganaFlower : BlockBase("organa_flower", Material.PLANTS, MapColor.P
         val belowState = worldIn.getBlockState(pos.down())
         val belowBlock = belowState.block
 
-        if (belowBlock === ModBlocks.ORGANA_PLANT_BLOCK || belowBlock === ModBlocks.ORGANA_BLOCK)
+        if (belowBlock === ModBlocks.ORGANA_PLANT_BLOCK || ModBlocks.isOrganaSoil(belowBlock))
             return true
         if (belowState.material !== Material.AIR) return false
         var i = 0
@@ -177,7 +179,8 @@ class BlockOrganaFlower : BlockBase("organa_flower", Material.PLANTS, MapColor.P
         worldIn: World, player: EntityPlayer, pos: BlockPos, state: IBlockState, te: TileEntity?, stack: ItemStack,
     ) {
         super.harvestBlock(worldIn, player, pos, state, te, stack)
-        spawnAsEntity(worldIn, pos, ItemStack(Item.getItemFromBlock(this)))
+        // Rule F: the flower drops 1 or 2 seeds, not itself.
+        spawnAsEntity(worldIn, pos, ItemStack(ModItems.ORGANA_FLOWER_SEED, 1 + worldIn.rand.nextInt(2)))
     }
 
     override fun getSilkTouchDrop(state: IBlockState): ItemStack = ItemStack.EMPTY
@@ -193,16 +196,6 @@ class BlockOrganaFlower : BlockBase("organa_flower", Material.PLANTS, MapColor.P
 
     override fun getBlockFaceShape(worldIn: IBlockAccess, state: IBlockState, pos: BlockPos, face: EnumFacing) =
         BlockFaceShape.UNDEFINED
-
-    override fun tickRate(world: World): Int {
-        return EntropyTuning.organaFlower.interval
-    }
-
-    override fun randomTick(world: World, pos: BlockPos, state: IBlockState, random: Random) {
-        if (state.getValue(AGE) == 10) {
-            randomTickPassiveInducer(world, pos, EntropyTuning.organaFlower, 0x5900B3, EnumParticleTypes.SPELL_MOB)
-        }
-    }
 
     companion object {
         @JvmField

@@ -40,7 +40,7 @@ class CriticalEventBuilder(private val registry: CriticalEventGroovy) {
     /** The entropy that the chunk loses. */
     fun cost(cost: Int) = apply { this.cost = cost }
 
-    /** Converts blocks with the wand conversions. */
+    /** Converts blocks with the corruption conversions. */
     fun convert() = apply { action = CriticalAction.Convert }
 
     /** Spawns [min] to [max] mobs of these entity ids. */

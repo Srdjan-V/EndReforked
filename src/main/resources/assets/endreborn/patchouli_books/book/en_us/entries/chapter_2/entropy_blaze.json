@@ -1,0 +1,11 @@
+{
+    "name": "Entropy Blaze",
+    "icon": "endreborn:item_end_shard",
+    "category": "chapter_2",
+    "pages": [
+        {
+            "type": "text",
+            "text": "The Entropy Blaze spawns only in the Entropy biome and in Breach events. It adds entropy while it lives. It always drops 1 or 2 end shards.$(br2)End shards make End Runes."
+        }
+    ]
+}

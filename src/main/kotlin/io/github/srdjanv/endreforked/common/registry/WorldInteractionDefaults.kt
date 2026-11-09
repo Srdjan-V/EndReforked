@@ -2,61 +2,35 @@ package io.github.srdjanv.endreforked.common.registry
 
 import io.github.srdjanv.endreforked.Tags
 import io.github.srdjanv.endreforked.api.world.BlockMatch
+import io.github.srdjanv.endreforked.api.world.CorruptionConversion
 import io.github.srdjanv.endreforked.api.world.EntityResult
 import io.github.srdjanv.endreforked.api.world.FluidBlockInteraction
 import io.github.srdjanv.endreforked.api.world.FluidEntityInteraction
-import io.github.srdjanv.endreforked.api.world.ITEM_ENTITY
-import io.github.srdjanv.endreforked.api.world.WandConversion
-import io.github.srdjanv.endreforked.api.world.WorldEffect
 import io.github.srdjanv.endreforked.common.ModBlocks
 import io.github.srdjanv.endreforked.common.ModFluids
-import io.github.srdjanv.endreforked.common.ModItems
-import io.github.srdjanv.endreforked.common.blocks.BlockOrganaFlower
-import io.github.srdjanv.endreforked.common.configs.Configs
 import net.minecraft.block.Block
-import net.minecraft.block.BlockSandStone
-import net.minecraft.block.BlockStone
 import net.minecraft.block.properties.IProperty
 import net.minecraft.init.Blocks
-import net.minecraft.item.ItemStack
 import net.minecraft.util.ResourceLocation
+import net.minecraftforge.fluids.BlockFluidBase
 
-/** The wand conversions and fluid interactions that ship with the mod. Called when the registries are built, after the blocks and items exist. */
+/** The corruption conversions and fluid interactions that ship with the mod. Called when the registries are built, after the blocks and items exist. */
 object WorldInteractionDefaults {
     private fun match(b: Block, vararg properties: Pair<IProperty<*>, Comparable<*>>) = BlockMatch(b, mapOf(*properties))
 
-    private fun wandId(name: String) = ResourceLocation(Tags.MODID, "wand/$name")
+    /** Only end stone corrupts. The conversions match the default state of the block only. */
+    fun corruptionConversions(): List<CorruptionConversion> = listOf(
+        CorruptionConversion(ResourceLocation(Tags.MODID, "corruption/end_stone"), match(Blocks.END_STONE), ModBlocks.ENTROPY_END_STONE.defaultState),
+    )
 
-    /** The damage of the wand config plus [extra]. The config is read when the defaults are built, like before. */
-    private fun damage(extra: Int) = Configs.SERVER_SIDE_CONFIGS.entropyWandUseDamage + extra
-
-    /** The old default conversions matched the default state of the block only. */
-    fun wandConversions(): List<WandConversion> {
-        val sound = listOf(WorldEffect.FLINT_SOUND)
-        fun simple(name: String, from: BlockMatch, to: Block) = WandConversion(wandId(name), from, to.defaultState, effects = sound)
-        val flower = ModBlocks.ORGANA_FLOWER_BLOCK
-        fun age(from: Int) = match(flower, BlockOrganaFlower.AGE to from)
-        fun grown(age: Int) = flower.defaultState.withProperty(BlockOrganaFlower.AGE, age)
-        return listOf(
-            simple("end_stone", match(Blocks.END_STONE), ModBlocks.ENTROPY_END_STONE),
-            simple("stone", match(Blocks.STONE, BlockStone.VARIANT to BlockStone.EnumType.STONE), Blocks.COBBLESTONE),
-            simple("cobblestone", match(Blocks.COBBLESTONE), Blocks.GRAVEL),
-            simple("gravel", match(Blocks.GRAVEL), Blocks.SAND),
-            simple("sandstone", match(Blocks.SANDSTONE, BlockSandStone.TYPE to BlockSandStone.EnumType.DEFAULT), Blocks.SAND),
-            simple("tallgrass", match(Blocks.TALLGRASS), Blocks.DEADBUSH),
-            simple("red_flower", match(Blocks.RED_FLOWER), Blocks.DEADBUSH),
-            simple("yellow_flower", match(Blocks.YELLOW_FLOWER), Blocks.DEADBUSH),
-            WandConversion(wandId("log"), match(Blocks.LOG), Blocks.COAL_BLOCK.defaultState, damage(8), effects = sound),
-            WandConversion(wandId("log2"), match(Blocks.LOG2), Blocks.COAL_BLOCK.defaultState, damage(8), effects = sound),
-            WandConversion(wandId("organa_flower_8"), age(8), grown(9), damage(10)),
-            WandConversion(wandId("organa_flower_9"), age(9), grown(10), damage(10)),
-            WandConversion(
-                wandId("end_magma"), match(ModBlocks.END_MAGMA_BLOCK), ModBlocks.FLUID_END_MAGMA_BLOCK.defaultState, damage(15),
-            ),
-        )
-    }
-
+    /** Entropy fluid next to an Organa fluid source makes Organa soil, like lava and water make obsidian. */
     fun fluidBlockInteractions(): List<FluidBlockInteraction> = listOf(
+        FluidBlockInteraction(
+            id = ResourceLocation(Tags.MODID, "entropy/organa_soil"),
+            fluid = ModFluids.ENTROPY,
+            match = match(ModBlocks.FLUID_ORGANA_BLOCK, BlockFluidBase.LEVEL to 0),
+            result = ModBlocks.ORGANA_BLOCK.defaultState,
+        ),
         FluidBlockInteraction(
             id = ResourceLocation(Tags.MODID, "entropy/entropy_end_stone"),
             fluid = ModFluids.ENTROPY,
@@ -69,24 +43,6 @@ object WorldInteractionDefaults {
     fun fluidEntityInteractions(): List<FluidEntityInteraction> {
         val entropy = ModFluids.ENTROPY
         return listOf(
-            FluidEntityInteraction(
-                id = ResourceLocation(Tags.MODID, "entropy/organa_flower"),
-                fluid = entropy,
-                entity = ITEM_ENTITY,
-                item = ItemStack(Blocks.CHORUS_FLOWER, 4),
-                result = EntityResult.SpawnItem(ItemStack(ModBlocks.ORGANA_FLOWER_BLOCK, 4)),
-                chance = 10,
-                consumeSource = true,
-            ),
-            FluidEntityInteraction(
-                id = ResourceLocation(Tags.MODID, "entropy/fluid_organa"),
-                fluid = entropy,
-                entity = ITEM_ENTITY,
-                item = ItemStack(ModItems.ORGANA_FRUIT),
-                result = EntityResult.SetFluidBlock(ModBlocks.FLUID_ORGANA_BLOCK.defaultState),
-                chance = 20,
-                consumeSource = true,
-            ),
             FluidEntityInteraction(
                 id = ResourceLocation(Tags.MODID, "entropy/entity_watcher"),
                 fluid = entropy,

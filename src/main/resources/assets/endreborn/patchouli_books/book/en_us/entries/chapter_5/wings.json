@@ -1,0 +1,19 @@
+{
+    "name": "Entropy Wings",
+    "icon": "endreborn:entropy_wings",
+    "category": "chapter_5",
+    "pages": [
+        {
+            "type": "spotlight",
+            "item": "endreborn:entropy_wings",
+            "link_recipe": true,
+            "text": "The wings need 2 infused ingots, 4 dragon scales, 2 angel feathers and an entropy cell (flight 3). They work when you want. They drain entropy from your chunk and from the cells in your inventory.$(br2)With Baubles, you can craft the wings ring from the wings, and back."
+        },
+        {
+            "type": "spotlight",
+            "item": "endreborn:item_angel_feather",
+            "link_recipe": true,
+            "text": "The angel feather needs a feather and dragon breath."
+        }
+    ]
+}

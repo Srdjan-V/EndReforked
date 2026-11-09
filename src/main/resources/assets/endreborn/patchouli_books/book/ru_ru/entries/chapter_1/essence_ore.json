@@ -1,0 +1,13 @@
+{
+    "name": "Эссенциевая руда",
+    "icon": "endreborn:essence_ore",
+    "category": "chapter_1",
+    "pages": [
+        {
+            "type": "spotlight",
+            "item": "endreborn:essence_ore",
+            "link_recipe": true,
+            "text": "Эссенциевая руда растёт на обсидиановых столбах в Краю. Из неё выпадает эссенция Края. Эссенция нужна для Кузницы Края и рунических блоков."
+        }
+    ]
+}

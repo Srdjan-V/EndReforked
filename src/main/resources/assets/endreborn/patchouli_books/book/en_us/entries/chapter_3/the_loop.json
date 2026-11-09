@@ -1,0 +1,15 @@
+{
+    "name": "The Loop",
+    "icon": "endreborn:entropy_shard",
+    "category": "chapter_3",
+    "pages": [
+        {
+            "type": "text",
+            "text": "The base is the only place where you control entropy. The loop:$(br)1. An entropy shard becomes entropy fluid in the Entropy Chamber (0 entropy).$(br)2. A flower stem needs a source block of entropy fluid next to it. The flower uses it up.$(br)3. The growing flower adds entropy to the chunk.$(br)4. Machines and shard crops use this entropy."
+        },
+        {
+            "type": "text",
+            "text": "Start values: a shard costs 100 entropy. 1 shard makes 1,000 mB of fluid, enough for 1 flower. A flower adds about 150 over its growth. Each cycle gives about +50.$(br2)A broken flower drops 1 or 2 seeds, not itself. The stem does not die: it grows the next flower when the old one is gone. The Organa Sensor Soil (Organa block + 4 redstone + lormyte crystal) gives a redstone signal of 15 when the plant on it is fully grown, so you can automate the harvest. The chunk at the start has 0 entropy: the first flowers still grow."
+        }
+    ]
+}

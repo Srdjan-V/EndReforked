@@ -1,0 +1,15 @@
+{
+    "name": "Critical Events",
+    "icon": "endreborn:entropy_shard",
+    "category": "entropy",
+    "pages": [
+        {
+            "type": "text",
+            "text": "Every 30 seconds, each loaded critical chunk rolls one event. The chance grows above 80 %. The event happens in an area. It uses entropy of its chunk. The entropy does not spread to other chunks."
+        },
+        {
+            "type": "text",
+            "text": "Corruption (radius 3): turns end stone into entropy end stone.$(br)Breach: spawns 1 to 3 Watchers or Entropy Blazes.$(br)Burst (radius 4): a lingering dragon breath cloud.$(br2)Events never change a block with a tile entity, or a block near a player with the tungsten Anchored trait."
+        }
+    ]
+}

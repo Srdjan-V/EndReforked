@@ -1,10 +1,6 @@
 package io.github.srdjanv.endreforked.common.entropy
 
-import io.github.srdjanv.endreforked.api.entropy.EntropyRadius
-import io.github.srdjanv.endreforked.api.util.Ticker
-import io.github.srdjanv.endreforked.common.entropy.chunks.PassiveEntropyChunkDrainer
 import io.github.srdjanv.endreforked.common.entropy.storage.DefaultEntropyStorage
-import io.github.srdjanv.endreforked.common.entropy.world.EntropyChunkReader
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -31,13 +27,5 @@ class EntropyTest {
         assertEquals(30, s.drainEntropy(50, false))
         assertEquals(0, s.currentEntropy)
         assertEquals(0, s.drainEntropy(-5, false))
-    }
-
-    @Test
-    fun drainerUsesChunkCount() {
-        val reader = EntropyChunkReader({ null })
-        for (r in EntropyRadius.entries)
-            assertEquals(150 * r.chunks, PassiveEntropyChunkDrainer(reader, Ticker(200), { 150 }) { r }.drained)
-        assertEquals(150, PassiveEntropyChunkDrainer(reader, Ticker(200), { 150 }) { EntropyRadius.ONE }.drained)
     }
 }

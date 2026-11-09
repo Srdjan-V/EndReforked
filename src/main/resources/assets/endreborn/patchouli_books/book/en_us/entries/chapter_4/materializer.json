@@ -1,0 +1,71 @@
+{
+    "name": "Materializer",
+    "icon": "endreborn:materializer_block",
+    "category": "chapter_4",
+    "pages": [
+        {
+            "type": "spotlight",
+            "item": "endreborn:materializer_block",
+            "link_recipe": true,
+            "text": "The Materializer has 3 item slots (the catalyst is one) and a radius upgrade slot. It makes items from entropy. Its recipes need a level: dragon breath a charged chunk, the others a critical chunk."
+        },
+        {
+            "type": "text",
+            "text": "Start mode: a button switches between auto (starts when the inputs are in) and manual (waits for the Start button). Manual is the default. It lets you build the structure first.$(br2)Ghost preview: a button shows the structure as ghost blocks, above the machine and in front of it. It is a guide only. Build anywhere in the area: 7x7 blocks around the machine, up to 5 blocks high, not in the machine column."
+        },
+        {
+            "type": "text",
+            "text": "At 80 % of a run, a world event can trigger. If the structure is not complete, the run fails and the inputs are lost. The event uses the structure up: each rune block becomes a purpur block.$(br2)Dragon breath (50 %): 4 glass bottles + 1 entropy shard + catalyst give 4 dragon breath (150 entropy).$(br)Shulker shell (75 %): 4 purpur blocks + 1 ender pearl + catalyst (300 entropy).$(br)Dragon scales (100 %): 1 infused ingot + 4 dragon breath + catalyst give 2 dragon scales (300 entropy)."
+        },
+        {
+            "type": "multiblock",
+            "name": "Dragon breath: 1 rune block",
+            "multiblock": {
+                "pattern": [
+                    [
+                        "0"
+                    ]
+                ],
+                "mapping": {
+                    "0": "endreborn:rune_block"
+                }
+            },
+            "enable_visualize": true
+        },
+        {
+            "type": "multiblock",
+            "name": "Shulker shell: purpur pillar with a rune block on top",
+            "multiblock": {
+                "pattern": [
+                    [
+                        "R"
+                    ],
+                    [
+                        "0"
+                    ]
+                ],
+                "mapping": {
+                    "R": "endreborn:rune_block",
+                    "0": "minecraft:purpur_pillar"
+                }
+            },
+            "enable_visualize": true
+        },
+        {
+            "type": "multiblock",
+            "name": "Dragon scales: 3 rune blocks in a row",
+            "multiblock": {
+                "pattern": [
+                    [
+                        "R0R"
+                    ]
+                ],
+                "mapping": {
+                    "R": "endreborn:rune_block",
+                    "0": "endreborn:rune_block"
+                }
+            },
+            "enable_visualize": true
+        }
+    ]
+}

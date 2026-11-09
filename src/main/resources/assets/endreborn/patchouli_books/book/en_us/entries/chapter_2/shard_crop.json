@@ -1,0 +1,13 @@
+{
+    "name": "Shard Crop",
+    "icon": "endreborn:entropy_crop",
+    "category": "chapter_2",
+    "pages": [
+        {
+            "type": "spotlight",
+            "item": "endreborn:entropy_crop",
+            "link_recipe": true,
+            "text": "Wild shard crops grow in the Entropy biome. Use silk touch to take a crop home. A ripe crop gives entropy shards.$(br2)Each growth stage uses about 33 chunk entropy, so a shard costs about 100. With no entropy, the crop does not grow. It can also spread to end stone for 25 entropy."
+        }
+    ]
+}

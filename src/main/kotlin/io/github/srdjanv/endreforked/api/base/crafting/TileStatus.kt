@@ -6,5 +6,6 @@ enum class TileStatus(val langKey: String) {
     FAILED("tile.status.gui.failed"),
     INVALID("tile.status.gui.invalid_recipe"),
     NOT_ENOUGH_ENTROPY("tile.status.gui.not_enough_entropy"),
+    WAITING_START("tile.status.gui.waiting_start"),
     RUNNING("tile.status.gui.running")
 }

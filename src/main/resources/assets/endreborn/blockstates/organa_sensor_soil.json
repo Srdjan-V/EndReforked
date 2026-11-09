@@ -1,0 +1,6 @@
+{
+    "variants": {
+        "powered=false": { "model": "endreborn:organa_sensor_soil" },
+        "powered=true": { "model": "endreborn:organa_sensor_soil" }
+    }
+}

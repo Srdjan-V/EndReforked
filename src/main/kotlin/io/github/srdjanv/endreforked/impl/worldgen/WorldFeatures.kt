@@ -41,6 +41,7 @@ class WorldFeatures(entries: Collection<WorldFeature>) : FrozenRegistry<WorldFea
             return when (feature) {
                 is Feature.Ore, is Feature.Bush, Feature.FlowerGeneration -> if (p.amount < 1) "amount must be at least 1" else null
                 is Feature.Sphere, is Feature.RadiusSurface, is Feature.Lake -> if (p.radius < 1) "radius must be at least 1" else null
+                is Feature.Geode -> if (p.radius < 3) "a geode needs a radius of at least 3" else null
                 is Feature.FilledSphere -> if (p.radius < 1 || p.fillRadius < 0) "needs radius >= 1 and fillRadius >= 0" else null
                 is Feature.Template -> null
             }
@@ -55,6 +56,12 @@ class WorldFeatures(entries: Collection<WorldFeature>) : FrozenRegistry<WorldFea
                     if (feature.replace.isEmpty()) "replace must not be empty" else if (bad(feature.outerChance)) "a chance is not in 0..100" else null
                 is Feature.RadiusSurface -> if (bad(feature.chance, feature.plantChance, feature.growChance)) "a chance is not in 0..100" else null
                 is Feature.Lake -> if (feature.depth < 1) "lake depth must be at least 1" else null
+                is Feature.Geode -> when {
+                    feature.replace.isEmpty() -> "replace must not be empty"
+                    feature.markerAmount < 0 -> "markerAmount must not be negative"
+                    feature.marker != null && feature.marker.block !is BlockBush -> "${feature.marker.block.registryName} is not a bush"
+                    else -> null
+                }
                 is Feature.Bush -> if (feature.block.block !is BlockBush) "${feature.block.block.registryName} is not a bush" else null
                 Feature.FlowerGeneration -> null
                 is Feature.Template ->
@@ -65,6 +72,16 @@ class WorldFeatures(entries: Collection<WorldFeature>) : FrozenRegistry<WorldFea
             }
         }
     }
+}
+
+/** The layers of a geode, from the outside to the inside. */
+enum class GeodeLayer { SHELL, LINING, AIR }
+
+/** The layer of a geode block that is [distance] from the centre of a geode with [radius]: the outer block layer is the shell, the next the lining, the rest air. */
+fun geodeLayer(distance: Double, radius: Int): GeodeLayer = when {
+    distance > radius - 1 -> GeodeLayer.SHELL
+    distance > radius - 2 -> GeodeLayer.LINING
+    else -> GeodeLayer.AIR
 }
 
 /** True when the feature may generate in this dimension. */

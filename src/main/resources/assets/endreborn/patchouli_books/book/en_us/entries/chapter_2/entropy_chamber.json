@@ -1,0 +1,17 @@
+{
+    "name": "Entropy Chamber",
+    "icon": "endreborn:entropy_chamber",
+    "category": "chapter_2",
+    "pages": [
+        {
+            "type": "spotlight",
+            "item": "endreborn:entropy_chamber",
+            "link_recipe": true,
+            "text": "The chamber uses entropy only for recipes. It has an item pipeline (1 slot, 1 fluid output tank) and a fluid pipeline (2 input tanks, 1 output tank)."
+        },
+        {
+            "type": "text",
+            "text": "Entropy fluid: 1 entropy shard gives 1,000 mB (0 entropy).$(br)Organa fluid: 4 Organa fruit give 1,000 mB (20 entropy).$(br)Ichor: 1,000 mB lava + 1,000 mB Organa fluid give 1,000 mB Ichor (100 entropy)."
+        }
+    ]
+}

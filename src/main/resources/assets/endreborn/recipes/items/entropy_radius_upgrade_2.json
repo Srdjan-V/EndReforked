@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " R ",
+        "IUI"
+    ],
+    "key": {
+        "R": {
+            "item": "endreborn:item_end_rune"
+        },
+        "I": {
+            "type": "forge:ore_dict",
+            "ore": "ingotInfused"
+        },
+        "U": {
+            "item": "endreborn:entropy_radius_upgrade_1"
+        }
+    },
+    "result": {
+        "item": "endreborn:entropy_radius_upgrade_2",
+        "count": 1
+    }
+}

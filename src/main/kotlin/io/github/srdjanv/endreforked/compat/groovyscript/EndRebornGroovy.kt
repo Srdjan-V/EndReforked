@@ -37,7 +37,7 @@ class EndRebornGroovy : GroovyPropertyContainer() {
         addProperty(MachineGroovy("EntropyChamber", MachineRecipeDefaults.ENTROPY_CHAMBER, machines))
         addProperty(MachineGroovy("EndForge", MachineRecipeDefaults.END_FORGE, machines))
         addProperty(MachineGroovy("Materializer", MachineRecipeDefaults.MATERIALIZER, machines))
-        addProperty(EntropyWandGroovy(layer(registries.wandConversions)))
+        addProperty(CorruptionConversionGroovy(layer(registries.corruptionConversions)))
         addProperty(FluidBlockInteractionGroovy(layer(registries.fluidBlockInteractions)))
         addProperty(FluidEntityInteractionGroovy(layer(registries.fluidEntityInteractions)))
         addProperty(WorldFeatureGroovy(layer(registries.worldFeatures)))

@@ -1,0 +1,19 @@
+{
+    "name": "Chunk Entropy",
+    "icon": "endreborn:entropy_shard",
+    "category": "entropy",
+    "pages": [
+        {
+            "type": "text",
+            "text": "Entropy is the energy of the dying End. Each chunk stores its own entropy. Entropy is not stored in items. Where you build is important.$(br2)This book shows the default content. A modpack can change recipes and rules."
+        },
+        {
+            "type": "text",
+            "text": "A chunk has 3 levels.$(br)Stable: less than 33 %. Machines run at normal speed.$(br)Charged: 33 to 80 %. Machines run 1.5 times faster and can give a bonus output. This is the best level.$(br)Critical: more than 80 %. Machines run 2 times faster, but they can overload. Critical events happen."
+        },
+        {
+            "type": "text",
+            "text": "Entropy goes slowly back to the base level of the biome. The Entropy biome has 85 %. Other biomes have 0 %.$(br2)Only 3 things add entropy: the Entropy Rift, a growing Organa flower and the Entropy Blaze."
+        }
+    ]
+}

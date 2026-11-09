@@ -1,0 +1,23 @@
+{
+    "name": "Radius Upgrades",
+    "icon": "endreborn:entropy_radius_upgrade_1",
+    "category": "chapter_3",
+    "pages": [
+        {
+            "type": "spotlight",
+            "item": "endreborn:entropy_radius_upgrade_1",
+            "link_recipe": true,
+            "text": "Upgrade II makes the radius 3x3 chunks. Use it in the Entropy Chamber and in the Materializer."
+        },
+        {
+            "type": "spotlight",
+            "item": "endreborn:entropy_radius_upgrade_2",
+            "link_recipe": true,
+            "text": "Upgrade III makes the radius 5x5 chunks."
+        },
+        {
+            "type": "text",
+            "text": "The radius sets where a recipe takes its entropy from. A recipe starts when the sum of the chunks in the radius is enough, so a recipe can cost more than one chunk holds. The fullest chunk pays first.$(br2)The level (speed, bonus, overload) still comes from the chunk of the machine."
+        }
+    ]
+}

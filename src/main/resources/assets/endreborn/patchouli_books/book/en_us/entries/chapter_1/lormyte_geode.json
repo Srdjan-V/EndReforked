@@ -1,0 +1,168 @@
+{
+    "name": "Lormyte Geode",
+    "icon": "endreborn:item_lormyte_crystal",
+    "category": "chapter_1",
+    "pages": [
+        {
+            "type": "text",
+            "text": "Geodes are only in the regular End. The shell is decorative lormyte. The lining is lormyte crystal blocks. The centre is hollow.$(br2)A patch of ripe dragonite bushes on the surface above the geode shows where it is. The bushes give dragonite berries."
+        },
+        {
+            "type": "multiblock",
+            "name": "A geode",
+            "multiblock": {
+                "pattern": [
+                    [
+                        "___________",
+                        "___________",
+                        "___________",
+                        "___________",
+                        "___________",
+                        "_____0_____",
+                        "___________",
+                        "___________",
+                        "___________",
+                        "___________",
+                        "___________"
+                    ],
+                    [
+                        "___________",
+                        "___________",
+                        "_____S_____",
+                        "___SSSSS___",
+                        "___SSSSS___",
+                        "__SSSLSSS__",
+                        "___SSSSS___",
+                        "___SSSSS___",
+                        "_____S_____",
+                        "___________",
+                        "___________"
+                    ],
+                    [
+                        "___________",
+                        "_____S_____",
+                        "___SSSSS___",
+                        "__SSLLLSS__",
+                        "__SLLLLLS__",
+                        "_SSLL_LLSS_",
+                        "__SLLLLLS__",
+                        "__SSLLLSS__",
+                        "___SSSSS___",
+                        "_____S_____",
+                        "___________"
+                    ],
+                    [
+                        "___________",
+                        "___SSSSS___",
+                        "__SSLLLSS__",
+                        "_SSL___LSS_",
+                        "_SL_____LS_",
+                        "_SL_____LS_",
+                        "_SL_____LS_",
+                        "_SSL___LSS_",
+                        "__SSLLLSS__",
+                        "___SSSSS___",
+                        "___________"
+                    ],
+                    [
+                        "___________",
+                        "___SSSSS___",
+                        "__SLLLLLS__",
+                        "_SL_____LS_",
+                        "_SL_____LS_",
+                        "_SL_____LS_",
+                        "_SL_____LS_",
+                        "_SL_____LS_",
+                        "__SLLLLLS__",
+                        "___SSSSS___",
+                        "___________"
+                    ],
+                    [
+                        "_____S_____",
+                        "__SSSLSSS__",
+                        "_SSLL_LLSS_",
+                        "_SL_____LS_",
+                        "_SL_____LS_",
+                        "SL_______LS",
+                        "_SL_____LS_",
+                        "_SL_____LS_",
+                        "_SSLL_LLSS_",
+                        "__SSSLSSS__",
+                        "_____S_____"
+                    ],
+                    [
+                        "___________",
+                        "___SSSSS___",
+                        "__SLLLLLS__",
+                        "_SL_____LS_",
+                        "_SL_____LS_",
+                        "_SL_____LS_",
+                        "_SL_____LS_",
+                        "_SL_____LS_",
+                        "__SLLLLLS__",
+                        "___SSSSS___",
+                        "___________"
+                    ],
+                    [
+                        "___________",
+                        "___SSSSS___",
+                        "__SSLLLSS__",
+                        "_SSL___LSS_",
+                        "_SL_____LS_",
+                        "_SL_____LS_",
+                        "_SL_____LS_",
+                        "_SSL___LSS_",
+                        "__SSLLLSS__",
+                        "___SSSSS___",
+                        "___________"
+                    ],
+                    [
+                        "___________",
+                        "_____S_____",
+                        "___SSSSS___",
+                        "__SSLLLSS__",
+                        "__SLLLLLS__",
+                        "_SSLL_LLSS_",
+                        "__SLLLLLS__",
+                        "__SSLLLSS__",
+                        "___SSSSS___",
+                        "_____S_____",
+                        "___________"
+                    ],
+                    [
+                        "___________",
+                        "___________",
+                        "_____S_____",
+                        "___SSSSS___",
+                        "___SSSSS___",
+                        "__SSSLSSS__",
+                        "___SSSSS___",
+                        "___SSSSS___",
+                        "_____S_____",
+                        "___________",
+                        "___________"
+                    ],
+                    [
+                        "___________",
+                        "___________",
+                        "___________",
+                        "___________",
+                        "___________",
+                        "_____S_____",
+                        "___________",
+                        "___________",
+                        "___________",
+                        "___________",
+                        "___________"
+                    ]
+                ],
+                "mapping": {
+                    "S": "endreborn:decorative_lormyte_block",
+                    "L": "endreborn:lormyte_crystal_block",
+                    "0": "endreborn:decorative_lormyte_block"
+                }
+            },
+            "enable_visualize": true
+        }
+    ]
+}

@@ -1,0 +1,25 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " R ",
+        "ISI"
+    ],
+    "key": {
+        "R": {
+            "item": "endreborn:item_end_rune"
+        },
+        "I": {
+            "type": "forge:ore_dict",
+            "ore": "ingotInfused"
+        },
+        "S": {
+            "item": "endreborn:lormyte_stabilizer",
+            "data": 1
+        }
+    },
+    "result": {
+        "item": "endreborn:lormyte_stabilizer",
+        "count": 1,
+        "data": 2
+    }
+}

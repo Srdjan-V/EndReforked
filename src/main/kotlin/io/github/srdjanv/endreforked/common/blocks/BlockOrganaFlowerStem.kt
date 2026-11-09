@@ -22,9 +22,10 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
 import net.minecraftforge.common.ForgeHooks
+import net.minecraftforge.fluids.BlockFluidBase
 import java.util.Random
 
-class BlockOrganaFlowerStem : BaseBlockCrops("organa_flower_stem", { setOf(ModBlocks.ORGANA_BLOCK) }) {
+class BlockOrganaFlowerStem : BaseBlockCrops("organa_flower_stem", { setOf(ModBlocks.ORGANA_BLOCK, ModBlocks.ORGANA_SENSOR_SOIL) }) {
 
     init {
         setTickRandomly(true)
@@ -40,8 +41,6 @@ class BlockOrganaFlowerStem : BaseBlockCrops("organa_flower_stem", { setOf(ModBl
     override fun isMaxAge(state: IBlockState) = state.getValue(AGE) >= 7
 
     override fun getMaxAge() = 7
-
-    fun isDead(state: IBlockState) = state.getValue(AGE) >= 9
 
     override fun getAgeProperty(): PropertyInteger = AGE
 
@@ -102,13 +101,17 @@ class BlockOrganaFlowerStem : BaseBlockCrops("organa_flower_stem", { setOf(ModBl
                 fruitPos = plantPos.offset(EnumFacing.Plane.HORIZONTAL.random(rand))
                 val soil = worldIn.getBlockState(fruitPos.down())
 
-                if (worldIn.isAirBlock(fruitPos) &&
+                // Rule E: a flower needs a source block of entropy fluid next to the stem. It is used up.
+                val fluidPos = EnumFacing.Plane.HORIZONTAL.map { plantPos.offset(it) }.firstOrNull {
+                    val fluid = worldIn.getBlockState(it)
+                    fluid.block === ModBlocks.FLUID_ENTROPY_BLOCK && fluid.getValue(BlockFluidBase.LEVEL) == 0
+                }
+
+                if (fluidPos != null && worldIn.isAirBlock(fruitPos) &&
                     soil.block.canSustainPlant(soil, worldIn, fruitPos.down(), EnumFacing.UP, this)
                 ) {
-                    val newState = state.withProperty(AGE, state.getValue(AGE) + 1)
-                    if (isDead(newState)) {
-                        worldIn.setBlockState(plantPos, ModBlocks.ORGANA_FLOWER_STEM_DEAD_BLOCK.defaultState, 2)
-                    } else worldIn.setBlockState(plantPos, newState, 2)
+                    worldIn.setBlockToAir(fluidPos)
+                    // The stem lives on: it stays at max age and grows the next flower after the old one is gone.
                     worldIn.setBlockState(fruitPos, FLOWER.defaultState)
                     worldIn.playEvent(1034, fruitPos, 0)
                 }

@@ -1,0 +1,15 @@
+{
+    "name": "The Organa Biome",
+    "icon": "endreborn:organa_block",
+    "category": "chapter_2",
+    "pages": [
+        {
+            "type": "text",
+            "text": "The Organa biome is about growth. It has Organa blocks and Organa end stone, Organa weed (it gives seeds), Organa plants (they give fruit), Organa fluid lakes and spores.$(br2)Wild Organa flowers are dormant. They add no entropy."
+        },
+        {
+            "type": "text",
+            "text": "Organa fruit: eat it to fly for a short time (flight 1). You also teleport.$(br2)Organa fluid makes you levitate. Be careful."
+        }
+    ]
+}

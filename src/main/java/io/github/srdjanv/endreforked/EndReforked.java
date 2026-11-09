@@ -1,6 +1,12 @@
 package io.github.srdjanv.endreforked;
 
-import java.util.Objects;
+import io.github.srdjanv.endreforked.common.CommonProxy;
+import io.github.srdjanv.endreforked.common.comands.EndRebornCommands;
+import io.github.srdjanv.endreforked.common.network.Network;
+import io.github.srdjanv.endreforked.compat.CompatManger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
@@ -23,14 +29,7 @@ import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.NotNull;
-
-import io.github.srdjanv.endreforked.common.CommonProxy;
-import io.github.srdjanv.endreforked.common.comands.EndRebornCommands;
-import io.github.srdjanv.endreforked.common.network.Network;
-import io.github.srdjanv.endreforked.compat.CompatManger;
+import java.util.Objects;
 
 @Mod(modid = Tags.MODID, name = Tags.MODNAME, version = Tags.VERSION, dependencies = Tags.MOD_DEPS)
 public class EndReforked {
@@ -39,14 +38,12 @@ public class EndReforked {
     public static final CreativeTabs ENDERTAB = new CreativeTabs("endertab") {
 
         @Override
-        public @NotNull ItemStack createIcon() {
+        public @NotNull
+        ItemStack createIcon() {
             return new ItemStack(Items.ENDER_PEARL);
         }
-    };
 
-    static {
-        FluidRegistry.enableUniversalBucket();
-    }
+    };
 
     public static Network NET;
 
@@ -54,8 +51,8 @@ public class EndReforked {
 
     private static CommonProxy proxy;
 
-    public static CommonProxy getProxy() {
-        return Objects.requireNonNull(proxy);
+    static {
+        FluidRegistry.enableUniversalBucket();
     }
 
     public EndReforked() {
@@ -68,13 +65,25 @@ public class EndReforked {
         MinecraftForge.EVENT_BUS.register(EndReforked.class);
     }
 
+    public static CommonProxy getProxy() {
+        return Objects.requireNonNull(proxy);
+    }
+
     // The client module is not visible to this module, so the client services are created by name
     private static CommonProxy newClientProxy(ModServices services) {
         try {
-            return (CommonProxy) Class.forName("io.github.srdjanv.endreforked.client.di.ClientServices").getMethod("create", ModServices.class)
-                    .invoke(null, services);
+            return (CommonProxy) Class.forName("io.github.srdjanv.endreforked.client.di.ClientServices")
+                .getMethod("create", ModServices.class)
+                .invoke(null, services);
         } catch (ReflectiveOperationException e) {
             throw new IllegalStateException("Failed to create the client services", e);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onConfigChangedEvent(ConfigChangedEvent.OnConfigChangedEvent event) {
+        if (event.getModID().equals(Tags.MODID)) {
+            ConfigManager.sync(Tags.MODID, Config.Type.INSTANCE);
         }
     }
 
@@ -114,10 +123,4 @@ public class EndReforked {
         evt.registerServerCommand(new EndRebornCommands());
     }
 
-    @SubscribeEvent
-    public static void onConfigChangedEvent(ConfigChangedEvent.OnConfigChangedEvent event) {
-        if (event.getModID().equals(Tags.MODID)) {
-            ConfigManager.sync(Tags.MODID, Config.Type.INSTANCE);
-        }
-    }
 }

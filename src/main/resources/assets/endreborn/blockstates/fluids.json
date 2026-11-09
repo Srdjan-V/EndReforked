@@ -11,10 +11,10 @@
         }
       }
     ],
-    "end_magma": [
+    "ichor": [
       {
         "custom": {
-          "fluid": "end_magma"
+          "fluid": "ichor"
         }
       }
     ],

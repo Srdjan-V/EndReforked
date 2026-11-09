@@ -8,7 +8,9 @@ import io.github.srdjanv.endreforked.api.worldgen.Step
 import io.github.srdjanv.endreforked.api.worldgen.WorldFeature
 import io.github.srdjanv.endreforked.common.blocks.BlockOrganaFlower
 import io.github.srdjanv.endreforked.common.registry.Registries
+import io.github.srdjanv.endreforked.impl.worldgen.GeodeLayer
 import io.github.srdjanv.endreforked.impl.worldgen.WorldFeatures
+import io.github.srdjanv.endreforked.impl.worldgen.geodeLayer
 import io.github.srdjanv.endreforked.impl.worldgen.isStructureChunk
 import io.github.srdjanv.endreforked.impl.worldgen.paramsAt
 import net.minecraft.block.BlockBush
@@ -75,6 +77,7 @@ class FeatureGenerator(private val registry: () -> WorldFeatures, private val lo
         when (val ft = f.feature) {
             is Feature.Ore -> ore(world, rand, ft, p, origin)
             is Feature.Sphere -> sphere(world, rand, ft, p, origin)
+            is Feature.Geode -> geode(world, rand, ft, p, origin)
             is Feature.FilledSphere -> filledSphere(world, rand, ft, p, origin)
             is Feature.RadiusSurface -> radiusSurface(world, rand, ft, p, origin)
             is Feature.Lake -> lake(world, rand, ft, p, origin)
@@ -97,6 +100,30 @@ class FeatureGenerator(private val registry: () -> WorldFeatures, private val lo
                 val alt = ft.alt
                 world.setBlockState(pos, if (alt != null && rand.nextInt(100) < ft.altChance) alt else ft.block)
             }
+        }
+    }
+
+    private fun geode(world: WorldServer, rand: Random, ft: Feature.Geode, p: GenParams, origin: BlockPos) {
+        val center = locate(world, rand, p, origin, RANDOM_HEIGHT) ?: return
+        val air = AIR.defaultState
+        forEachInSphere(center, p.radius) { pos ->
+            if (world.getBlockState(pos) !in ft.replace) return@forEachInSphere
+            world.setBlockState(pos, when (geodeLayer(center.getDistance(pos.x, pos.y, pos.z), p.radius)) {
+                GeodeLayer.SHELL -> ft.shell
+                GeodeLayer.LINING -> ft.lining
+                GeodeLayer.AIR -> air
+            }, 2)
+        }
+        // The marker: plants on the surface above the centre.
+        val marker = ft.marker?.takeIf { ft.markerAmount > 0 } ?: return
+        val block = marker.block as? BlockBush ?: return
+        repeat(ft.markerAmount) {
+            val dx = rand.nextInt(7) - 3
+            val dz = rand.nextInt(7) - 3
+            if (dx * dx + dz * dz > 9) return@repeat
+            val ground = surface(world, p.copy(minHeight = center.y), BlockPos(center.x + dx, 0, center.z + dz), Step.Surface()) ?: return@repeat
+            val at = ground.up()
+            if (world.isAirBlock(at) && block.canBlockStay(world, at, marker)) world.setBlockState(at, marker, 2)
         }
     }
 

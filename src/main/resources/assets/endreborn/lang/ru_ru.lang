@@ -4,19 +4,15 @@ itemGroup.endertab=Энд: Возрождение
 # Items -
 item.item_ingot_endorium.name=Эндориумовый слиток
 item.tungsten_ingot.name=Вольфрамовый слиток
-item.item_shard_obsidian.name=Обсидиановый осколок
-item.item_raw_endorium.name=Сырой эндориум
 item.item_end_essence.name=Эссенция края
 item.item_end_shard.name=Фрагмент Края
 item.item_end_rune.name=Скрижаль Края
 item.item_lormyte_crystal.name=Кристалл лормита
-item.item_ender_string.name=Нить жизни
 item.dragonite_tea.name=Драгонитовый чай
 item.item_angel_feather.name=Ангельское перо
 item.dragon_scales.name=Драконья чешуя
 item.entropy_shard.name=Осколок энтропии
 item.catalyst.name=Пыль обсидиана
-item.sword_shard.name=Часть сломанного меча
 item.ingot_infused.name=Заряженный эндориум
 
 # Blocks -
@@ -40,21 +36,18 @@ tile.end_stone_smooth_stairs.name=Полированные эндерняков�
 tile.end_bricks_wall.name=Эндерняковая ограда
 tile.end_stone_smooth_wall.name=Полированная эндерняковая ограда
 tile.purpur_wall.name=Пурпурная ограда
-tile.organa_liquid.name=Органическая жидкость
 tile.end_forge_block.name=Кузня пустоты
 tile.entropy_crop.name=Кластер осколков энтропии
 tile.materializer_block.name=Материализер
 tile.voidbloom_crop_withered.name=Увядший цветок Пустоты
 
 # Tools -
-item.entropy_wand.name=Посох энтропии
 
 #Armors
 
 #Food
 item.ender_flesh.name=Плоть эндера
 item.dragonite_berries.name=Ягоды драгонита
-item.chorus_soup.name=Настой из коруса
 
 #Entities
 entity.entropy_blaze.name=Энтропийный ифрит
@@ -74,14 +67,12 @@ enchantment.ender_core=Ядро Эндера
 enchantment.ender_killer=Убийца эндеров
 
 #Other
-tile.soup.tooltip=Имеет положительные эффекты
 tile.flesh.tooltip=Деликатес, который улучшает зрение
 tile.entropy_crop.tooltip=Осколки энтропии, которые медленно распространяются по мере роста
 tile.essence.tooltip=Вещество, появляющееся среди обсидиана
 tile.user.tooltip=Позволяет удваивать руды
 tile.tea.tooltip=Работает как и обычный корус
 tile.block_forge.tooltip=Жар этой кузни меняет свойства эндориума
-tile.wand.tooltip=Меняет некоторые блоки в их разрушенное состояние
 tile.catalyst.tooltip=Действует как катализатор
 container.entropy_user=Материализер
 
@@ -133,3 +124,19 @@ item.banner.endreborn_pearl.magenta=Сиреневый жемчуг
 item.banner.endreborn_pearl.orange=Оранжевый жемчуг
 
 #Advancements
+tile.ichor.name=Ichor
+fluid.ichor=Ichor
+tile.entropy_rift.name=Entropy Rift
+endreborn.jei.min_level=Needs a %s chunk
+tile.materializer.mode.auto=Mode: Auto
+tile.materializer.mode.manual=Mode: Manual
+tile.materializer.start=Start
+tile.materializer.ghost.on=Ghost: On
+tile.materializer.ghost.off=Ghost: Off
+tile.status.gui.waiting_start=Waiting for start
+tile.lormyte_stabilizer.name=Lormyte Stabilizer
+tile.lormyte_stabilizer.tier_1.name=Lormyte Stabilizer II
+tile.lormyte_stabilizer.tier_2.name=Lormyte Stabilizer III
+tile.organa_sensor_soil.name=Organa Sensor Soil
+modifier.endreborn_ender_pocket.name=Ender Pocket
+modifier.endreborn_ender_pocket.desc=Drops and XP go to your inventory, then to your ender chest (or the ender chest of your Ender Pouch)

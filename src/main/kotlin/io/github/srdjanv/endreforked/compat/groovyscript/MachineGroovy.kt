@@ -5,6 +5,7 @@ import com.cleanroommc.groovyscript.api.IIngredient
 import com.cleanroommc.groovyscript.helper.Alias
 import com.cleanroommc.groovyscript.helper.recipe.AbstractRecipeBuilder
 import com.cleanroommc.groovyscript.helper.ingredient.OreDictIngredient
+import io.github.srdjanv.endreforked.api.entropy.EntropyLevel
 import io.github.srdjanv.endreforked.api.machine.ItemIngredient
 import io.github.srdjanv.endreforked.api.machine.MachineRecipe
 import io.github.srdjanv.endreforked.api.machine.StructureSpec
@@ -54,6 +55,7 @@ class MachineRecipeBuilder(private val registry: MachineGroovy) : AbstractRecipe
     private var ticks = 0
     private var entropy = 0
     private var priority = 0
+    private var minLevel = EntropyLevel.STABLE
     private val events = ArrayList<WorldEvent>()
     private val items = ArrayList<ItemIngredient>()
 
@@ -62,6 +64,12 @@ class MachineRecipeBuilder(private val registry: MachineGroovy) : AbstractRecipe
     fun entropy(entropy: Int) = apply { this.entropy = entropy }
 
     fun priority(priority: Int) = apply { this.priority = priority }
+
+    /** The lowest chunk level that the recipe runs at: `'stable'` (default), `'charged'` or `'critical'`. */
+    fun minLevel(level: String) = apply {
+        val found = EntropyLevel.entries.firstOrNull { it.name.equals(level, ignoreCase = true) }
+        if (found == null) GroovyLog.msg("Unknown level {}, use stable, charged or critical", level).error().post() else minLevel = found
+    }
 
     /**
      * A world event, for the Materializer. At [atPercent] of the progress it triggers in [chance] percent, and needs a match of [structure].
@@ -112,6 +120,7 @@ class MachineRecipeBuilder(private val registry: MachineGroovy) : AbstractRecipe
                 entropy = entropy,
                 priority = priority,
                 worldEvents = events.toList(),
+                minLevel = minLevel,
             )
         }
     }

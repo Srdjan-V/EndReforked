@@ -1,0 +1,13 @@
+{
+    "name": "Плоть Края",
+    "icon": "endreborn:ender_flesh",
+    "category": "chapter_1",
+    "pages": [
+        {
+            "type": "spotlight",
+            "item": "endreborn:ender_flesh",
+            "link_recipe": true,
+            "text": "Создайте её из гнилой плоти и огненного порошка или получите от Наблюдателей. После еды вы получаете Глаза Края. Глаза Края останавливают атаки Хронологов."
+        }
+    ]
+}

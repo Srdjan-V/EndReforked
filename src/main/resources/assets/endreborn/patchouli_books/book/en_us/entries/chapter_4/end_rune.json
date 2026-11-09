@@ -1,0 +1,19 @@
+{
+    "name": "End Rune and Rune Block",
+    "icon": "endreborn:item_end_rune",
+    "category": "chapter_4",
+    "pages": [
+        {
+            "type": "spotlight",
+            "item": "endreborn:item_end_rune",
+            "link_recipe": true,
+            "text": "The End Rune needs 4 end shards (from Entropy Blazes) and 1 ender pearl."
+        },
+        {
+            "type": "spotlight",
+            "item": "endreborn:rune_block",
+            "link_recipe": true,
+            "text": "The rune block needs 4 purpur blocks, 1 End Rune and 1 End essence. It is the frame of the Materializer and the running cost of its structures."
+        }
+    ]
+}

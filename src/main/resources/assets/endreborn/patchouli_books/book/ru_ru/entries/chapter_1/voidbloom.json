@@ -1,0 +1,13 @@
+{
+    "name": "Пустоцвет",
+    "icon": "endreborn:voidbloom_crop",
+    "category": "chapter_1",
+    "pages": [
+        {
+            "type": "spotlight",
+            "item": "endreborn:voidbloom_crop",
+            "link_recipe": true,
+            "text": "Пустоцвет - это растение, на котором растёт жемчуг Края. Посадите семя на камень Края. Семя можно найти в сундуке обсерватории или купить у Исследователя Края."
+        }
+    ]
+}

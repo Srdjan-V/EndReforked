@@ -1,0 +1,19 @@
+{
+    "name": "Энтропийные крылья",
+    "icon": "endreborn:entropy_wings",
+    "category": "chapter_5",
+    "pages": [
+        {
+            "type": "spotlight",
+            "item": "endreborn:entropy_wings",
+            "link_recipe": true,
+            "text": "Для крыльев нужны 2 слитка настоя, 4 чешуи дракона, 2 ангельских пера и энтропийная ячейка (полёт 3). Они работают, когда вам нужно. Они вытягивают энтропию из вашего чанка и из ячеек в инвентаре.$(br2)С Baubles можно создать кольцо крыльев из крыльев и обратно."
+        },
+        {
+            "type": "spotlight",
+            "item": "endreborn:item_angel_feather",
+            "link_recipe": true,
+            "text": "Для ангельского пера нужны перо и дыхание дракона."
+        }
+    ]
+}

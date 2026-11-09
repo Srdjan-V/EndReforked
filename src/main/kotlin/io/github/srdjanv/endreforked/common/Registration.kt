@@ -39,6 +39,7 @@ class Registration : Initializer {
         tile(EndForgeTile::class.java, "endforge_Tile")
         tile(SmallEntropyBatteryTile::class.java, "small_entropy_battery_tile")
         tile(EntropyChamberTile::class.java, "entropy_chamber_tile")
+        tile(LormyteStabilizerTile::class.java, "lormyte_stabilizer_tile")
 
     }
 
@@ -63,12 +64,12 @@ class Registration : Initializer {
         val path = tea.registryName!!.path
         val ingredients = NonNullList.from(
             Ingredient.EMPTY,
-            Ingredient.fromStacks(ItemStack(Items.GLASS_BOTTLE, 2)),
+            Ingredient.fromStacks(ItemStack(Items.GLASS_BOTTLE)),
             Ingredient.fromStacks(ItemStack(ModItems.DRAGONITE_BERRIES)),
             Ingredient.fromStacks(ItemStack(ModItems.ORGANA_FRUIT)),
         )
         event.registry.register(
-            ShapelessRecipes(path, ItemStack(tea, 2), ingredients).setRegistryName(ResourceLocation(Tags.MODID, path)),
+            ShapelessRecipes(path, ItemStack(tea), ingredients).setRegistryName(ResourceLocation(Tags.MODID, path)),
         )
     }
 
@@ -99,7 +100,6 @@ class Registration : Initializer {
         OreDictionary.registerOre("oreTungsten", ModBlocks.TUNGSTEN_END_ORE)
 
         OreDictionary.registerOre("dustObsidian", ModItems.CATALYST)
-        OreDictionary.registerOre("shardObsidian", ModItems.SHARD_OBSIDIAN)
         OreDictionary.registerOre("shardLormyte", ModItems.LORMYTE_CRYSTAL)
         OreDictionary.registerOre("essence", ModItems.END_ESSENCE)
     }

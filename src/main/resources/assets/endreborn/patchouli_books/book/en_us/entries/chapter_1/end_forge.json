@@ -1,0 +1,17 @@
+{
+    "name": "End Forge",
+    "icon": "endreborn:end_forge_block",
+    "category": "chapter_1",
+    "pages": [
+        {
+            "type": "spotlight",
+            "item": "endreborn:end_forge_block",
+            "link_recipe": true,
+            "text": "The End Forge has 2 item slots and 1 fluid tank. It needs no entropy for the first recipe."
+        },
+        {
+            "type": "text",
+            "text": "Endorium: 250 mB lava + 2 ender pearls + 4 end stone gives 1 endorium ingot (0 entropy, 10 s).$(br)Infused ingot: 250 mB Ichor + 1 endorium gives 1 infused ingot (40 entropy, 7.5 s).$(br)More endorium: 250 mB Ichor + 2 ender pearls + 4 end stone gives 4 endorium ingots (40 entropy, 7.5 s).$(br2)Look at the recipes in JEI."
+        }
+    ]
+}

@@ -4,6 +4,9 @@ import io.github.srdjanv.endreforked.EndReforked
 import io.github.srdjanv.endreforked.api.capabilities.entropy.EntropyChunk
 import io.github.srdjanv.endreforked.api.entropy.EntropyLevel
 import io.github.srdjanv.endreforked.common.ModBioms
+import io.github.srdjanv.endreforked.common.ModBlocks
+import io.github.srdjanv.endreforked.common.blocks.BlockLormyteStabilizer
+import io.github.srdjanv.endreforked.common.entropy.Stabilizers
 import io.github.srdjanv.endreforked.common.entropy.CriticalEvents
 import io.github.srdjanv.endreforked.common.entropy.EntropyTuning
 import io.github.srdjanv.endreforked.common.capabilities.entropy.CapabilityEntropyHandler
@@ -16,8 +19,50 @@ import java.util.Optional
 import java.util.concurrent.ConcurrentHashMap
 
 class EntropyWorld(private val world: World) {
+    private companion object {
+        const val MAX_TIER = BlockLormyteStabilizer.MAX_TIER
+    }
+
     // one map per world, so dimensions never share entries; dropped with the world
     private val chunks = ConcurrentHashMap<Long, EntropyChunk>()
+
+    // The Lormyte Stabilizers of the loaded chunks, by the chunk that holds the crystal. Filled by LormyteStabilizerTile.
+    private val stabilizers = ConcurrentHashMap<Long, MutableSet<BlockPos>>()
+
+    fun addStabilizer(pos: BlockPos) {
+        stabilizers.computeIfAbsent(ChunkPos.asLong(pos.x shr 4, pos.z shr 4)) { ConcurrentHashMap.newKeySet() }.add(pos.toImmutable())
+    }
+
+    fun removeStabilizer(pos: BlockPos) {
+        val key = ChunkPos.asLong(pos.x shr 4, pos.z shr 4)
+        stabilizers[key]?.let { set ->
+            set.remove(pos)
+            if (set.isEmpty()) stabilizers.remove(key, set)
+        }
+    }
+
+    /** The crystals that cover the chunk, on or off. A tier covers 0, 1 or 2 chunks around its own. */
+    fun stabilizersCovering(chunkX: Int, chunkZ: Int): List<BlockPos> {
+        val found = ArrayList<BlockPos>()
+        for (dx in -MAX_TIER..MAX_TIER) for (dz in -MAX_TIER..MAX_TIER) {
+            val crystals = stabilizers[ChunkPos.asLong(chunkX + dx, chunkZ + dz)] ?: continue
+            for (pos in crystals) {
+                if (!world.isBlockLoaded(pos)) continue
+                val state = world.getBlockState(pos)
+                if (state.block === ModBlocks.LORMYTE_STABILIZER && Stabilizers.covers(state.getValue(BlockLormyteStabilizer.TIER), dx, dz)) found += pos
+            }
+        }
+        return found
+    }
+
+    /** True when a crystal that is on (not powered) covers the chunk, and the chunk is not in the Entropy biome. */
+    fun isCapped(chunkX: Int, chunkZ: Int): Boolean {
+        if (stabilizers.isEmpty() || inEntropyBiome(chunkX, chunkZ)) return false
+        return stabilizersCovering(chunkX, chunkZ).any { !world.getBlockState(it).getValue(BlockLormyteStabilizer.POWERED) }
+    }
+
+    /** The biome of the middle of the chunk decides, not the rift. */
+    fun inEntropyBiome(chunkX: Int, chunkZ: Int) = world.getBiome(BlockPos((chunkX shl 4) + 8, 0, (chunkZ shl 4) + 8)) === ModBioms.ENTROPY_BIOME
 
     fun getEntropyChunk(chunkX: Int, chunkZ: Int): Optional<EntropyChunk> =
         if (world.isAreaLoaded(BlockPos(chunkX shl 4, 0, chunkZ shl 4), 0)) {
@@ -55,6 +100,8 @@ class EntropyWorld(private val world: World) {
             val pos = BlockPos(x, world.getHeight(x, z), z)
             chunk.drainEntropy(event.entropyCost, false)
             world.getChunk(chunk.dimPos.chunkPosX, chunk.dimPos.chunkPosZ).markDirty()
+            // An absorbed event costs the entropy but does not happen.
+            if (Stabilizers.absorb(world, pos)) continue
             CriticalEvents.run(world, event, pos)
         }
     }

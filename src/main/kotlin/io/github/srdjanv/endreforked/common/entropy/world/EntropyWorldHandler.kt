@@ -32,6 +32,12 @@ object EntropyWorldHandler {
         .map { EntropyTuning.level(it.currentEntropy, it.maxEntropy) }
         .orElse(EntropyLevel.STABLE)
 
+    /** True when a Lormyte Stabilizer that is on caps the entropy of this chunk. */
+    fun isCapped(world: World, chunkX: Int, chunkZ: Int): Boolean = entropyWorld(world)?.isCapped(chunkX, chunkZ) ?: false
+
+    /** The entropy world of [world], or null on a client or when it is not loaded. */
+    fun entropyWorld(world: World): EntropyWorld? = getEntropyWorld(world.provider.dimension)
+
     private fun getEntropyWorld(dim: Int): EntropyWorld? {
         val entropyWorld = worlds[dim] ?: return null
         if (!DimensionManager.isWorldQueuedToUnload(dim)) return entropyWorld

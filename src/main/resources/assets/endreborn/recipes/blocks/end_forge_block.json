@@ -1,0 +1,27 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "TOT",
+        "EFE",
+        "TOT"
+    ],
+    "key": {
+        "T": {
+            "type": "forge:ore_dict",
+            "ore": "ingotTungsten"
+        },
+        "O": {
+            "item": "minecraft:obsidian"
+        },
+        "E": {
+            "item": "endreborn:item_end_essence"
+        },
+        "F": {
+            "item": "minecraft:furnace"
+        }
+    },
+    "result": {
+        "item": "endreborn:end_forge_block",
+        "count": 1
+    }
+}

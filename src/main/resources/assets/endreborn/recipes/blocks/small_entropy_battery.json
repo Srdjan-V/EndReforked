@@ -1,0 +1,28 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "TST",
+        "IBI",
+        "TST"
+    ],
+    "key": {
+        "T": {
+            "type": "forge:ore_dict",
+            "ore": "ingotTungsten"
+        },
+        "S": {
+            "item": "endreborn:entropy_shard"
+        },
+        "I": {
+            "type": "forge:ore_dict",
+            "ore": "ingotInfused"
+        },
+        "B": {
+            "item": "endreborn:lormyte_crystal_block"
+        }
+    },
+    "result": {
+        "item": "endreborn:small_entropy_battery",
+        "count": 1
+    }
+}

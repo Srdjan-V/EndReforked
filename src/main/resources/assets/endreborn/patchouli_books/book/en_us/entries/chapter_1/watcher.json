@@ -1,0 +1,11 @@
+{
+    "name": "Watcher",
+    "icon": "endreborn:item_end_essence",
+    "category": "chapter_1",
+    "pages": [
+        {
+            "type": "text",
+            "text": "The Watcher lives in the regular End and in the Organa biome. It is also rare on Overworld plains. It follows and watches players. It drops ender pearls and ender flesh.$(br2)An enderman that falls into entropy fluid becomes a Watcher. This makes a Watcher farm."
+        }
+    ]
+}

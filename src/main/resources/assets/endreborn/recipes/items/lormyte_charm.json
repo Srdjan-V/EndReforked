@@ -1,9 +1,21 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": [" L ", "LEL", " L "],
-  "key": {
-    "L": {"item": "endreborn:item_lormyte_crystal"},
-    "E": {"item": "endreborn:item_ingot_endorium"}
-  },
-  "result": {"item": "endreborn:lormyte_charm", "count": 1}
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " L ",
+        "LEL",
+        " L "
+    ],
+    "key": {
+        "L": {
+            "item": "endreborn:item_lormyte_crystal"
+        },
+        "E": {
+            "type": "forge:ore_dict",
+            "ore": "ingotEndorium"
+        }
+    },
+    "result": {
+        "item": "endreborn:lormyte_charm",
+        "count": 1
+    }
 }

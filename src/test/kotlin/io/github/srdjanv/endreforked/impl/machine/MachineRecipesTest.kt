@@ -1,7 +1,9 @@
 package io.github.srdjanv.endreforked.impl.machine
 
+import io.github.srdjanv.endreforked.api.entropy.EntropyLevel
 import io.github.srdjanv.endreforked.api.machine.ItemIngredient
 import io.github.srdjanv.endreforked.api.machine.MachineRecipe
+import io.github.srdjanv.endreforked.wire.s2c.RegistrySnapshot
 import net.minecraft.init.Blocks
 import net.minecraft.init.Bootstrap
 import net.minecraft.item.ItemStack
@@ -108,6 +110,37 @@ class MachineRecipesTest {
         assertEquals(r, recipes.find(chamber, listOf(endStone()), listOf(FluidStack(lava, 100)))?.recipe)
         assertNull(recipes.find(chamber, listOf(endStone()), emptyList())) // an item-only pipeline never finds it
         assertNull(recipes.find(chamber, emptyList(), listOf(FluidStack(lava, 100))))
+    }
+
+    @Test
+    fun anItemRecipeWithAFluidOutputNeedsNoFluidTank() {
+        val r = MachineRecipe(
+            ResourceLocation("test", "shard"), chamber, listOf(need(1)),
+            fluidOutputs = listOf(FluidStack(lava, 1000)), ticks = 10,
+        )
+        val recipes = MachineRecipes(listOf(r))
+        assertEquals(r, recipes.find(chamber, listOf(endStone()), emptyList())?.recipe)
+        assertTrue(r.itemOutputs.isEmpty())
+    }
+
+    @Test
+    fun twoFluidInputsNeedBothTanks() {
+        val r = recipe("ichor", fluids = listOf(FluidStack(lava, 1000), FluidStack(water, 1000)))
+        val recipes = MachineRecipes(listOf(r))
+        val match = recipes.find(chamber, emptyList(), listOf(FluidStack(water, 1500), FluidStack(lava, 1000)))
+        assertArrayEquals(intArrayOf(1000, 1000), match?.fluidsTaken)
+        assertNull(recipes.find(chamber, emptyList(), listOf(FluidStack(lava, 1000), null)))
+        assertNull(recipes.find(chamber, emptyList(), listOf(FluidStack(lava, 1000), FluidStack(water, 999))))
+        assertNull(recipes.find(chamber, emptyList(), listOf(FluidStack(lava, 2000)))) // one tank of one fluid is not enough
+    }
+
+    @Test
+    fun theMinimumLevelSurvivesTheWire() {
+        val r = recipe("a", listOf(need(1))).copy(minLevel = EntropyLevel.CRITICAL)
+        val snapshot = MachineRecipes(listOf(r)).toSnapshot()
+        val back = RegistrySnapshot.ADAPTER.decode(RegistrySnapshot.ADAPTER.encode(snapshot)).toMachineRecipes()!!
+        assertEquals(EntropyLevel.CRITICAL, back.single().minLevel)
+        assertEquals(EntropyLevel.STABLE, recipe("b").minLevel)
     }
 
     @Test

@@ -1,6 +1,7 @@
 package io.github.srdjanv.endreforked.compat.jei
 
 import com.cleanroommc.modularui.utils.Color
+import io.github.srdjanv.endreforked.api.entropy.EntropyLevel
 import io.github.srdjanv.endreforked.api.machine.ItemIngredient
 import io.github.srdjanv.endreforked.api.machine.MachineRecipe
 import io.github.srdjanv.endreforked.utils.LangUtil
@@ -27,11 +28,15 @@ class MachineRecipeWrapper private constructor(
 
     override fun drawInfo(minecraft: Minecraft, recipeWidth: Int, recipeHeight: Int, mouseX: Int, mouseY: Int) {
         if (recipe.entropy > 0) minecraft.fontRenderer.drawString(recipe.entropy.toString(), 76, 47, Color.argb(128, 128, 128, 1))
+        if (recipe.minLevel != EntropyLevel.STABLE) {
+            val level = LangUtil.translateToLocal("hud.entropy.level." + recipe.minLevel.name.lowercase())
+            minecraft.fontRenderer.drawString(LangUtil.translateToLocal("endreborn.jei.min_level").format(level), 2, 2, Color.argb(128, 128, 128, 1))
+        }
     }
 
     override fun getTooltipStrings(mouseX: Int, mouseY: Int): List<String> {
         if (recipe.entropy > 0 && mouseX in 73..84 && mouseY in 44..55) {
-            return listOf(LangUtil.translateToLocal("endreborn.jei.entropy_wand.item_cost"))
+            return listOf(LangUtil.translateToLocal("endreborn.jei.entropy_cost"))
         }
         return super.getTooltipStrings(mouseX, mouseY)
     }

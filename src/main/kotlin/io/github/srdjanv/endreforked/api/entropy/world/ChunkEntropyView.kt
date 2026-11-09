@@ -61,15 +61,21 @@ class ChunkEntropyView(
     override val maxEntropy: Int get() = view.sumOf { it.maxEntropy }
     override val currentEntropy: Int get() = view.sumOf { it.currentEntropy }
 
-    override fun induceEntropy(entropy: Int, simulate: Boolean) = distribute(entropy, simulate) { chunk, left -> chunk.induceEntropy(left, simulate) }
+    /** Induces into the emptiest chunk first (not overloaded ones first). */
+    override fun induceEntropy(entropy: Int, simulate: Boolean) =
+        distribute(entropy, simulate, sortedEntropies) { chunk, left -> chunk.induceEntropy(left, simulate) }
 
-    override fun drainEntropy(entropy: Int, simulate: Boolean) = distribute(entropy, simulate) { chunk, left -> chunk.drainEntropy(left, simulate) }
+    /** Drains the fullest chunk first, so a drainer pulls critical chunks down first. */
+    override fun drainEntropy(entropy: Int, simulate: Boolean): Int {
+        buildView()
+        return distribute(entropy, simulate, sortedEntropies.sortedByDescending { it.currentEntropy }) { chunk, left -> chunk.drainEntropy(left, simulate) }
+    }
 
-    /** Offers [entropy] to each chunk in order, then drains what is left from the chunk references. Returns what was accepted. */
-    private inline fun distribute(entropy: Int, simulate: Boolean, first: (EntropyChunk, Int) -> Int): Int {
+    /** Offers [entropy] to each chunk of [order], then drains what is left from the chunk references. Returns what was accepted. */
+    private inline fun distribute(entropy: Int, simulate: Boolean, order: List<EntropyChunk>, first: (EntropyChunk, Int) -> Int): Int {
         buildView()
         var left = entropy
-        for (chunk in sortedEntropies) {
+        for (chunk in order) {
             if (left <= 0) break
             left -= first(chunk, left)
         }

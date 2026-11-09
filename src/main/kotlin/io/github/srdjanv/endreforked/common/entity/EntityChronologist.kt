@@ -1,6 +1,9 @@
 package io.github.srdjanv.endreforked.common.entity
 
+import io.github.srdjanv.endreforked.api.entropy.EntropyLevel
+import io.github.srdjanv.endreforked.common.LootHandler
 import io.github.srdjanv.endreforked.common.ModPotions
+import io.github.srdjanv.endreforked.common.entropy.world.EntropyWorldHandler
 import net.minecraft.entity.SharedMonsterAttributes
 import net.minecraft.entity.ai.*
 import net.minecraft.entity.monster.EntityEndermite
@@ -12,7 +15,6 @@ import net.minecraft.util.SoundEvent
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.MathHelper
 import net.minecraft.world.World
-import net.minecraft.world.storage.loot.LootTableList
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 
@@ -37,7 +39,11 @@ class EntityChronologist(world: World) : EndEntity(world) {
 
     override fun getEyeHeight() = 2.55f
 
-    override fun getLootTable(): ResourceLocation = LootTableList.ENTITIES_ENDERMAN
+    override fun getLootTable(): ResourceLocation = LootHandler.CHRONOLOGIST
+
+    /** It only spawns in critical chunks. */
+    override fun getCanSpawnHere() =
+        super.getCanSpawnHere() && EntropyWorldHandler.levelAt(world.provider.dimension, position) == EntropyLevel.CRITICAL
 
     override fun getAmbientSound(): SoundEvent =
         if (isScreaming) SoundEvents.ENTITY_ENDERMEN_SCREAM else SoundEvents.ENTITY_ENDERMEN_AMBIENT

@@ -1,0 +1,22 @@
+{
+    "variants": {
+        "powered=false,tier=0": {
+            "model": "endreborn:lormyte_stabilizer_0"
+        },
+        "powered=true,tier=0": {
+            "model": "endreborn:lormyte_stabilizer_0"
+        },
+        "powered=false,tier=1": {
+            "model": "endreborn:lormyte_stabilizer_1"
+        },
+        "powered=true,tier=1": {
+            "model": "endreborn:lormyte_stabilizer_1"
+        },
+        "powered=false,tier=2": {
+            "model": "endreborn:lormyte_stabilizer_2"
+        },
+        "powered=true,tier=2": {
+            "model": "endreborn:lormyte_stabilizer_2"
+        }
+    }
+}

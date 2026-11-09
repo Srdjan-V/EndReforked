@@ -14,8 +14,10 @@ class LootHandler : Initializer {
     companion object {
         @JvmField val ENTROPY_BLAZE = ResourceLocation(Tags.MODID, "entities/entropy_blaze")
         @JvmField val WATCHER = ResourceLocation(Tags.MODID, "entities/watcher")
+        @JvmField val CHRONOLOGIST = ResourceLocation(Tags.MODID, "entities/chronologist")
+        @JvmField val OBSERVATORY = ResourceLocation(Tags.MODID, "chests/observatory")
+        @JvmField val END_SHIPWRECK = ResourceLocation(Tags.MODID, "chests/end_shipwreck")
 
-        // TODO: 08/02/2024 add shipWreck loot table
         private val INJECTED_CHEST_TABLES = listOf(
             "abandoned_mineshaft", "desert_pyramid", "end_city_treasure", "jungle_temple", "nether_bridge",
             "village_blacksmith",
@@ -39,7 +41,7 @@ class LootHandler : Initializer {
     }
 
     override fun preInit(event: FMLPreInitializationEvent) {
-        listOf(ENTROPY_BLAZE, WATCHER).forEach(LootTableList::register)
+        listOf(ENTROPY_BLAZE, WATCHER, CHRONOLOGIST, OBSERVATORY, END_SHIPWRECK).forEach(LootTableList::register)
     }
 
     @SubscribeEvent

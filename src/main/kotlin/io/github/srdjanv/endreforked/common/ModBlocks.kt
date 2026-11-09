@@ -2,7 +2,7 @@ package io.github.srdjanv.endreforked.common
 
 import io.github.srdjanv.endreforked.common.blocks.*
 import io.github.srdjanv.endreforked.common.blocks.base.BlockEndBase
-import io.github.srdjanv.endreforked.common.fluids.blocks.BlockFluidEndMagma
+import io.github.srdjanv.endreforked.common.fluids.blocks.BlockFluidIchor
 import io.github.srdjanv.endreforked.common.fluids.blocks.BlockFluidEntropy
 import io.github.srdjanv.endreforked.common.fluids.blocks.BlockFluidOrgana
 import io.github.srdjanv.endreforked.utils.models.IAsset
@@ -15,15 +15,17 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 object ModBlocks {
     private val BLOCKS = DeferredRegistry(this, Block::class.java)
 
+    /** True for the blocks Organa plants grow on: the Organa block and the sensor soil. */
+    @JvmStatic fun isOrganaSoil(block: Block) = block === ORGANA_BLOCK || block === ORGANA_SENSOR_SOIL
+
     @get:JvmStatic val ENTROPY_LANTERN by BLOCKS.register { EntropyLantern("entropy_lantern_block") }
 
     @get:JvmStatic val OBSIDIAN_ESSENCE_ORE by BLOCKS.register(::BlockObsidianEssence)
 
     @get:JvmStatic val ENTROPY_END_STONE by BLOCKS.register(::BlockEntropyEndStone)
+    @get:JvmStatic val ENTROPY_RIFT by BLOCKS.register(::BlockEntropyRift)
     @get:JvmStatic val ENTROPY_FIRE by BLOCKS.register(::BlockEntropyFire)
     @get:JvmStatic val END_CORAL by BLOCKS.register(::BlockEndCoral)
-
-    @get:JvmStatic val END_MAGMA_BLOCK by BLOCKS.register(::BlockOrganaLiquid)
 
     @get:JvmStatic val LORMYTE_CRYSTAL_BLOCK by BLOCKS.register { BlockEndBase("lormyte_crystal_block", Material.ROCK) }
     @get:JvmStatic val DECORATIVE_LORMYTE_BLOCK by BLOCKS.register { BlockEndBase("decorative_lormyte_block", Material.ROCK) }
@@ -40,6 +42,7 @@ object ModBlocks {
     @get:JvmStatic val MATERIALIZER_BLOCK by BLOCKS.register { BlockMaterializer("materializer_block") }
     @get:JvmStatic val SMALL_ENTROPY_BATTERY_BLOCK by BLOCKS.register(::BlockSmallEntropyBattery)
     @get:JvmStatic val ENTROPY_CHAMBER by BLOCKS.register(::BlockEntropyChamber)
+    @get:JvmStatic val LORMYTE_STABILIZER by BLOCKS.register(::BlockLormyteStabilizer)
 
     @get:JvmStatic val RUNE_BLOCK by BLOCKS.register { BlockRune("rune_block", Material.ROCK) }
 
@@ -55,12 +58,13 @@ object ModBlocks {
     @get:JvmStatic val ORGANA_SPORE_BLOCK by BLOCKS.register(::BlockOrganaSpore)
 
     // fluids
-    @get:JvmStatic val FLUID_END_MAGMA_BLOCK by BLOCKS.register(::BlockFluidEndMagma)
+    @get:JvmStatic val FLUID_ICHOR_BLOCK by BLOCKS.register(::BlockFluidIchor)
     @get:JvmStatic val FLUID_ENTROPY_BLOCK by BLOCKS.register(::BlockFluidEntropy)
     @get:JvmStatic val FLUID_ORGANA_BLOCK by BLOCKS.register(::BlockFluidOrgana)
 
     @get:JvmStatic val ORGANA_BLOCK by BLOCKS.register(::BlockOrgana)
     @get:JvmStatic val ORGANA_END_STONE_BLOCK by BLOCKS.register(::BlockOrganaEndStone)
+    @get:JvmStatic val ORGANA_SENSOR_SOIL by BLOCKS.register(::BlockOrganaSensorSoil)
 
     @get:JvmStatic val ORGANA_FLOWER_BLOCK by BLOCKS.register(::BlockOrganaFlower)
     @get:JvmStatic val ORGANA_PLANT_BLOCK by BLOCKS.register(::BlockOrganaPlant)

@@ -17,7 +17,7 @@ import net.minecraft.world.World
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 
-/** Carries entropy in its NBT. Use fills it from the chunk, sneak + use empties it into the chunk. */
+/** Carries entropy in its NBT. Use takes entropy from the chunk into the cell. The cell cannot give it back. */
 class ItemEntropyCell : ItemBase("entropy_cell") {
     init {
         maxStackSize = 1
@@ -28,18 +28,10 @@ class ItemEntropyCell : ItemBase("entropy_cell") {
         if (world.isRemote) return ActionResult(EnumActionResult.SUCCESS, stack)
         val view = EntropyChunkReader.ofEntity(player, EntropyRadius.ONE).entropyView
         val content = content(stack)
-        val moved: Int
-        if (player.isSneaking) {
-            moved = EntropyCell.empty(content, view.induceEntropy(content, true))
-            if (moved > 0) view.induceEntropy(moved, false)
-            setContent(stack, content - moved)
-        } else {
-            val want = EntropyCell.fill(content, EntropyTuning.cellCapacity, EntropyTuning.cellCapacity)
-            moved = if (want > 0) view.drainEntropy(want, false) else 0
-            setContent(stack, content + moved)
-        }
-        val key = if (player.isSneaking) "entropy_cell.emptied" else "entropy_cell.filled"
-        player.sendStatusMessage(TextComponentTranslation(key, moved, content(stack), EntropyTuning.cellCapacity), true)
+        val want = EntropyCell.fill(content, EntropyTuning.cellCapacity, EntropyTuning.cellCapacity)
+        val moved = if (want > 0) view.drainEntropy(want, false) else 0
+        setContent(stack, content + moved)
+        player.sendStatusMessage(TextComponentTranslation("entropy_cell.filled", moved, content(stack), EntropyTuning.cellCapacity), true)
         return ActionResult(EnumActionResult.SUCCESS, stack)
     }
 

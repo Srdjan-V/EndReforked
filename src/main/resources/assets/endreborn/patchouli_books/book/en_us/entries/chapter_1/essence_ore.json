@@ -1,0 +1,13 @@
+{
+    "name": "Essence Ore",
+    "icon": "endreborn:essence_ore",
+    "category": "chapter_1",
+    "pages": [
+        {
+            "type": "spotlight",
+            "item": "endreborn:essence_ore",
+            "link_recipe": true,
+            "text": "Essence ore grows on obsidian pillars in the End. It drops End essence. You need End essence for the End Forge and for rune blocks."
+        }
+    ]
+}

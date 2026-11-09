@@ -49,10 +49,10 @@ message RegistrySnapshot {
   string registry = 1; // registry id, for example endreborn:machine_recipes
   oneof entries {
     MachineRecipes machine_recipes = 2;
-    WandConversions wand_conversions = 3;
     FluidBlockInteractions fluid_block_interactions = 4;
     FluidEntityInteractions fluid_entity_interactions = 5;
   }
+  reserved 3; // wand_conversions, removed
 }
 
 message MachineRecipes {
@@ -70,6 +70,7 @@ message MachineRecipe {
   int32 entropy = 8;
   int32 priority = 9;
   repeated WorldEvent world_events = 10;
+  int32 min_level = 11; // EntropyLevel ordinal, 0 stable
 }
 
 // A world event of a machine recipe, see api WorldEvent.
@@ -96,24 +97,6 @@ message DropItemAction {
 }
 
 // World interaction registries, see api WorldInteraction.kt.
-message WandConversions {
-  repeated WandConversion conversions = 1;
-}
-
-message WandConversion {
-  string id = 1;
-  BlockSpec match = 2;
-  BlockSpec result = 3;
-  optional int32 item_damage = 4; // not set: the server config value
-  int32 priority = 5;
-  repeated WorldEffect effects = 6;
-}
-
-enum WorldEffect {
-  WORLD_EFFECT_UNKNOWN = 0;
-  FLINT_SOUND = 1;
-}
-
 message FluidBlockInteractions {
   repeated FluidBlockInteraction interactions = 1;
 }

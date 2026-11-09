@@ -6,12 +6,11 @@ import crafttweaker.api.block.IBlockStateMatcher
 import crafttweaker.api.item.IItemStack
 import crafttweaker.api.liquid.ILiquidStack
 import crafttweaker.api.minecraft.CraftTweakerMC
+import io.github.srdjanv.endreforked.api.world.CorruptionConversion
 import io.github.srdjanv.endreforked.api.world.EntityResult
 import io.github.srdjanv.endreforked.api.world.FluidBlockInteraction
 import io.github.srdjanv.endreforked.api.world.FluidEntityInteraction
 import io.github.srdjanv.endreforked.api.world.ITEM_ENTITY
-import io.github.srdjanv.endreforked.api.world.WandConversion
-import io.github.srdjanv.endreforked.api.world.WorldEffect
 import io.github.srdjanv.endreforked.compat.scripting.removeByEntity
 import io.github.srdjanv.endreforked.compat.scripting.removeByFluid
 import io.github.srdjanv.endreforked.compat.scripting.removeByInput
@@ -23,37 +22,31 @@ import stanhebben.zenscript.annotations.ZenMethod
 // The script API of the world interaction registries. An input block is `<blockstate:minecraft:log:variant=oak>` (the properties must match)
 // or `<blockstate:minecraft:log>.matchBlock()` (every state matches). An output block is a block state. An id argument is `namespace:path`.
 
-/** `mods.endreborn.EntropyWand`: what the Entropy Wand does to a block. */
+/** `mods.endreborn.CorruptionConversion`: what the Corruption critical event does to a block. */
 @ZenRegister
-@ZenClass("mods.endreborn.EntropyWand")
-object EntropyWandZen {
-    private val layer get() = CtLayers.wand
+@ZenClass("mods.endreborn.CorruptionConversion")
+object CorruptionConversionZen {
+    private val layer get() = CtLayers.corruption
 
-    /** Adds a conversion. [damage] is the durability the wand loses, -1 uses the value of the server config. [sound] plays the sound of a flint and steel. */
     @JvmStatic
     @ZenMethod
-    fun addRecipe(
-        input: IBlockStateMatcher, output: IBlockState,
-        @Optional(valueLong = -1) damage: Int, @Optional priority: Int, @Optional sound: Boolean, @Optional name: String?,
-    ) {
-        val match = matchOf(input) ?: return fail("EntropyWand: the input must match the states of one block")
+    fun addRecipe(input: IBlockStateMatcher, output: IBlockState, @Optional priority: Int, @Optional name: String?) {
+        val match = matchOf(input) ?: return fail("CorruptionConversion: the input must match the states of one block")
         val result = CraftTweakerMC.getBlockState(output)
-        act("Adding an Entropy Wand conversion") {
-            layer.add(name?.let(layer::parse), "wand") {
-                WandConversion(it, match, result, damage.takeIf { d -> d >= 0 }, priority, if (sound) listOf(WorldEffect.FLINT_SOUND) else emptyList())
-            }
+        act("Adding a corruption conversion") {
+            layer.add(name?.let(layer::parse), "corruption") { CorruptionConversion(it, match, result, priority) }
         }
     }
 
-    @JvmStatic @ZenMethod fun remove(id: String) = act("Removing the Entropy Wand conversion $id") { layer.remove(layer.parse(id)) }
+    @JvmStatic @ZenMethod fun remove(id: String) = act("Removing the corruption conversion $id") { layer.remove(layer.parse(id)) }
 
-    @JvmStatic @ZenMethod fun removeAll() = act("Removing all Entropy Wand conversions") { layer.removeAll() }
+    @JvmStatic @ZenMethod fun removeAll() = act("Removing all corruption conversions") { layer.removeAll() }
 
     @JvmStatic @ZenMethod fun removeByInput(input: IBlockState) =
-        act("Removing the Entropy Wand conversions of $input") { layer.removeByInput(CraftTweakerMC.getBlockState(input)) }
+        act("Removing the corruption conversions of $input") { layer.removeByInput(CraftTweakerMC.getBlockState(input)) }
 
     @JvmStatic @ZenMethod fun removeByOutput(output: IBlockState) =
-        act("Removing the Entropy Wand conversions to $output") { layer.removeByOutput(CraftTweakerMC.getBlockState(output)) }
+        act("Removing the corruption conversions to $output") { layer.removeByOutput(CraftTweakerMC.getBlockState(output)) }
 }
 
 /** `mods.endreborn.FluidBlockInteraction`: what a fluid block does to a block next to it. */

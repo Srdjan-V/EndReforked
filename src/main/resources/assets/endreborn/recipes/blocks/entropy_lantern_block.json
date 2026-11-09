@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "TLT",
+        " O "
+    ],
+    "key": {
+        "T": {
+            "type": "forge:ore_dict",
+            "ore": "ingotTungsten"
+        },
+        "L": {
+            "item": "endreborn:item_lormyte_crystal"
+        },
+        "O": {
+            "item": "minecraft:torch"
+        }
+    },
+    "result": {
+        "item": "endreborn:entropy_lantern_block",
+        "count": 1
+    }
+}

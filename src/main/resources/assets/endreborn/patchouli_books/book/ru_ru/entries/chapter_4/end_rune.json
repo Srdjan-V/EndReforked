@@ -1,0 +1,19 @@
+{
+    "name": "Руна Края и рунический блок",
+    "icon": "endreborn:item_end_rune",
+    "category": "chapter_4",
+    "pages": [
+        {
+            "type": "spotlight",
+            "item": "endreborn:item_end_rune",
+            "link_recipe": true,
+            "text": "Для Руны Края нужны 4 осколка Края (от Энтропийных Блейзов) и 1 жемчужина Края."
+        },
+        {
+            "type": "spotlight",
+            "item": "endreborn:rune_block",
+            "link_recipe": true,
+            "text": "Для рунического блока нужны 4 блока пурпура, 1 Руна Края и 1 эссенция Края. Это каркас Материализатора и расходник его структур."
+        }
+    ]
+}

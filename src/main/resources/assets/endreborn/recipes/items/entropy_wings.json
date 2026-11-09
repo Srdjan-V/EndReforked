@@ -1,0 +1,27 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "SFS",
+        "ICI",
+        "SFS"
+    ],
+    "key": {
+        "S": {
+            "item": "endreborn:dragon_scales"
+        },
+        "F": {
+            "item": "endreborn:item_angel_feather"
+        },
+        "I": {
+            "type": "forge:ore_dict",
+            "ore": "ingotInfused"
+        },
+        "C": {
+            "item": "endreborn:entropy_cell"
+        }
+    },
+    "result": {
+        "item": "endreborn:entropy_wings",
+        "count": 1
+    }
+}

@@ -1,0 +1,16 @@
+{
+    "name": "Tinkers' Materials",
+    "icon": "endreborn:item_ingot_endorium",
+    "category": "chapter_5",
+    "pages": [
+        {
+            "type": "text",
+            "text": "Tinkers' Construct and Construct's Armory are optional. The mod has no own tools or armor. Its materials work in them instead.$(br2)Endorium. Tool: Ender Pocket (drops and XP go to your inventory, then to your ender chest). Armor: Blink.$(br)Tungsten. Tool: Grounding (a hit target cannot teleport for 10 s). Armor: Anchored."
+        },
+        {
+            "type": "text",
+            "text": "Infused ingot. Tool: Siphon (drains chunk entropy for mining speed and repair). Armor: Absorb (entropy becomes absorption hearts).$(br)Dragon scales. Bow string: Breath (an arrow leaves a small dragon breath cloud). Armor: Void rescue.$(br2)With Ender Storage and an Ender Pouch, the Ender Pocket uses the pouch chest."
+        }
+    ],
+    "flag": "mod:tconstruct"
+}

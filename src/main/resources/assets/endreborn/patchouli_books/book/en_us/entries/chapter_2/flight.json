@@ -1,0 +1,17 @@
+{
+    "name": "Flight 1 and 2",
+    "icon": "endreborn:dragonite_tea",
+    "category": "chapter_2",
+    "pages": [
+        {
+            "type": "text",
+            "text": "Flight 1: Organa fruit. You fly for a short time and teleport."
+        },
+        {
+            "type": "spotlight",
+            "item": "endreborn:dragonite_tea",
+            "link_recipe": true,
+            "text": "Flight 2: dragonite tea. It lasts longer and does not teleport you. Craft it from a glass bottle, dragonite berries and an Organa fruit. The flight is longer in charged and critical chunks."
+        }
+    ]
+}

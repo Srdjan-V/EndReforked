@@ -1,0 +1,19 @@
+{
+    "name": "Endorium",
+    "icon": "endreborn:item_ingot_endorium",
+    "category": "chapter_1",
+    "pages": [
+        {
+            "type": "spotlight",
+            "item": "endreborn:item_ingot_endorium",
+            "link_recipe": true,
+            "text": "Endorium is the metal of chapter 1. You make it in the End Forge with lava."
+        },
+        {
+            "type": "spotlight",
+            "item": "endreborn:lormyte_charm",
+            "link_recipe": true,
+            "text": "The Lormyte charm needs 4 lormyte crystals and 1 endorium ingot."
+        }
+    ]
+}

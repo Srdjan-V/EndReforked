@@ -1,5 +1,6 @@
 package io.github.srdjanv.endreforked.api.machine
 
+import io.github.srdjanv.endreforked.api.entropy.EntropyLevel
 import io.github.srdjanv.endreforked.api.registry.RegistryEntry
 import io.github.srdjanv.endreforked.api.registry.RegistryScripts
 import net.minecraft.item.Item
@@ -25,6 +26,7 @@ sealed interface ItemIngredient {
  * NBT is not part of the model and is not synced to clients: no current recipe depends on NBT.
  * Of several matching recipes, the highest [priority] wins, then the lowest [id].
  * [worldEvents] are for machines that change the world while they run. The others leave them empty.
+ * The recipe only runs when the chunk of the machine is at [minLevel] or higher.
  */
 data class MachineRecipe(
     override val id: ResourceLocation,
@@ -37,6 +39,7 @@ data class MachineRecipe(
     val entropy: Int = 0,
     val priority: Int = 0,
     val worldEvents: List<WorldEvent> = emptyList(),
+    val minLevel: EntropyLevel = EntropyLevel.STABLE,
 ) : RegistryEntry
 
 /** The first world event after [percent] of progress, or null. */

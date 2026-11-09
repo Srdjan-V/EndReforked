@@ -3,18 +3,18 @@ package io.github.srdjanv.endreforked.common.registry
 import io.github.srdjanv.endreforked.api.machine.MachineRecipe
 import io.github.srdjanv.endreforked.api.entropy.CriticalEvent
 import io.github.srdjanv.endreforked.api.registry.LoadReport
+import io.github.srdjanv.endreforked.api.world.CorruptionConversion
 import io.github.srdjanv.endreforked.api.world.FluidBlockInteraction
 import io.github.srdjanv.endreforked.api.world.FluidEntityInteraction
-import io.github.srdjanv.endreforked.api.world.WandConversion
 import io.github.srdjanv.endreforked.api.worldgen.EndBiome
 import io.github.srdjanv.endreforked.api.worldgen.WorldFeature
 import io.github.srdjanv.endreforked.impl.machine.MachineRecipes
 import io.github.srdjanv.endreforked.impl.machine.toSnapshot
 import io.github.srdjanv.endreforked.impl.registry.ManagedRegistry
 import io.github.srdjanv.endreforked.impl.world.CriticalEvents
+import io.github.srdjanv.endreforked.impl.world.CorruptionConversions
 import io.github.srdjanv.endreforked.impl.world.FluidBlockInteractions
 import io.github.srdjanv.endreforked.impl.world.FluidEntityInteractions
-import io.github.srdjanv.endreforked.impl.world.WandConversions
 import io.github.srdjanv.endreforked.impl.world.toSnapshot
 import io.github.srdjanv.endreforked.impl.worldgen.EndBiomes
 import io.github.srdjanv.endreforked.impl.worldgen.WorldFeatures
@@ -24,12 +24,12 @@ import net.minecraft.world.biome.Biome
 /**
  * All registries of one side. The server and the client each have their own instance, also in single player.
  * A new registry is added here: a property and a [Slot] in [slots]. A synced one also needs one case in the client packet handler.
- * The world features, the End biomes and the critical events are server only: nothing on the client reads them, so they have no snapshot,
+ * The world features, the End biomes, the critical events and the corruption conversions are server only: nothing on the client reads them, so they have no snapshot,
  * and a client instance ([withWorldGen] false) leaves them out of [slots] and never builds them.
  */
 class Registries(
     val machineRecipes: ManagedRegistry<MachineRecipe, MachineRecipes>,
-    val wandConversions: ManagedRegistry<WandConversion, WandConversions>,
+    val corruptionConversions: ManagedRegistry<CorruptionConversion, CorruptionConversions>,
     val fluidBlockInteractions: ManagedRegistry<FluidBlockInteraction, FluidBlockInteractions>,
     val fluidEntityInteractions: ManagedRegistry<FluidEntityInteraction, FluidEntityInteractions>,
     val worldFeatures: ManagedRegistry<WorldFeature, WorldFeatures>,
@@ -52,9 +52,6 @@ class Registries(
         Slot(machineRecipes.key.path, machineRecipes::rebuild, { machineRecipes.current.toSnapshot() }) { l ->
             machineRecipes.addListener { l(it.toSnapshot()) }
         },
-        Slot(wandConversions.key.path, wandConversions::rebuild, { wandConversions.current.toSnapshot() }) { l ->
-            wandConversions.addListener { l(it.toSnapshot()) }
-        },
         Slot(fluidBlockInteractions.key.path, fluidBlockInteractions::rebuild, { fluidBlockInteractions.current.toSnapshot() }) { l ->
             fluidBlockInteractions.addListener { l(it.toSnapshot()) }
         },
@@ -65,6 +62,7 @@ class Registries(
         Slot(worldFeatures.key.path, worldFeatures::rebuild),
         Slot(endBiomes.key.path, endBiomes::rebuild),
         Slot(criticalEvents.key.path, criticalEvents::rebuild),
+        Slot(corruptionConversions.key.path, corruptionConversions::rebuild),
     ) else emptyList()
 
     /** The current content of every synced registry, ready to send to a client. */
@@ -77,7 +75,7 @@ class Registries(
         /** The registries of one side. The server passes true, the client false. */
         fun create(withWorldGen: Boolean) = Registries(
             MachineRecipes.managed(MachineRecipeDefaults::all),
-            WandConversions.managed(WorldInteractionDefaults::wandConversions),
+            CorruptionConversions.managed(WorldInteractionDefaults::corruptionConversions),
             FluidBlockInteractions.managed(WorldInteractionDefaults::fluidBlockInteractions),
             FluidEntityInteractions.managed(WorldInteractionDefaults::fluidEntityInteractions),
             WorldFeatures.managed(WorldFeatureDefaults::all, ::validate),

@@ -1,0 +1,13 @@
+{
+    "name": "Voidbloom",
+    "icon": "endreborn:voidbloom_crop",
+    "category": "chapter_1",
+    "pages": [
+        {
+            "type": "spotlight",
+            "item": "endreborn:voidbloom_crop",
+            "link_recipe": true,
+            "text": "The voidbloom is a plant that grows ender pearls. Plant its seed on end stone. You get a seed from an observatory chest or from the End explorer."
+        }
+    ]
+}

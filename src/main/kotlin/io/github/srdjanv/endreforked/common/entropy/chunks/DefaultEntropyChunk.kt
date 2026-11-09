@@ -3,7 +3,10 @@ package io.github.srdjanv.endreforked.common.entropy.chunks
 import io.github.srdjanv.endreforked.api.capabilities.entropy.EntropyChunk
 import io.github.srdjanv.endreforked.api.capabilities.entropy.EntropyStorage
 import io.github.srdjanv.endreforked.api.util.DimPos
+import io.github.srdjanv.endreforked.common.entropy.EntropyTuning
+import io.github.srdjanv.endreforked.common.entropy.Stabilizers
 import io.github.srdjanv.endreforked.common.entropy.storage.DefaultWeakEntropyStorage
+import io.github.srdjanv.endreforked.common.entropy.world.EntropyWorldHandler
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.world.chunk.Chunk
 import net.minecraftforge.fml.common.FMLCommonHandler
@@ -47,10 +50,14 @@ class DefaultEntropyChunk(private val chunk: Chunk) : EntropyChunk {
     override val maxEntropy get() = storage.maxEntropy
     override val currentEntropy get() = storage.currentEntropy
 
+    /** Under a Lormyte Stabilizer the chunk takes only what keeps it below the cap. Inducers waste the rest. */
     override fun induceEntropy(entropy: Int, simulate: Boolean): Int {
-        var induced = storage.induceEntropy(entropy, simulate)
+        val amount = if (EntropyWorldHandler.isCapped(world, dimPos.chunkPosX, dimPos.chunkPosZ)) {
+            minOf(entropy, Stabilizers.room(currentEntropy, EntropyTuning.stabilizerCap(maxEntropy)))
+        } else entropy
+        var induced = storage.induceEntropy(amount, simulate)
         val ref = reference
-        if (ref != null && entropy > induced) induced += ref.induceEntropy(entropy - induced, simulate)
+        if (ref != null && amount > induced) induced += ref.induceEntropy(amount - induced, simulate)
         if (!simulate && induced > 0) chunk.markDirty()
         return induced
     }

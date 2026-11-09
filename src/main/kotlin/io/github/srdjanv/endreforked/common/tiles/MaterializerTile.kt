@@ -6,6 +6,7 @@ import com.cleanroommc.modularui.drawable.keys.DynamicKey
 import com.cleanroommc.modularui.drawable.keys.LangKey
 import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.screen.ModularPanel
+import com.cleanroommc.modularui.value.sync.BooleanSyncValue
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue
 import com.cleanroommc.modularui.value.sync.GuiSyncManager
 import com.cleanroommc.modularui.value.sync.IntSyncValue
@@ -15,12 +16,16 @@ import com.cleanroommc.modularui.widgets.ButtonWidget
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.ProgressWidget
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
+import com.cleanroommc.modularui.widgets.slot.SlotGroup
 import io.github.srdjanv.endreforked.api.base.crafting.TileStatus
+import io.github.srdjanv.endreforked.api.entropy.EntropyRadius
+import io.github.srdjanv.endreforked.api.entropy.EntropyRadiusUpgrade
 import io.github.srdjanv.endreforked.api.machine.MachineRecipe
 import io.github.srdjanv.endreforked.api.machine.WorldEvent
 import io.github.srdjanv.endreforked.api.machine.nextWorldEvent
 import io.github.srdjanv.endreforked.common.ModBlocks
 import io.github.srdjanv.endreforked.common.blocks.BlockMaterializer
+import io.github.srdjanv.endreforked.common.entropy.Stabilizers
 import io.github.srdjanv.endreforked.common.entropy.world.EntropyChunkReader
 import io.github.srdjanv.endreforked.common.entropy.world.EntropyWorldHandler
 import io.github.srdjanv.endreforked.common.machine.InputHandler
@@ -29,14 +34,17 @@ import io.github.srdjanv.endreforked.common.machine.MachineProcess
 import io.github.srdjanv.endreforked.common.machine.OutputHandler
 import io.github.srdjanv.endreforked.common.machine.ProcessHooks
 import io.github.srdjanv.endreforked.common.machine.recipes
+import io.github.srdjanv.endreforked.common.materializer.GhostPreview
 import io.github.srdjanv.endreforked.common.materializer.WorldEvents
 import io.github.srdjanv.endreforked.common.registry.MachineRecipeDefaults
 import io.github.srdjanv.endreforked.common.tiles.base.BaseTileEntity
 import io.github.srdjanv.endreforked.common.widgets.BasicTextWidget
 import io.github.srdjanv.endreforked.common.widgets.BlockStateRendereWidget
+import io.github.srdjanv.endreforked.utils.LangUtil
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.effect.EntityLightningBolt
 import net.minecraft.init.SoundEvents
+import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumParticleTypes
@@ -52,17 +60,24 @@ import net.minecraftforge.items.CapabilityItemHandler
 import org.apache.commons.lang3.tuple.Pair
 
 /**
- * The Materializer: an item and a catalyst go in (any of the two slots), the output comes out.
+ * The Materializer: three items go in (an ingredient, more of it or a second one, and the catalyst, in any slot), the output comes out.
+ * A radius upgrade sets the chunks that the recipe takes entropy from, like in the Entropy Chamber.
  * While a recipe runs, its world events change blocks near the machine. An event that triggers and finds no structure ruins the run.
  * The inputs stay in their slots until the recipe is done, or the run fails and they are lost.
  */
 class MaterializerTile : BaseTileEntity(), ITickable, IGuiHolder<PosGuiData> {
-    private val reader = EntropyChunkReader.ofTileEntity(this)
+    private val reader = EntropyChunkReader.ofTileEntity(this, EntropyRadius.ONE)
+
+    private val upgradeSlot = object : InternalItemStackHandler(1) {
+        override fun insertItem(slot: Int, stack: ItemStack, simulate: Boolean): ItemStack =
+            if (stack.item is EntropyRadiusUpgrade) super.insertItem(slot, stack, simulate) else stack
+    }
+
     private val process: MachineProcess = MachineProcess(
         MachineRecipeDefaults.MATERIALIZER,
         MachineIO(
             InputHandler(
-                2,
+                3,
                 { recipes().acceptsItem(MachineRecipeDefaults.MATERIALIZER, it) },
                 { markDirty(); process.inputChanged() },
             ),
@@ -86,12 +101,18 @@ class MaterializerTile : BaseTileEntity(), ITickable, IGuiHolder<PosGuiData> {
                 return true
             }
 
+            override fun absorbOverload() = Stabilizers.absorb(world as WorldServer, pos)
+
             override fun onFinished(recipe: MachineRecipe) = circle(EnumParticleTypes.PORTAL)
         },
     )
 
     private val itemIn get() = process.io.itemInputs
     private val itemOut get() = process.io.itemOutputs
+
+    /** In manual mode a run only starts after the player pressed Start. After a run ends, the machine waits again. Default: manual. */
+    private var manualStart = true
+    private var startRequested = false
 
     /** The percent of the last world event that was tried in this run, 0 before the first. The GUI shows the next one. */
     private var lastEvent = 0
@@ -105,6 +126,7 @@ class MaterializerTile : BaseTileEntity(), ITickable, IGuiHolder<PosGuiData> {
     init {
         inventoriesToDrop.add(itemIn)
         inventoriesToDrop.add(itemOut)
+        inventoriesToDrop.add(upgradeSlot)
     }
 
     override fun getDisplayName(): ITextComponent = TextComponentTranslation("container.entropy_user")
@@ -117,18 +139,25 @@ class MaterializerTile : BaseTileEntity(), ITickable, IGuiHolder<PosGuiData> {
         super.readFromNBT(compound)
         process.deserializeNBT(compound.getCompoundTag("process"))
         lastEvent = compound.getInteger("last_event")
+        if (compound.hasKey("manual_start")) manualStart = compound.getBoolean("manual_start")
+        startRequested = compound.getBoolean("start_requested")
+        if (compound.hasKey("upgrade_slot")) upgradeSlot.deserializeNBT(compound.getCompoundTag("upgrade_slot"))
     }
 
     override fun writeToNBT(compound: NBTTagCompound): NBTTagCompound {
         compound.setTag("process", process.serializeNBT())
         compound.setInteger("last_event", lastEvent)
+        compound.setBoolean("manual_start", manualStart)
+        compound.setBoolean("start_requested", startRequested)
+        compound.setTag("upgrade_slot", upgradeSlot.serializeNBT())
         return super.writeToNBT(compound)
     }
 
     override fun update() {
         if (!world.isRemote) {
             updateBlockState()
-            process.tick(reader.entropyView, EntropyWorldHandler.levelAt(world.provider.dimension, pos))
+            updateRange()
+            tickProcess()
             if (process.ticksRun == 0) lastEvent = 0 // a new run, or the last one ended
         } else if (process.status == TileStatus.FAILED || failTick > 0) {
             // show the failure text for 3 seconds
@@ -139,6 +168,29 @@ class MaterializerTile : BaseTileEntity(), ITickable, IGuiHolder<PosGuiData> {
             }
             failTick++
         }
+    }
+
+    /** In manual mode the process only ticks after Start, or while a run is under way. When a run ends, the machine waits for Start again. */
+    private fun tickProcess() {
+        val underWay = process.ticksRun > 0
+        if (manualStart && !startRequested && !underWay) {
+            process.status = when {
+                process.recipe != null -> TileStatus.WAITING_START
+                process.io.isInputEmpty() -> TileStatus.IDLE
+                else -> TileStatus.INVALID
+            }
+            return
+        }
+        process.tick(reader.entropyView, EntropyWorldHandler.levelAt(world.provider.dimension, pos))
+        if (underWay && process.ticksRun == 0) startRequested = false
+    }
+
+    /** The world event whose structure the ghost preview shows: the next one of the loaded recipe, else the first. Null without a recipe or event. */
+    fun ghostEvent(): WorldEvent? = process.recipe?.let { it.nextWorldEvent(lastEvent) ?: it.worldEvents.firstOrNull() }
+
+    private fun updateRange() {
+        val upgrade = upgradeSlot.getStackInSlot(0).item
+        reader.updateRadius(if (upgrade is EntropyRadiusUpgrade) upgrade.entropyRadius else EntropyRadius.ONE)
     }
 
     /** Rolls the chance of the event, then runs it. False means that it triggered and found no structure. */
@@ -179,6 +231,9 @@ class MaterializerTile : BaseTileEntity(), ITickable, IGuiHolder<PosGuiData> {
         val panel = ModularPanel.defaultPanel("materializer_gui").bindPlayerInventory()
 
         syncManager.syncValue("last_event", IntSyncValue({ lastEvent }, { lastEvent = it }))
+        // The buttons write the client value and send it to the server (the pattern of the battery GUI).
+        syncManager.syncValue("manual_start", 0, BooleanSyncValue({ manualStart }, { manualStart = it }))
+        syncManager.syncValue("start_requested", 0, BooleanSyncValue({ startRequested }, { startRequested = it && (world.isRemote || process.recipe != null) }))
         syncManager.syncValue(
             "status",
             SyncHandlers.enumValue(TileStatus::class.java, { process.status }, { process.status = it }),
@@ -256,6 +311,19 @@ class MaterializerTile : BaseTileEntity(), ITickable, IGuiHolder<PosGuiData> {
             render.isEnabled = false
             renderText.isEnabled = false
 
+            fun press(name: String, value: Boolean) =
+                (syncManager.getSyncHandler(GuiSyncManager.makeSyncKey(name, 0)) as BooleanSyncValue).setBoolValue(value, true, true)
+
+            fun textButton(left: Int, width: Int, key: () -> String, onClick: () -> Unit) {
+                val button = Btn().background(GuiTextures.MC_BACKGROUND).left(left).top(24).size(width, 16).overlay(DynamicKey { LangUtil.translateToLocal(key()) })
+                button.onMousePressed { mouseButton -> (mouseButton == 0).also { if (it) onClick() } }
+                panel.child(button)
+            }
+            textButton(30, 50, { if (manualStart) "tile.materializer.mode.manual" else "tile.materializer.mode.auto" }) { press("manual_start", !manualStart) }
+            textButton(85, 35, { "tile.materializer.start" }) { press("start_requested", true) }
+            textButton(125, 44, { if (GhostPreview.enabled) "tile.materializer.ghost.on" else "tile.materializer.ghost.off" }) { GhostPreview.enabled = !GhostPreview.enabled }
+            GhostPreview.opened(pos)
+
             panel.child(
                 ProgressWidget().size(18).left(95).top(45)
                     .texture(GuiTextures.PROGRESS_ARROW, 25)
@@ -263,8 +331,20 @@ class MaterializerTile : BaseTileEntity(), ITickable, IGuiHolder<PosGuiData> {
             )
         }
 
-        panel.child(ItemSlot().slot(ModularSlot(itemIn, 0)).left(50).top(45))
-        panel.child(ItemSlot().slot(ModularSlot(itemIn, 1)).left(70).top(45))
+        panel.child(ItemSlot().slot(ModularSlot(itemIn, 0)).left(30).top(45))
+        panel.child(ItemSlot().slot(ModularSlot(itemIn, 1)).left(50).top(45))
+        panel.child(ItemSlot().slot(ModularSlot(itemIn, 2)).left(70).top(45))
+
+        val upgrade = ItemSlot().slot(ModularSlot(upgradeSlot, 0).slotGroup(SlotGroup.singleton("upgrade_item_in", 110))).left(7).top(45)
+        upgrade.tooltip().setAutoUpdate(true).tooltipBuilder { tooltip ->
+            val item = upgrade.ingredient
+            if (item is EntropyRadiusUpgrade) {
+                val range = item.entropyRadius
+                tooltip.addLine(LangKey("entropy.range.chunks").get() + ": " + range.chunks)
+                tooltip.addLine(LangKey("entropy.range.radius").get() + ": " + range.radius)
+            }
+        }
+        panel.child(upgrade)
         panel.child(ItemSlot().slot(ModularSlot(itemOut, 0).accessibility(false, true)).left(120).top(45))
         return panel
     }

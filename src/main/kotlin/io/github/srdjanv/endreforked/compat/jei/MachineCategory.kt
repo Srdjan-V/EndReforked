@@ -9,10 +9,10 @@ import mezz.jei.api.recipe.IRecipeCategory
 import net.minecraft.client.Minecraft
 
 /**
- * The layout of the End Forge and the Materializer: two input slots at x 35 and 55, an arrow, and an output slot at x 105.
+ * The layout of the End Forge and the Materializer: input slots at the x positions [inputs], an arrow, and an output slot at x 105.
  * Subclasses put the ingredients in the slots.
  */
-abstract class MachineCategory(helper: IGuiHelper, private val uid: String, private val titleKey: String) :
+abstract class MachineCategory(helper: IGuiHelper, private val uid: String, private val titleKey: String, private val inputs: List<Int>) :
     IRecipeCategory<MachineRecipeWrapper> {
     private val background = helper.createBlankDrawable(160, 60)
     private val slot = helper.slotDrawable
@@ -30,7 +30,6 @@ abstract class MachineCategory(helper: IGuiHelper, private val uid: String, priv
         val progress = Minecraft.getSystemTime() % 2000 / 2000f // 2 seconds
         GuiTextures.PROGRESS_ARROW.getSubArea(0f, 0.5f, progress, 1f).draw(78f, 20f, progress * 20, 20f)
         slot.draw(minecraft, 105, 20)
-        slot.draw(minecraft, 55, 20)
-        slot.draw(minecraft, 35, 20)
+        for (x in inputs) slot.draw(minecraft, x, 20)
     }
 }

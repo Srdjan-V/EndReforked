@@ -31,23 +31,12 @@ data class BlockMatch(val block: Block, val properties: Map<IProperty<*>, Compar
     }
 }
 
-/** A sound or other effect that server code plays after a change. */
-enum class WorldEffect {
-    /** The sound of a flint and steel. */
-    FLINT_SOUND,
-}
-
-/**
- * What the Entropy Wand does to the block it is used on: it turns the block that fits [match] into [result].
- * The wand loses [itemDamage] durability, or the value of the server config when this is null.
- */
-data class WandConversion(
+/** What the Corruption critical event does to a block that fits [match]: it turns the block into [result]. Server only. */
+data class CorruptionConversion(
     override val id: ResourceLocation,
     val match: BlockMatch,
     val result: IBlockState,
-    val itemDamage: Int? = null,
     val priority: Int = 0,
-    val effects: List<WorldEffect> = emptyList(),
 ) : RegistryEntry
 
 /**

@@ -1,0 +1,28 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "TET",
+        "LCL",
+        "TET"
+    ],
+    "key": {
+        "T": {
+            "type": "forge:ore_dict",
+            "ore": "ingotTungsten"
+        },
+        "E": {
+            "type": "forge:ore_dict",
+            "ore": "ingotEndorium"
+        },
+        "L": {
+            "item": "endreborn:item_lormyte_crystal"
+        },
+        "C": {
+            "item": "minecraft:cauldron"
+        }
+    },
+    "result": {
+        "item": "endreborn:entropy_chamber",
+        "count": 1
+    }
+}

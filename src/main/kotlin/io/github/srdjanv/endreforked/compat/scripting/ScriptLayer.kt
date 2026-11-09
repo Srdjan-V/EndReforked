@@ -3,9 +3,9 @@ package io.github.srdjanv.endreforked.compat.scripting
 import io.github.srdjanv.endreforked.Tags
 import io.github.srdjanv.endreforked.api.registry.LoadReport
 import io.github.srdjanv.endreforked.api.registry.RegistryEntry
+import io.github.srdjanv.endreforked.api.world.CorruptionConversion
 import io.github.srdjanv.endreforked.api.world.FluidBlockInteraction
 import io.github.srdjanv.endreforked.api.world.FluidEntityInteraction
-import io.github.srdjanv.endreforked.api.world.WandConversion
 import io.github.srdjanv.endreforked.impl.registry.ManagedRegistry
 import net.minecraft.block.state.IBlockState
 import net.minecraft.util.ResourceLocation
@@ -78,11 +78,11 @@ class ScriptLayer<E : RegistryEntry>(
 }
 
 /** Removals with Minecraft types, for every script engine. A match on a block state needs the same block and the same value of every property of the state. */
-@JvmName("wandByInput")
-fun ScriptLayer<WandConversion>.removeByInput(state: IBlockState) = removeIf { it.match.matches(state) }
+@JvmName("corruptionByInput")
+fun ScriptLayer<CorruptionConversion>.removeByInput(state: IBlockState) = removeIf { it.match.matches(state) }
 
-@JvmName("wandByOutput")
-fun ScriptLayer<WandConversion>.removeByOutput(state: IBlockState) = removeIf { it.result == state }
+@JvmName("corruptionByOutput")
+fun ScriptLayer<CorruptionConversion>.removeByOutput(state: IBlockState) = removeIf { it.result == state }
 
 @JvmName("fluidBlockByFluid")
 fun ScriptLayer<FluidBlockInteraction>.removeByFluid(fluid: Fluid) = removeIf { it.fluid == fluid }

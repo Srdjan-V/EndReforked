@@ -1,0 +1,11 @@
+{
+    "name": "Overload",
+    "icon": "endreborn:entropy_shard",
+    "category": "entropy",
+    "pages": [
+        {
+            "type": "text",
+            "text": "In a critical chunk, each finished machine run has a 20 % chance to overload. An overload takes the inputs and the entropy, but gives no output.$(br2)The level comes only from the chunk of the machine. A Lormyte Stabilizer with Organa fluid can absorb an overload."
+        }
+    ]
+}

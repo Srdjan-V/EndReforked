@@ -108,6 +108,19 @@ sealed interface Feature {
     /** `amount` plants of [block] (a `BlockBush`) on the surface in the area. With [randomAge] a crop starts with a random age below its maximum. */
     data class Bush(val block: IBlockState, val randomAge: Boolean = false) : Feature
 
+    /**
+     * A hollow geode with `radius` at a random height. Of the blocks of [replace] in the sphere, the outer layer becomes [shell],
+     * the next one [lining], and the inside becomes air (see `geodeLayer`). Then [markerAmount] plants of [marker] (a `BlockBush`) grow on the surface
+     * above the centre, in a disc of 3 blocks, so that the geode can be found. Without a [marker] there are none.
+     */
+    data class Geode(
+        val shell: IBlockState,
+        val lining: IBlockState,
+        val replace: List<IBlockState>,
+        val marker: IBlockState? = null,
+        val markerAmount: Int = 0,
+    ) : Feature
+
     /** Organa flower growth, resolved after terrain-changing features. */
     data object FlowerGeneration : Feature
 

@@ -77,7 +77,7 @@ class TConstruct : CompatManger.ModCompat {
             if (partType == null) addTrait(trait) else addTrait(trait, partType)
             setRepresentativeItem(item)
         }
-        endorium.ingots(ModItems.INGOT_ENDORIUM, TraitRift)
+        endorium.ingots(ModItems.INGOT_ENDORIUM, TraitEnderPocket)
         endorium.addItem(ModItems.BLOCK_ENDORIUM, 1, Material.VALUE_Block)
         tungsten.ingots(ModItems.TUNGSTEN_INGOT, TraitGrounding)
         tungsten.addItem(ModItems.TUNGSTEN_NUGGET, 1, Material.VALUE_Nugget)

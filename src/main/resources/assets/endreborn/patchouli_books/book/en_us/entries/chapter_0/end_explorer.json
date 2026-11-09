@@ -1,0 +1,15 @@
+{
+    "name": "The End Explorer",
+    "icon": "endreborn:item_end_essence",
+    "category": "chapter_0",
+    "pages": [
+        {
+            "type": "text",
+            "text": "The End explorer is a villager in the Explorer house of Overworld villages. He takes tungsten, not emeralds. He sells small amounts of End items before your trip to the End. He never sells infused ingots, stabilizers, catalysts or machines."
+        },
+        {
+            "type": "text",
+            "text": "Level 1: 4 tungsten for 2 ender pearls. 6 tungsten for 2 End essence. 3 ender pearls for 1 emerald.$(br)Level 2: 8 tungsten for dragonite tea. 6 tungsten for 2 Organa fruit. 4 tungsten for a voidbloom seed.$(br)Level 3: 10 tungsten for 2 lormyte crystals. 12 tungsten for 2 Organa flower seeds. 4 tungsten for 4 Organa spores or End coral."
+        }
+    ]
+}

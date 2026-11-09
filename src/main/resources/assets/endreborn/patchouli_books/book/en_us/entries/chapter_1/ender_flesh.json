@@ -1,0 +1,13 @@
+{
+    "name": "Ender Flesh",
+    "icon": "endreborn:ender_flesh",
+    "category": "chapter_1",
+    "pages": [
+        {
+            "type": "spotlight",
+            "item": "endreborn:ender_flesh",
+            "link_recipe": true,
+            "text": "Craft it from rotten flesh and blaze powder, or take it from Watchers. If you eat it, you get Ender Eyes. Ender Eyes stop the attacks of Chronologists."
+        }
+    ]
+}

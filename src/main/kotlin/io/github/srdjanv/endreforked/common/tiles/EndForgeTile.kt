@@ -14,6 +14,7 @@ import com.cleanroommc.modularui.widgets.ProgressWidget
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import io.github.srdjanv.endreforked.api.base.crafting.TileStatus
 import io.github.srdjanv.endreforked.api.machine.MachineRecipe
+import io.github.srdjanv.endreforked.common.entropy.Stabilizers
 import io.github.srdjanv.endreforked.common.entropy.world.EntropyChunkReader
 import io.github.srdjanv.endreforked.common.entropy.world.EntropyWorldHandler
 import io.github.srdjanv.endreforked.common.machine.InputHandler
@@ -31,12 +32,13 @@ import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ITickable
 import net.minecraft.util.SoundCategory
+import net.minecraft.world.WorldServer
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler
 import net.minecraftforge.items.CapabilityItemHandler
 
 /**
- * The End Forge: one item slot, one 1,600 mB tank and one output slot, on the machine recipe registry.
+ * The End Forge: two item slots, one 1,600 mB tank and one output slot, on the machine recipe registry.
  * The inputs stay in their slot and tank until the recipe is done, then the recipe takes its amounts.
  */
 class EndForgeTile : BaseTileEntity(), ITickable, IGuiHolder<PosGuiData> {
@@ -45,7 +47,7 @@ class EndForgeTile : BaseTileEntity(), ITickable, IGuiHolder<PosGuiData> {
         MachineRecipeDefaults.END_FORGE,
         MachineIO(
             InputHandler(
-                1,
+                2,
                 { recipes().acceptsItem(MachineRecipeDefaults.END_FORGE, it) },
                 { markDirty(); process.inputChanged() },
             ),
@@ -61,6 +63,8 @@ class EndForgeTile : BaseTileEntity(), ITickable, IGuiHolder<PosGuiData> {
         ),
         this::recipes,
         object : ProcessHooks {
+            override fun absorbOverload() = Stabilizers.absorb(world as WorldServer, pos)
+
             override fun onFinished(recipe: MachineRecipe) {
                 world.playSound(null, pos, SoundEvents.BLOCK_FURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 1.0f, 1.0f)
             }
@@ -114,7 +118,8 @@ class EndForgeTile : BaseTileEntity(), ITickable, IGuiHolder<PosGuiData> {
         }
 
         panel.child(FluidSlot().syncHandler(FluidSlotSyncHandler(fluidIn)).left(25).top(45))
-        panel.child(ItemSlot().slot(ModularSlot(itemIn, 0)).left(50).top(45))
+        panel.child(ItemSlot().slot(ModularSlot(itemIn, 0)).left(47).top(45))
+        panel.child(ItemSlot().slot(ModularSlot(itemIn, 1)).left(67).top(45))
         panel.child(ItemSlot().slot(ModularSlot(itemOut, 0).accessibility(false, true)).left(120).top(45))
         return panel
     }

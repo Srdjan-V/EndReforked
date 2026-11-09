@@ -12,6 +12,7 @@ import io.github.srdjanv.endreforked.api.worldgen.Step
 import io.github.srdjanv.endreforked.api.worldgen.WorldFeature
 import io.github.srdjanv.endreforked.common.ModBioms
 import io.github.srdjanv.endreforked.common.ModBlocks
+import io.github.srdjanv.endreforked.common.blocks.BlockDragoniteCrop
 import net.minecraft.block.Block
 import net.minecraft.block.BlockStone
 import net.minecraft.block.state.IBlockState
@@ -57,32 +58,35 @@ object WorldFeatureDefaults {
             ore("obsidian_essence_ore", ModBlocks.OBSIDIAN_ESSENCE_ORE, Blocks.OBSIDIAN.defaultState,
                 dims = dims(OVERWORLD to params(0, 256, rarity = 80, amount = 20), END to params(0, 256, rarity = 60, amount = 40))),
             ore("entropy_ore_crop", ModBlocks.ENTROPY_CROP_BLOCK, Blocks.END_STONE.defaultState,
-                dims = dims(END to params(0, 60, rarity = 25, amount = 20))),
+                biomes = biomes(ModBioms.ENTROPY_BIOME.registryName!! to params(0, 60, rarity = 25, amount = 20))),
             ore("tungsten_ore", ModBlocks.TUNGSTEN_ORE, diorite,
                 dims = dims(OVERWORLD to params(0, 48, rarity = 15, amount = 10))),
             ore("tungsten_end", ModBlocks.TUNGSTEN_END_ORE, Blocks.END_STONE.defaultState,
-                params = params(0, 48, rarity = 5, amount = 25), dims = Condition.of(END), biomes = Condition.of(mc("sky"))),
+                params = params(0, 48, rarity = 5, amount = 25), dims = Condition.of(END)),
         ))
     }
 
     private fun generic(): List<WorldFeature> {
         val organa = ModBioms.ORGANA_BIOME.registryName!!
+        val entropy = ModBioms.ENTROPY_BIOME.registryName!!
         val endStone = Blocks.END_STONE.defaultState
         val moss = ModBlocks.ORGANA_END_STONE_BLOCK.defaultState
-        val magma = ModBlocks.END_MAGMA_BLOCK.defaultState
-        val fluidMagma = ModBlocks.FLUID_END_MAGMA_BLOCK.defaultState
         fun generic(name: String, feature: Feature?, dims: Condition<Int> = Condition(), biomes: Condition<ResourceLocation> = Condition()) =
             feature?.let { WorldFeature(id(name), FeatureKind.GENERIC, 0, it, null, dims, biomes) }
+        // Only in the regular End: a shell of decorative lormyte, a lining of lormyte crystal blocks, a hollow centre, and ripe dragonite bushes above as the marker.
+        fun geode() = state(ModBlocks.DECORATIVE_LORMYTE_BLOCK)?.let { shell ->
+            state(ModBlocks.LORMYTE_CRYSTAL_BLOCK)?.let { lining ->
+                val marker = ModBlocks.DRAGONITE_CROP.let { it.defaultState.withProperty(BlockDragoniteCrop.AGE, it.maxAge) }
+                Feature.Geode(shell, lining, listOf(endStone), marker, markerAmount = 5)
+            }
+        }
         fun cropBush(block: Block?) = block?.let { Feature.Bush(it.defaultState, randomAge = true) }
         return ordered(FeatureKind.GENERIC, listOf(
-            generic("lormyte", state(ModBlocks.LORMYTE_CRYSTAL_BLOCK)?.let { Feature.Sphere(listOf(endStone, moss), it) },
-                dims(END to params(20, 45, rarity = 80, radius = 12))),
-            generic("fuzzy_end_magma", Feature.Sphere(listOf(endStone, moss), magma, alt = fluidMagma, altChance = 51),
-                dims(END to params(10, 25, rarity = 95, radius = 12))),
-            generic("filled_end_magma", Feature.FilledSphere(listOf(endStone, moss), inner = fluidMagma, outer = magma),
-                biomes = biomes(organa to params(10, 25, rarity = 95, radius = 12, fill = 6))),
+            generic("lormyte_geode", geode(), biomes = biomes(mc("sky") to params(20, 45, rarity = 80, radius = 5))),
             generic("entropy_end_stone", Feature.Ore(ModBlocks.ENTROPY_END_STONE.defaultState, endStone),
                 dims(END to params(10, 30, rarity = 25, amount = 30))),
+            generic("entropy_rift", Feature.Ore(ModBlocks.ENTROPY_RIFT.defaultState, ModBlocks.ENTROPY_END_STONE.defaultState),
+                biomes = biomes(entropy to params(40, 90, amount = 3))),
             generic("organa_surface_lake",
                 Feature.Lake(
                     replace = listOf(ModBlocks.ORGANA_BLOCK.defaultState, ModBlocks.ORGANA_END_STONE_BLOCK.defaultState),
@@ -128,7 +132,6 @@ object WorldFeatureDefaults {
                 biomes = biomes(organa to params(50, 130, amount = 4))),
             generic("end_coral", Feature.Bush(ModBlocks.END_CORAL.defaultState),
                 dims(END to params(50, 90, rarity = 0, amount = 20))),
-            generic("dragonite_crop", cropBush(ModBlocks.DRAGONITE_CROP), dims(END to params(50, 90, rarity = 5, amount = 6))),
             generic("voidbloom_crop", cropBush(ModBlocks.VOIDBLOOM_CROP), dims(END to params(50, 90, rarity = 5, amount = 6))),
         ))
     }

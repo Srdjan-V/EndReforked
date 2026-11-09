@@ -1,0 +1,24 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "LIL",
+        " S ",
+        "LIL"
+    ],
+    "key": {
+        "L": {
+            "item": "endreborn:item_lormyte_crystal"
+        },
+        "I": {
+            "type": "forge:ore_dict",
+            "ore": "ingotInfused"
+        },
+        "S": {
+            "item": "endreborn:entropy_shard"
+        }
+    },
+    "result": {
+        "item": "endreborn:entropy_radius_upgrade_1",
+        "count": 1
+    }
+}

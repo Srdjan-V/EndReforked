@@ -7,6 +7,7 @@ import crafttweaker.api.item.IngredientStack
 import crafttweaker.api.liquid.ILiquidStack
 import crafttweaker.api.minecraft.CraftTweakerMC
 import crafttweaker.api.oredict.IOreDictEntry
+import io.github.srdjanv.endreforked.api.entropy.EntropyLevel
 import io.github.srdjanv.endreforked.api.machine.ItemIngredient
 import io.github.srdjanv.endreforked.api.machine.MachineRecipe
 import io.github.srdjanv.endreforked.common.registry.MachineRecipeDefaults
@@ -17,6 +18,7 @@ import stanhebben.zenscript.annotations.ZenMethod
 
 // One ZenScript class per machine of the machine recipe registry. All three share the script layer, so each one only touches the recipes of its machine.
 // An item input is one item (with a count) or one ore dictionary entry (with a count). The world events of the Materializer are not supported.
+// [minLevel] is "stable" (default), "charged" or "critical": the recipe only runs in a chunk of that level or higher.
 
 /** `mods.endreborn.EntropyChamber` */
 @ZenRegister
@@ -30,8 +32,8 @@ object EntropyChamberZen {
     fun addRecipe(
         inputs: Array<IIngredient>, outputs: Array<IItemStack>, ticks: Int,
         @Optional fluidInputs: Array<ILiquidStack>?, @Optional fluidOutputs: Array<ILiquidStack>?,
-        @Optional entropy: Int, @Optional priority: Int, @Optional name: String?,
-    ) = machine.addRecipe(inputs, outputs, ticks, fluidInputs, fluidOutputs, entropy, priority, name)
+        @Optional entropy: Int, @Optional priority: Int, @Optional name: String?, @Optional minLevel: String?,
+    ) = machine.addRecipe(inputs, outputs, ticks, fluidInputs, fluidOutputs, entropy, priority, name, minLevel)
 
     /** Removes the recipe with this id, for example `endreborn:entropy_chamber/obsidian`. */
     @JvmStatic @ZenMethod fun remove(id: String) = machine.remove(id)
@@ -58,8 +60,8 @@ object EndForgeZen {
     fun addRecipe(
         inputs: Array<IIngredient>, outputs: Array<IItemStack>, ticks: Int,
         @Optional fluidInputs: Array<ILiquidStack>?, @Optional fluidOutputs: Array<ILiquidStack>?,
-        @Optional entropy: Int, @Optional priority: Int, @Optional name: String?,
-    ) = machine.addRecipe(inputs, outputs, ticks, fluidInputs, fluidOutputs, entropy, priority, name)
+        @Optional entropy: Int, @Optional priority: Int, @Optional name: String?, @Optional minLevel: String?,
+    ) = machine.addRecipe(inputs, outputs, ticks, fluidInputs, fluidOutputs, entropy, priority, name, minLevel)
 
     @JvmStatic @ZenMethod fun remove(id: String) = machine.remove(id)
 
@@ -85,8 +87,8 @@ object MaterializerZen {
     fun addRecipe(
         inputs: Array<IIngredient>, outputs: Array<IItemStack>, ticks: Int,
         @Optional fluidInputs: Array<ILiquidStack>?, @Optional fluidOutputs: Array<ILiquidStack>?,
-        @Optional entropy: Int, @Optional priority: Int, @Optional name: String?,
-    ) = machine.addRecipe(inputs, outputs, ticks, fluidInputs, fluidOutputs, entropy, priority, name)
+        @Optional entropy: Int, @Optional priority: Int, @Optional name: String?, @Optional minLevel: String?,
+    ) = machine.addRecipe(inputs, outputs, ticks, fluidInputs, fluidOutputs, entropy, priority, name, minLevel)
 
     @JvmStatic @ZenMethod fun remove(id: String) = machine.remove(id)
 
@@ -109,8 +111,10 @@ internal class MachineZen(private val machine: ResourceLocation) {
     fun addRecipe(
         inputs: Array<IIngredient>, outputs: Array<IItemStack>, ticks: Int,
         fluidInputs: Array<ILiquidStack>?, fluidOutputs: Array<ILiquidStack>?,
-        entropy: Int, priority: Int, name: String?,
+        entropy: Int, priority: Int, name: String?, minLevel: String?,
     ) {
+        val level = if (minLevel.isNullOrBlank()) EntropyLevel.STABLE
+        else EntropyLevel.entries.firstOrNull { it.name.equals(minLevel, ignoreCase = true) } ?: return fail("$label: unknown level $minLevel, use stable, charged or critical")
         val items = inputs.map { toIngredient(it) ?: return fail("$label: an item input must be one item or one ore dictionary entry, got $it") }
         val fluidIn = fluidInputs.orEmpty().map { CraftTweakerMC.getLiquidStack(it).copy() }
         val itemOut = outputs.map { CraftTweakerMC.getItemStack(it).copy() }
@@ -120,7 +124,7 @@ internal class MachineZen(private val machine: ResourceLocation) {
         if (ticks < 1) return fail("$label: ticks must be at least 1, got $ticks")
         act("Adding an End Reforked $label recipe") {
             layer.add(name?.let(layer::parse), label) {
-                MachineRecipe(it, machine, items, fluidIn, itemOut, fluidOut, ticks, entropy, priority)
+                MachineRecipe(it, machine, items, fluidIn, itemOut, fluidOut, ticks, entropy, priority, minLevel = level)
             }
         }
     }

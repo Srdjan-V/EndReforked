@@ -19,23 +19,18 @@ entropy.drainer.passive.frequency=Ticks per operation
 item.item_ingot_endorium.name=Endorium Ingot
 item.tungsten_ingot.name=Tungsten Ingot
 item.tungsten_nugget.name=Tungsten Nugget
-item.item_shard_obsidian.name=Obsidian Shard
-item.item_raw_endorium.name=Endorium Nugget
 item.item_end_essence.name=Essence
 item.item_end_shard.name=Purpur Shards
 item.item_end_rune.name=Purpur Rune
 item.item_lormyte_crystal.name=Lormyte Crystal
-item.item_ender_string.name=String of Life
 item.dragonite_tea.name=Dragonite Tea
 item.item_angel_feather.name=Angel Feather
 item.dragon_scales.name=Dragon Scales
 item.entropy_shard.name=Entropy Shard
 item.catalyst.name=Obsidian Dust
-item.sword_shard.name=Broken Sword Part
 item.ingot_infused.name=Infused Endorium
 item.entropy_radius_upgrade_1.name=Entropy Radius Upgrade II
 item.entropy_radius_upgrade_2.name=Entropy Radius Upgrade III
-item.entropy_reader.name=Entropy Reader
 item.entropy_wings.name=Entropy Wings
 item.entropy_wings_ring.name=Entropy Wings Ring
 item.organa_flower_seed.name=Organa Flower Seed
@@ -61,7 +56,6 @@ tile.end_stone_smooth_stairs.name=Smooth End Stone Stairs
 tile.end_bricks_wall.name=End Stone Wall
 tile.end_stone_smooth_wall.name=Smooth End Stone Wall
 tile.purpur_wall.name=Purpur Wall
-tile.organa_liquid.name=Organa Liquid
 tile.end_forge_block.name=Void Forge
 tile.entropy_crop.name=Entropy Shard Cluster
 tile.entropy_crop.mature.name=Mature Entropy Shard Cluster
@@ -80,27 +74,23 @@ tile.organa_flower_stem_dead.name=Dead Organa Flower Stem
 tile.organa_plant.name=Organa Plant
 tile.organa_weed.name=Organa Weed
 tile.organa_spore.name=Organa Spore
+tile.organa_sensor_soil.name=Organa Sensor Soil
 tile.small_entropy_battery.name=Small Entropy Battery
 tile.tungsten_end_ore.name=Tungsten End Ore
-tile.end_magma.name=Liquid End Magma
 tile.entropy.name=Liquid Entropy
 tile.organa.name=Liquid Organa
-fluid.end_magma=Liquid End Magma
 fluid.entropy=Liquid Entropy
 fluid.organa=Liquid Organa
 
 # Tools -
-item.entropy_wand.name=Wand Of Entropy
 item.lormyte_charm.name=Lormyte Charm
 item.entropy_cell.name=Entropy Cell
 entropy_cell.tooltip=Entropy: %s / %s
 entropy_cell.filled=Cell filled: +%s (%s / %s)
-entropy_cell.emptied=Cell emptied: -%s (%s / %s)
 
 #Food
 item.ender_flesh.name=Mysical Flesh
 item.dragonite_berries.name=Dragonite Berries
-item.chorus_soup.name=Chorus Soup
 item.organa_fruit.name=Organa Fruit
 
 #Entities
@@ -108,12 +98,10 @@ entity.entropy_blaze.name=Entropy Blaze
 entity.watcher.name=Watcher
 entity.chronologist.name=Chronologist
 entity.entropy_fireball.name=Cold Fireball
-entity.Villager.endreborn.nether_explorer.name=Nether Explorer
 entity.Villager.endreborn.end_explorer.name=End Explorer
-entity.Villager.endreborn.overworld_explorer.name=World Explorer
 
 #JEI
-endreborn.jei.entropy_wand.item_cost=Damage to item to convert
+endreborn.jei.entropy_cost=Damage to item to convert
 
 #Book
 item.endreborn.book.name=Book of The End
@@ -131,7 +119,6 @@ enchantment.ender_killer=Ender Killer
 enchantment.endreborn.ender_killer.desc=Higher damage while in the End
 
 #Other
-tile.soup.tooltip=Looks tasty
 
 tile.flesh.tooltip=Can improve eyesight
 tile.entropy_crop.tooltip=Small entropy shards that slowly spread as they grow
@@ -139,7 +126,6 @@ tile.essence.tooltip=Substance that appearing among obsidian
 tile.user.tooltip=Allows to double some resources
 tile.tea.tooltip=Allows one to fly
 tile.block_forge.tooltip=The heat of this forge changes the properties of some materials
-tile.wand.tooltip=Changes some blocks to their destroyed state
 tile.catalyst.tooltip=Materializer recipes catalyst
 
 effect.ender_eyes=Ender eyes
@@ -257,8 +243,6 @@ material.endreborn_dragonscale.name=Dragon Scale
 fluid.endreborn_endorium=Molten Endorium
 fluid.endreborn_tungsten=Molten Tungsten
 fluid.endreborn_infused=Molten Infused Endorium
-modifier.endreborn_rift.name=Rift
-modifier.endreborn_rift.desc=Drops and XP go to your inventory, then to your ender chest
 modifier.endreborn_grounding.name=Grounding
 modifier.endreborn_grounding.desc=A hit target cannot teleport for 10 s. Longer in charged and critical chunks
 modifier.endreborn_siphon.name=Siphon
@@ -273,3 +257,18 @@ modifier.endreborn_absorb_armor.name=Absorb
 modifier.endreborn_absorb_armor.desc=Converts chunk entropy into absorption hearts
 modifier.endreborn_voidrescue_armor.name=Void Rescue
 modifier.endreborn_voidrescue_armor.desc=In the void you teleport to the last safe block and the armor loses much durability. Immune to dragon breath
+tile.ichor.name=Ichor
+fluid.ichor=Ichor
+tile.entropy_rift.name=Entropy Rift
+endreborn.jei.min_level=Needs a %s chunk
+tile.materializer.mode.auto=Mode: Auto
+tile.materializer.mode.manual=Mode: Manual
+tile.materializer.start=Start
+tile.materializer.ghost.on=Ghost: On
+tile.materializer.ghost.off=Ghost: Off
+tile.status.gui.waiting_start=Waiting for start
+tile.lormyte_stabilizer.name=Lormyte Stabilizer
+tile.lormyte_stabilizer.tier_1.name=Lormyte Stabilizer II
+tile.lormyte_stabilizer.tier_2.name=Lormyte Stabilizer III
+modifier.endreborn_ender_pocket.name=Ender Pocket
+modifier.endreborn_ender_pocket.desc=Drops and XP go to your inventory, then to your ender chest (or the ender chest of your Ender Pouch)

@@ -1,10 +1,10 @@
 package io.github.srdjanv.endreforked.impl.world
 
+import io.github.srdjanv.endreforked.api.world.CorruptionConversion
 import io.github.srdjanv.endreforked.api.world.EntityResult
 import io.github.srdjanv.endreforked.api.world.FluidBlockInteraction
 import io.github.srdjanv.endreforked.api.world.FluidEntityInteraction
 import io.github.srdjanv.endreforked.api.world.ITEM_ENTITY
-import io.github.srdjanv.endreforked.api.world.WandConversion
 import io.github.srdjanv.endreforked.impl.registry.FrozenRegistry
 import io.github.srdjanv.endreforked.impl.registry.ManagedRegistry
 import net.minecraft.block.Block
@@ -12,25 +12,20 @@ import net.minecraft.entity.EntityList
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.fluids.Fluid
 
-/** The conversions of the Entropy Wand, indexed by the block they match. */
-class WandConversions(entries: Collection<WandConversion>) : FrozenRegistry<WandConversion>(KEY, entries) {
-    private val byBlock: Map<Block, List<WandConversion>> =
+/** The conversions of the Corruption event, indexed by the block they match. */
+class CorruptionConversions(entries: Collection<CorruptionConversion>) : FrozenRegistry<CorruptionConversion>(KEY, entries) {
+    private val byBlock: Map<Block, List<CorruptionConversion>> =
         this.entries.sortedWith(ORDER).groupBy { it.match.block }
 
     /** The conversions for [block], first to try first. */
-    fun forBlock(block: Block): List<WandConversion> = byBlock[block] ?: emptyList()
+    fun forBlock(block: Block): List<CorruptionConversion> = byBlock[block] ?: emptyList()
 
     companion object {
-        val KEY = ResourceLocation("endreborn", "wand_conversions")
+        val KEY = ResourceLocation("endreborn", "corruption_conversions")
 
-        private val ORDER = compareByDescending<WandConversion> { it.priority }.thenBy { it.id }
+        private val ORDER = compareByDescending<CorruptionConversion> { it.priority }.thenBy { it.id }
 
-        fun managed(defaults: () -> Collection<WandConversion>) = ManagedRegistry(KEY, defaults, ::validate, ::WandConversions)
-
-        fun validate(c: WandConversion): String? = when {
-            c.itemDamage != null && c.itemDamage!! < 0 -> "itemDamage must not be negative"
-            else -> null
-        }
+        fun managed(defaults: () -> Collection<CorruptionConversion>) = ManagedRegistry(KEY, defaults, { null }, ::CorruptionConversions)
     }
 }
 

@@ -1,33 +1,22 @@
 {
     "type": "minecraft:crafting_shaped",
-    
-    "pattern":
-    [
-        "000", 
-        "212",
-        "000"      
+    "pattern": [
+        "P P",
+        " R ",
+        "PEP"
     ],
-    
-    "key":
-    {
-        "0":
-        {
+    "key": {
+        "P": {
             "item": "minecraft:purpur_block"
         },
-
-        "1":
-        {
+        "R": {
             "item": "endreborn:item_end_rune"
         },
-
-        "2":
-        {
+        "E": {
             "item": "endreborn:item_end_essence"
         }
     },
-    
-    "result":
-    {
+    "result": {
         "item": "endreborn:rune_block",
         "count": 1
     }

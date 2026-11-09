@@ -1,0 +1,13 @@
+{
+    "name": "Entropy Cell",
+    "icon": "endreborn:entropy_cell",
+    "category": "entropy",
+    "pages": [
+        {
+            "type": "spotlight",
+            "item": "endreborn:entropy_cell",
+            "link_recipe": true,
+            "text": "Use the cell to take entropy from your chunk into the cell. The cell cannot give entropy back to a chunk, so it cannot move entropy between chunks.$(br2)The cell holds charge for the wings and for Tinkers' items."
+        }
+    ]
+}

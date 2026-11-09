@@ -38,7 +38,7 @@ class BlockOrganaPlant : BlockBase("organa_plant", Material.PLANTS, MapColor.PUR
         val flower = ModBlocks.ORGANA_FLOWER_BLOCK
         fun connects(p: BlockPos) = at(p).let { it === this || it === flower }
         return state
-            .withProperty(DOWN, at(pos.down()).let { it === this || it === flower || it === ModBlocks.ORGANA_BLOCK })
+            .withProperty(DOWN, at(pos.down()).let { it === this || it === flower || ModBlocks.isOrganaSoil(it) })
             .withProperty(UP, connects(pos.up()))
             .withProperty(NORTH, connects(pos.north()))
             .withProperty(EAST, connects(pos.east()))
@@ -107,12 +107,12 @@ class BlockOrganaPlant : BlockBase("organa_plant", Material.PLANTS, MapColor.PUR
             if (wordIn.getBlockState(blockPosFacing).block === this) {
                 if (!upAir && !downAir) return false
                 val blockUnder = wordIn.getBlockState(blockPosFacing.down()).block
-                if (blockUnder === this || blockUnder === ModBlocks.ORGANA_BLOCK) return true
+                if (blockUnder === this || ModBlocks.isOrganaSoil(blockUnder)) return true
             }
         }
 
         val blockDown = wordIn.getBlockState(pos.down()).block
-        return blockDown === this || blockDown === ModBlocks.ORGANA_BLOCK
+        return blockDown === this || ModBlocks.isOrganaSoil(blockDown)
     }
 
     override fun createBlockState() = BlockStateContainer(this, NORTH, EAST, SOUTH, WEST, UP, DOWN)

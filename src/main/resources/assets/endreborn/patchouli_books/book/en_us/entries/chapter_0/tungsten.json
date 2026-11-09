@@ -1,0 +1,17 @@
+{
+    "name": "Tungsten",
+    "icon": "endreborn:tungsten_ingot",
+    "category": "chapter_0",
+    "pages": [
+        {
+            "type": "spotlight",
+            "item": "endreborn:tungsten_ingot",
+            "link_recipe": true,
+            "text": "Tungsten ore is in diorite in the Overworld. Smelt it to get tungsten ingots. In the End, tungsten ore generates in every biome.$(br2)Tungsten makes machine frames, the entropy cell and the stabilizer."
+        },
+        {
+            "type": "text",
+            "text": "The observatory is a tower in the Overworld. Its chest holds tungsten ingots, End essence, ender pearls, a voidbloom seed and, rarely, dragonite tea. An ender eye is in its item frame."
+        }
+    ]
+}

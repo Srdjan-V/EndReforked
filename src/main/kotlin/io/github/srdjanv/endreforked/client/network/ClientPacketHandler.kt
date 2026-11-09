@@ -7,7 +7,6 @@ import io.github.srdjanv.endreforked.common.registry.Registries
 import io.github.srdjanv.endreforked.impl.machine.toMachineRecipes
 import io.github.srdjanv.endreforked.impl.world.toFluidBlockInteractions
 import io.github.srdjanv.endreforked.impl.world.toFluidEntityInteractions
-import io.github.srdjanv.endreforked.impl.world.toWandConversions
 import io.github.srdjanv.endreforked.wire.s2c.ChunkEntropy
 import io.github.srdjanv.endreforked.wire.s2c.RegistrySnapshot
 import io.github.srdjanv.endreforked.wire.s2c.PlayerParticle
@@ -54,7 +53,6 @@ class ClientPacketHandler(
     private fun registrySnapshot(snapshot: RegistrySnapshot) {
         try {
             val known = snapshot.toMachineRecipes()?.let(registries.machineRecipes::replace)
-                ?: snapshot.toWandConversions()?.let(registries.wandConversions::replace)
                 ?: snapshot.toFluidBlockInteractions()?.let(registries.fluidBlockInteractions::replace)
                 ?: snapshot.toFluidEntityInteractions()?.let(registries.fluidEntityInteractions::replace)
             if (known == null) EndReforked.LOGGER.warn("Unknown registry snapshot {}", snapshot.registry)

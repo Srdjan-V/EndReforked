@@ -1,0 +1,33 @@
+{
+    "name": "Стабилизатор лормита",
+    "icon": "endreborn:lormyte_stabilizer",
+    "category": "chapter_3",
+    "pages": [
+        {
+            "type": "text",
+            "text": "Стабилизатор держит энтропию чанка ниже критического уровня (предел заряженного, 80 %). Источники теряют лишнее. Так на базе возможен лучший выход (заряженный уровень).$(br2)Уровень I: его чанк. Уровень II: 3x3 чанка. Уровень III: 5x5 чанков."
+        },
+        {
+            "type": "spotlight",
+            "item": "endreborn:lormyte_stabilizer",
+            "link_recipe": true,
+            "text": "Уровень I."
+        },
+        {
+            "type": "spotlight",
+            "item": "endreborn:lormyte_stabilizer:1",
+            "link_recipe": true,
+            "text": "Для уровня II нужен уровень I в центре."
+        },
+        {
+            "type": "spotlight",
+            "item": "endreborn:lormyte_stabilizer:2",
+            "link_recipe": true,
+            "text": "Для уровня III нужен уровень II в центре."
+        },
+        {
+            "type": "text",
+            "text": "Сигнал редстоуна выключает кристалл. Тогда чанк может намеренно стать критическим. Сломайте его, и он вернётся с тем же уровнем.$(br2)В биоме Энтропии он ничего не делает."
+        }
+    ]
+}

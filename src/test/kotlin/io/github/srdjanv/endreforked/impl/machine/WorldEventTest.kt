@@ -6,13 +6,16 @@ import io.github.srdjanv.endreforked.api.machine.StructureSpec
 import io.github.srdjanv.endreforked.api.machine.WorldAction
 import io.github.srdjanv.endreforked.api.machine.WorldEvent
 import io.github.srdjanv.endreforked.api.machine.nextWorldEvent
+import io.github.srdjanv.endreforked.common.materializer.WorldEvents
 import io.github.srdjanv.endreforked.wire.s2c.RegistrySnapshot
 import net.minecraft.block.BlockStone
 import net.minecraft.init.Blocks
 import net.minecraft.init.Bootstrap
 import net.minecraft.init.Items
 import net.minecraft.item.ItemStack
+import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
+import net.minecraft.util.math.BlockPos
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -81,5 +84,25 @@ class WorldEventTest {
         assertEquals(1, report.errors.size, report.errors.toString())
         assertTrue(report.errors.single().startsWith("scripts: test:range: world event at 500%"))
         assertEquals(2, registry.current.size) // the default and test:good
+    }
+
+    @Test
+    fun theSearchAreaIs7x7AndFiveHighWithoutTheMachineColumn() {
+        assertTrue(WorldEvents.inArea(3, 0, -3))
+        assertTrue(WorldEvents.inArea(-3, 5, 3))
+        assertTrue(!WorldEvents.inArea(4, 0, 0))
+        assertTrue(!WorldEvents.inArea(0, 0, -4))
+        assertTrue(!WorldEvents.inArea(1, -1, 1)) // below the machine
+        assertTrue(!WorldEvents.inArea(1, 6, 1))
+        assertTrue(!WorldEvents.inArea(0, 3, 0)) // the column of the machine
+    }
+
+    @Test
+    fun theGhostStartsAboveAndInFrontOfTheMachine() {
+        val machine = BlockPos(10, 64, 10)
+        assertEquals(BlockPos(10, 65, 9), WorldEvents.ghostPos(machine, EnumFacing.NORTH, 0, 0, 0))
+        // aisle = up, row = away from the machine, column = to the right of the facing (east for north)
+        assertEquals(BlockPos(12, 66, 7), WorldEvents.ghostPos(machine, EnumFacing.NORTH, 1, 2, 2))
+        assertEquals(BlockPos(9, 65, 12), WorldEvents.ghostPos(machine, EnumFacing.SOUTH, 0, 1, 1)) // west is the right of south
     }
 }

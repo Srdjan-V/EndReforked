@@ -8,7 +8,7 @@ import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.world.IBlockAccess
 
 /** Small mushroom-like spore growth found on Organa surfaces and floating islands. */
-class BlockOrganaSpore : BaseBlockBush("organa_spore", Material.PLANTS, { setOf(ModBlocks.ORGANA_BLOCK, ModBlocks.ORGANA_END_STONE_BLOCK) }) {
+class BlockOrganaSpore : BaseBlockBush("organa_spore", Material.PLANTS, { setOf(ModBlocks.ORGANA_BLOCK, ModBlocks.ORGANA_SENSOR_SOIL, ModBlocks.ORGANA_END_STONE_BLOCK) }) {
     override fun getBoundingBox(state: IBlockState, source: IBlockAccess, pos: net.minecraft.util.math.BlockPos) = AABB
 
     companion object {

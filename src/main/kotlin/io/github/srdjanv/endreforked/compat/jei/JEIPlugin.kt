@@ -3,10 +3,8 @@ package io.github.srdjanv.endreforked.compat.jei
 import io.github.srdjanv.endreforked.EndReforked
 import io.github.srdjanv.endreforked.client.ClientProxy
 import io.github.srdjanv.endreforked.common.ModBlocks
-import io.github.srdjanv.endreforked.common.ModItems
 import io.github.srdjanv.endreforked.compat.jei.endforge.EndForgeCategory
 import io.github.srdjanv.endreforked.compat.jei.entropychamber.EntropyChamberCategory
-import io.github.srdjanv.endreforked.compat.jei.entropywand.EntropyWandCategory
 import io.github.srdjanv.endreforked.compat.jei.fluids.FluidInteractionEntityCategory
 import io.github.srdjanv.endreforked.compat.jei.fluids.FluidInteractionStateCategory
 import io.github.srdjanv.endreforked.compat.jei.materializer.MaterializerCategory
@@ -24,7 +22,7 @@ class JEIPlugin : IModPlugin {
         val gui = registry.jeiHelpers.guiHelper
         registry.addRecipeCategories(
             EntropyChamberCategory(gui), EndForgeCategory(gui), MaterializerCategory(gui),
-            EntropyWandCategory(gui), FluidInteractionEntityCategory(gui), FluidInteractionStateCategory(gui),
+            FluidInteractionEntityCategory(gui), FluidInteractionStateCategory(gui),
         )
     }
 
@@ -36,8 +34,6 @@ class JEIPlugin : IModPlugin {
         registry.addRecipeCatalyst(ItemStack(ModBlocks.BLOCK_END_FORGE), EndForgeCategory.UID)
         registry.addRecipes(MaterializerCategory.FEED.load(machineRecipes), MaterializerCategory.UID)
         registry.addRecipeCatalyst(ItemStack(ModBlocks.MATERIALIZER_BLOCK), MaterializerCategory.UID)
-        registry.addRecipes(EntropyWandCategory.FEED.load(registries.wandConversions.current), EntropyWandCategory.UID)
-        registry.addRecipeCatalyst(ItemStack(ModItems.ENTROPY_WAND), EntropyWandCategory.UID)
         registry.addRecipes(EntropyChamberCategory.FEED.load(machineRecipes), EntropyChamberCategory.UID)
         registry.addRecipeCatalyst(ItemStack(ModBlocks.ENTROPY_CHAMBER), EntropyChamberCategory.UID)
         registry.addRecipes(FluidInteractionEntityCategory.FEED.load(registries.fluidEntityInteractions.current), FluidInteractionEntityCategory.UID)
@@ -50,7 +46,6 @@ class JEIPlugin : IModPlugin {
         EntropyChamberCategory.FEED.watch(jei, registries.machineRecipes)
         EndForgeCategory.FEED.watch(jei, registries.machineRecipes)
         MaterializerCategory.FEED.watch(jei, registries.machineRecipes)
-        EntropyWandCategory.FEED.watch(jei, registries.wandConversions)
         FluidInteractionEntityCategory.FEED.watch(jei, registries.fluidEntityInteractions)
         FluidInteractionStateCategory.FEED.watch(jei, registries.fluidBlockInteractions)
     }

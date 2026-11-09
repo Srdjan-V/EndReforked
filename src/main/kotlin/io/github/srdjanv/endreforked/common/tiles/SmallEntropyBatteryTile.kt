@@ -83,6 +83,14 @@ class SmallEntropyBatteryTile : TileEntity(), IGuiHolder<PosGuiData>, ITickable,
         return linked
     }
 
+    val storedEntropy get() = storage.currentEntropy
+
+    /** Removes the chunk reference to this battery, if the chunk holds it. */
+    fun unlink() {
+        val chunk = reader.centerEntropy ?: return
+        if (chunk.entropyStorageReference.map { it === storage }.orElse(false)) chunk.setEntropyStorageReference(null, true)
+    }
+
     fun isLinked() = reader.centerEntropy?.entropyStorageReference?.map { it === storage }?.orElse(false) ?: false
 
     override fun readFromNBT(compound: NBTTagCompound) {

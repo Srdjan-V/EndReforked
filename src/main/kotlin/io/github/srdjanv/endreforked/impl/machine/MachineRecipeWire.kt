@@ -1,5 +1,6 @@
 package io.github.srdjanv.endreforked.impl.machine
 
+import io.github.srdjanv.endreforked.api.entropy.EntropyLevel
 import io.github.srdjanv.endreforked.api.machine.ItemIngredient
 import io.github.srdjanv.endreforked.api.machine.MachineRecipe
 import io.github.srdjanv.endreforked.api.machine.StructureSpec
@@ -50,6 +51,7 @@ private fun MachineRecipe.toWire() = WireRecipe(
     entropy = entropy,
     priority = priority,
     world_events = worldEvents.map { it.toWire() },
+    min_level = minLevel.ordinal,
 )
 
 private fun WorldEvent.toWire() = WireEvent(
@@ -84,6 +86,7 @@ private fun WireRecipe.toRecipe() = MachineRecipe(
     entropy = entropy,
     priority = priority,
     worldEvents = world_events.map { it.toEvent() },
+    minLevel = EntropyLevel.entries.getOrElse(min_level) { EntropyLevel.STABLE },
 )
 
 private fun WireEvent.toEvent(): WorldEvent {

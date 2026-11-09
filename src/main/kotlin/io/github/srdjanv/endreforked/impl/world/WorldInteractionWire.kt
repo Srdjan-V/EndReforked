@@ -3,8 +3,6 @@ package io.github.srdjanv.endreforked.impl.world
 import io.github.srdjanv.endreforked.api.world.EntityResult
 import io.github.srdjanv.endreforked.api.world.FluidBlockInteraction
 import io.github.srdjanv.endreforked.api.world.FluidEntityInteraction
-import io.github.srdjanv.endreforked.api.world.WandConversion
-import io.github.srdjanv.endreforked.api.world.WorldEffect
 import io.github.srdjanv.endreforked.impl.registry.decodeEntries
 import io.github.srdjanv.endreforked.impl.registry.fluidOf
 import io.github.srdjanv.endreforked.impl.registry.toItemStack
@@ -17,14 +15,9 @@ import io.github.srdjanv.endreforked.wire.s2c.FluidBlockInteraction as WireBlock
 import io.github.srdjanv.endreforked.wire.s2c.FluidBlockInteractions as WireBlockInteractions
 import io.github.srdjanv.endreforked.wire.s2c.FluidEntityInteraction as WireEntityInteraction
 import io.github.srdjanv.endreforked.wire.s2c.FluidEntityInteractions as WireEntityInteractions
-import io.github.srdjanv.endreforked.wire.s2c.WandConversion as WireConversion
-import io.github.srdjanv.endreforked.wire.s2c.WandConversions as WireConversions
-import io.github.srdjanv.endreforked.wire.s2c.WorldEffect as WireEffect
 import net.minecraft.util.ResourceLocation
 
 // Mapping between the world interaction registries and their RegistrySnapshot messages. Each `to...` list function returns null for a snapshot of another registry.
-
-fun WandConversions.toSnapshot() = RegistrySnapshot(registry = key.toString(), wand_conversions = WireConversions(entries.map { it.toWire() }))
 
 fun FluidBlockInteractions.toSnapshot() =
     RegistrySnapshot(registry = key.toString(), fluid_block_interactions = WireBlockInteractions(entries.map { it.toWire() }))
@@ -33,29 +26,9 @@ fun FluidEntityInteractions.toSnapshot() =
     RegistrySnapshot(registry = key.toString(), fluid_entity_interactions = WireEntityInteractions(entries.map { it.toWire() }))
 
 /** An entry with something this client does not have is skipped. */
-fun RegistrySnapshot.toWandConversions(): List<WandConversion>? = wand_conversions?.conversions?.decodeEntries({ it.id }) { it.toEntry() }
-
 fun RegistrySnapshot.toFluidBlockInteractions(): List<FluidBlockInteraction>? = fluid_block_interactions?.interactions?.decodeEntries({ it.id }) { it.toEntry() }
 
 fun RegistrySnapshot.toFluidEntityInteractions(): List<FluidEntityInteraction>? = fluid_entity_interactions?.interactions?.decodeEntries({ it.id }) { it.toEntry() }
-
-private fun WandConversion.toWire() = WireConversion(
-    id = id.toString(),
-    match = match.toWire(),
-    result = result.toWire(),
-    item_damage = itemDamage,
-    priority = priority,
-    effects = effects.map { WireEffect.valueOf(it.name) },
-)
-
-private fun WireConversion.toEntry() = WandConversion(
-    id = ResourceLocation(id),
-    match = (match ?: throw IllegalArgumentException("conversion $id without match")).toMatch(),
-    result = (result ?: throw IllegalArgumentException("conversion $id without result")).toState(),
-    itemDamage = item_damage,
-    priority = priority,
-    effects = effects.filter { it != WireEffect.WORLD_EFFECT_UNKNOWN }.map { WorldEffect.valueOf(it.name) },
-)
 
 private fun FluidBlockInteraction.toWire() = WireBlockInteraction(
     id.toString(), fluid.toWire(), match.toWire(), result.toWire(), chance, consumeSource, consumeChance, priority,

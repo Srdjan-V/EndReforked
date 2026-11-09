@@ -7,7 +7,7 @@ import stanhebben.zenscript.annotations.ZenMethod
 
 /**
  * `mods.endreborn.Entropy`: the entropy numbers, see [EntropyTuning]. Startup only: CraftTweaker has no reload.
- * Inducer names: organaWeed, organaFlower, entropyCrop, fluidEntropy, fluidOrgana.
+ * Inducer names: rift, organaFlower.
  */
 @ZenRegister
 @ZenClass("mods.endreborn.Entropy")
@@ -18,7 +18,7 @@ object EntropyZen {
 
     @JvmStatic @ZenMethod fun entropyBiomePercent(percent: Int) = act("Setting the Entropy biome base level to $percent %") { EntropyTuning.entropyBiomePercent = percent }
 
-    @JvmStatic @ZenMethod fun chamberDrain(amount: Int) = act("Setting the Entropy Chamber drain to $amount") { EntropyTuning.chamberDrain = amount }
+    @JvmStatic @ZenMethod fun overloadChance(percent: Int) = act("Setting the overload chance to $percent %") { EntropyTuning.overloadChance = percent.coerceIn(0, 100) }
 
     @JvmStatic
     @ZenMethod
@@ -26,6 +26,19 @@ object EntropyZen {
         EntropyTuning.criticalInterval = interval.coerceAtLeast(1)
         EntropyTuning.criticalBaseChance = baseChance.coerceIn(0, 100)
     }
+
+    @JvmStatic
+    @ZenMethod
+    fun shardCrop(stage: Int, spread: Int) = act("Setting the shard crop to $stage entropy per stage and $spread per spread") {
+        EntropyTuning.shardCropStage = stage.coerceAtLeast(0)
+        EntropyTuning.shardCropSpread = spread.coerceAtLeast(0)
+    }
+
+    @JvmStatic
+    @ZenMethod
+    fun stabilizerCap(percent: Int) = act("Setting the Lormyte Stabilizer cap to $percent % (below 0: the critical level)") { EntropyTuning.stabilizerCapPercent = percent.coerceAtMost(100) }
+
+    @JvmStatic @ZenMethod fun absorption(enabled: Boolean) = act("Setting the Organa absorption to $enabled") { EntropyTuning.absorptionEnabled = enabled }
 
     @JvmStatic @ZenMethod fun cellCapacity(capacity: Int) = act("Setting the entropy cell capacity to $capacity") { EntropyTuning.cellCapacity = capacity.coerceAtLeast(1) }
 
