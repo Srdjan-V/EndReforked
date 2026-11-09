@@ -67,6 +67,8 @@ dependencies {
     runtimeOnly(cleanroom.deobf("curse.maven:cofh-core-69162:2920433"))
     runtimeOnly(cleanroom.deobf("curse.maven:cofh-world-271384:2920434"))
     runtimeOnly(cleanroom.deobf("curse.maven:redstone-flux-270789:2920436"))
+    // Patchouli shows the guide book in assets/endreborn/patchouli_books
+    runtimeOnly(cleanroom.deobf("curse.maven:patchouli-306770:3162874"))
 
 
     implementation(cleanroom.userdev(cleanroomVersion))
