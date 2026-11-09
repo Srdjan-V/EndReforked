@@ -130,7 +130,7 @@ cleanroom {
         maybeCreate("client").configure(RunMinecraft::class.java) {
             username.set(minecraftUsername)
             uuid.set(devUuid)
-            jvmArgs("-Dfml.coreMods.load=$coreModClass")
+            jvmArgs("-Dfml.coreMods.load=$coreModClass", "-Xmx2g")
         }
         maybeCreate("server").configure(RunMinecraft::class.java) {
             uuid.set(devUuid)
