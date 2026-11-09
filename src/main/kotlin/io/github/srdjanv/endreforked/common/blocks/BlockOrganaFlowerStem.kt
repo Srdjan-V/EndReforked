@@ -102,7 +102,7 @@ class BlockOrganaFlowerStem : BaseBlockCrops("organa_flower_stem", { setOf(ModBl
                 val soil = worldIn.getBlockState(fruitPos.down())
 
                 // Rule E: a flower needs a source block of entropy fluid next to the stem. It is used up.
-                val fluidPos = EnumFacing.Plane.HORIZONTAL.map { plantPos.offset(it) }.firstOrNull {
+                val fluidPos = EnumFacing.Plane.HORIZONTAL.map { plantPos.down().offset(it) }.firstOrNull {
                     val fluid = worldIn.getBlockState(it)
                     fluid.block === ModBlocks.FLUID_ENTROPY_BLOCK && fluid.getValue(BlockFluidBase.LEVEL) == 0
                 }
