@@ -149,27 +149,22 @@ tasks.named<RenameJar>("reobfJar") { from(tasks.shadowJar); archiveClassifier = 
 tasks.withType<JavaExec>().configureEach { systemProperty("foundation.loadsall", "true") }
 
 // ccl-mcp: CodeChickenLib's ObfMapping reads the ForgeGradle 2 properties GradleStart.srg.notch-srg and GradleStart.csvDir.
-// CleanroomGradle only makes srg2mcp.tsrg, so we write fields.csv and methods.csv from it before each run.
-val cclMcpDir = layout.buildDirectory.dir("ccl-mcp")
-tasks.withType<RunMinecraft>().configureEach {
-    systemProperty("net.minecraftforge.gradle.GradleStart.srg.notch-srg", cclMcpDir.get().file("notch-srg.srg").asFile.path)
-    systemProperty("net.minecraftforge.gradle.GradleStart.csvDir", cclMcpDir.get().asFile.path)
-    doFirst {
-        val dir = cclMcpDir.get().asFile.apply { mkdirs() }
-        File(dir, "notch-srg.srg").writeText("")
-        val fields = StringBuilder("searge,name,side,desc\n")
-        val methods = StringBuilder("searge,name,side,desc\n")
-        layout.buildDirectory.file("cleanroom_gradle/userdev/srg2mcp.tsrg").get().asFile.forEachLine { line ->
-            val p = line.trim().split(' ')
-            if (!line.startsWith("\t")) return@forEachLine
-            when {
-                p[0].startsWith("field_") -> fields.append("${p[0]},${p[1]},2,\n")
-                p[0].startsWith("func_") -> methods.append("${p[0]},${p.last()},2,\n")
-            }
-        }
-        File(dir, "fields.csv").writeText(fields.toString())
-        File(dir, "methods.csv").writeText(methods.toString())
+// CleanroomGradle does not set them, so we extract the MCP csv files that ship in the userdev jar.
+val cclMcp by tasks.registering(Sync::class) {
+    val userdev = configurations.detachedConfiguration(dependencies.create("com.cleanroommc:cleanroom-userdev:$cleanroomVersion")).apply { isTransitive = false }
+    from(provider { zipTree(userdev.singleFile) }) {
+        include("userdev/fields.csv", "userdev/methods.csv")
+        eachFile { path = name }
+        includeEmptyDirs = false
     }
+    into(layout.buildDirectory.dir("ccl-mcp"))
+    doLast { File(destinationDir, "notch-srg.srg").writeText("") }
+}
+tasks.withType<RunMinecraft>().configureEach {
+    dependsOn(cclMcp)
+    val dir = cclMcp.get().destinationDir
+    systemProperty("net.minecraftforge.gradle.GradleStart.srg.notch-srg", File(dir, "notch-srg.srg").path)
+    systemProperty("net.minecraftforge.gradle.GradleStart.csvDir", dir.path)
 }
 tasks.test { useJUnitPlatform() }
 // The Java style findings (Configs, mixins) exist since before the progression phase; they must not fail the build.
