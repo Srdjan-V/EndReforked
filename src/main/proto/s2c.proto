@@ -16,11 +16,15 @@ message S2CPacket {
   }
 }
 
-// The entropy of the chunk the player stands in. The server sends it every second, only when it changed.
+// The entropy of the chunk the player stands in, and the levels of the 5x5 chunks around it.
+// The server sends it every second, only when it changed.
 message ChunkEntropy {
   int32 entropy = 1;
   int32 capacity = 2;
   int32 level = 3; // EntropyLevel ordinal
+  int32 chunk_x = 4; // the chunk of the player, center of the area
+  int32 chunk_z = 5;
+  repeated int32 nearby_levels = 6; // EntropyLevel ordinals, row-major, index (dz + 2) * 5 + (dx + 2)
 }
 
 // Starts or stops a particle effect on the local player. The other fields are only used when remove is false.
